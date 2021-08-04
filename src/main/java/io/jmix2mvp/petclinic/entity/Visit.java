@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "visit")
 public class Visit extends BaseEntity {
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id", nullable = false)
     private Pet pet;
 
@@ -16,8 +16,7 @@ public class Visit extends BaseEntity {
     @Column(name = "visit_end", nullable = false)
     private LocalDateTime visitEnd;
 
-    @Lob
-    @Column(name = "description")
+    @Column(name = "description", length = 4000)
     private String description;
 
     public String getDescription() {

@@ -1,7 +1,7 @@
 package io.jmix2mvp.petclinic.repository;
 
+import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
 import io.jmix2mvp.petclinic.entity.PetType;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PetTypeRepository extends JpaRepository<PetType, Long> {
+public interface PetTypeRepository extends EntityGraphJpaRepository<PetType, Long> {
 }

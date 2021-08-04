@@ -33,7 +33,7 @@ CREATE TABLE visit
     pet_id      BIGINT                                  NOT NULL,
     visit_start TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     visit_end   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    description TEXT,
+    description VARCHAR(4000),
     CONSTRAINT pk_visit PRIMARY KEY (id)
 );
 

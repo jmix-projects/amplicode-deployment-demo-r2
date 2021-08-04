@@ -1,10 +1,7 @@
 package io.jmix2mvp.petclinic.repository;
 
-import io.jmix2mvp.petclinic.entity.Pet;
+import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
 import io.jmix2mvp.petclinic.entity.Visit;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface VisitRepository extends JpaRepository<Visit, Long> {
+public interface VisitRepository extends EntityGraphJpaRepository<Visit, Long> {
 }
