@@ -52,7 +52,7 @@ public class OwnerService {
     @Transactional
     public OwnerDTO update(OwnerInputDTO input) {
         if (input.getId() != null) {
-            if (crudRepository.existsById(input.getId())) {
+            if (!crudRepository.existsById(input.getId())) {
                 throw new ResourceNotFoundException(
                         String.format("Unable to find entity by id: %s ", input.getId()));
             }
