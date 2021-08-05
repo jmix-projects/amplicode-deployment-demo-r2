@@ -1,14 +1,13 @@
 package io.jmix2mvp.petclinic.graphql;
 
+import io.jmix2mvp.petclinic.dto.PetDTO;
 import io.jmix2mvp.petclinic.dto.VisitDTO;
 import io.jmix2mvp.petclinic.dto.VisitInputDTO;
 import io.jmix2mvp.petclinic.entity.Visit;
 import io.jmix2mvp.petclinic.mapper.Mapper;
+import io.jmix2mvp.petclinic.repository.PetRepository;
 import io.jmix2mvp.petclinic.repository.VisitRepository;
-import io.leangen.graphql.annotations.GraphQLArgument;
-import io.leangen.graphql.annotations.GraphQLMutation;
-import io.leangen.graphql.annotations.GraphQLNonNull;
-import io.leangen.graphql.annotations.GraphQLQuery;
+import io.leangen.graphql.annotations.*;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
@@ -21,11 +20,13 @@ import java.util.stream.Collectors;
 @GraphQLApi
 @Service
 public class VisitService {
-    private final VisitRepository crudRepository;
+    private final VisitRepository visitRepository;
+    private final PetRepository petRepository;
     private final Mapper mapper;
 
-    public VisitService(VisitRepository crudRepository, Mapper mapper) {
-        this.crudRepository = crudRepository;
+    public VisitService(VisitRepository visitRepository, PetRepository petRepository, Mapper mapper) {
+        this.visitRepository = visitRepository;
+        this.petRepository = petRepository;
         this.mapper = mapper;
     }
 
@@ -33,7 +34,7 @@ public class VisitService {
     @GraphQLQuery(name = "visit")
     @Transactional
     public VisitDTO findById(@GraphQLArgument(name = "id") Long id) {
-        return crudRepository.findById(id)
+        return visitRepository.findById(id)
                 .map(mapper::mapToDTO)
                 .orElse(null);
     }
@@ -42,9 +43,18 @@ public class VisitService {
     @GraphQLQuery(name = "visitList")
     @Transactional
     public List<VisitDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
-        return crudRepository.findAll(pageable).stream()
+        return visitRepository.findAll(pageable).stream()
                 .map(mapper::mapToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Secured("ROLE_ADMIN")
+    @GraphQLQuery(name = "pet")
+    @Transactional
+    public PetDTO getPet(@GraphQLContext VisitDTO visitDTO) {
+        return petRepository.findPetByVisit(visitDTO.getId())
+                .map(mapper::mapToDTO)
+                .orElse(null);
     }
 
     @Secured("ROLE_ADMIN")
@@ -52,7 +62,7 @@ public class VisitService {
     @Transactional
     public VisitDTO update(VisitInputDTO input) {
         if (input.getId() != null) {
-            if (!crudRepository.existsById(input.getId())) {
+            if (!visitRepository.existsById(input.getId())) {
                 throw new ResourceNotFoundException(
                         String.format("Unable to find entity by id: %s ", input.getId()));
             }
@@ -60,7 +70,7 @@ public class VisitService {
 
         Visit entity = new Visit();
         mapper.mapFromDTO(input, entity);
-        entity = crudRepository.save(entity);
+        entity = visitRepository.save(entity);
 
         return mapper.mapToDTO(entity);
     }
@@ -69,9 +79,9 @@ public class VisitService {
     @GraphQLMutation(name = "delete_Visit")
     @Transactional
     public void delete(@GraphQLNonNull Long id) {
-        Visit entity = crudRepository.findById(id)
+        Visit entity = visitRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
 
-        crudRepository.delete(entity);
+        visitRepository.delete(entity);
     }
 }
