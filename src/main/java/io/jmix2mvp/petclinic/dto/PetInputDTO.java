@@ -2,7 +2,7 @@ package io.jmix2mvp.petclinic.dto;
 
 import java.time.LocalDate;
 
-public class PetDTO extends BaseDTO {
+public class PetInputDTO extends BaseDTO {
     private String identificationNumber;
     private LocalDate birthDate;
     private PetTypeDTO type;

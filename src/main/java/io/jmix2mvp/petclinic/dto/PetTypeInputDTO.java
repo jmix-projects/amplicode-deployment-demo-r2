@@ -1,6 +1,6 @@
 package io.jmix2mvp.petclinic.dto;
 
-public class PetTypeDTO extends BaseDTO {
+public class PetTypeInputDTO extends BaseDTO {
     private String name;
 
     public String getName() {

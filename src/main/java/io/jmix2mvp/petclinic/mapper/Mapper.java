@@ -1,79 +1,51 @@
 package io.jmix2mvp.petclinic.mapper;
 
-import io.jmix2mvp.petclinic.dto.OwnerDTO;
-import io.jmix2mvp.petclinic.dto.PetDTO;
-import io.jmix2mvp.petclinic.dto.PetTypeDTO;
-import io.jmix2mvp.petclinic.dto.VisitDTO;
+import io.jmix2mvp.petclinic.dto.*;
 import io.jmix2mvp.petclinic.entity.Owner;
 import io.jmix2mvp.petclinic.entity.Pet;
 import io.jmix2mvp.petclinic.entity.PetType;
 import io.jmix2mvp.petclinic.entity.Visit;
-import org.hibernate.Hibernate;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Mapper {
+    private final ModelMapper modelMapper;
 
-    public PetTypeDTO map(PetType src) {
-        PetTypeDTO dst = null;
-        if (src != null) {
-            dst = new PetTypeDTO();
-
-            dst.setId(src.getId());
-            dst.setName(src.getName());
-        }
-        return dst;
+    public Mapper() {
+        this.modelMapper = new ModelMapper();
+        this.modelMapper.getConfiguration().setSkipNullEnabled(true);
     }
 
-    public OwnerDTO map(Owner src) {
-        OwnerDTO dst = null;
-        if (src != null) {
-            dst = new OwnerDTO();
-
-            dst.setId(src.getId());
-            dst.setFirstName(src.getFirstName());
-            dst.setLastName(src.getLastName());
-            dst.setCity(src.getCity());
-            dst.setAddress(src.getAddress());
-            dst.setTelephone(src.getTelephone());
-            dst.setEmail(src.getEmail());
-        }
-        return dst;
+    public PetTypeDTO mapToDTO(PetType src) {
+        return modelMapper.map(src, PetTypeDTO.class);
     }
 
-    public PetDTO map(Pet src) {
-        PetDTO dst = null;
-        if (src != null) {
-            dst = new PetDTO();
-
-            dst.setId(src.getId());
-            dst.setIdentificationNumber(src.getIdentificationNumber());
-            dst.setBirthDate(src.getBirthDate());
-
-            if (Hibernate.isInitialized(src.getType())) {
-                dst.setType(map(src.getType()));
-            }
-            if (Hibernate.isInitialized(src.getOwner())) {
-                dst.setOwner(map(src.getOwner()));
-            }
-        }
-        return dst;
+    public void mapFromDTO(PetTypeInputDTO src, PetType dst) {
+        modelMapper.map(src, dst);
     }
 
-    public VisitDTO map(Visit src) {
-        VisitDTO dst = null;
-        if (src != null) {
-            dst = new VisitDTO();
+    public void mapFromDTO(OwnerInputDTO src, Owner dst) {
+        modelMapper.map(src, dst);
+    }
 
-            dst.setId(src.getId());
-            dst.setDescription(src.getDescription());
-            dst.setVisitStart(src.getVisitStart());
-            dst.setVisitEnd(src.getVisitEnd());
+    public void mapFromDTO(PetInputDTO src, Pet dst) {
+        modelMapper.map(src, dst);
+    }
 
-            if (Hibernate.isInitialized(src.getPet())) {
-                dst.setPet(map(src.getPet()));
-            }
-        }
-        return dst;
+    public void mapFromDTO(VisitInputDTO src, Visit dst) {
+        modelMapper.map(src, dst);
+    }
+
+    public OwnerDTO mapToDTO(Owner src) {
+        return modelMapper.map(src, OwnerDTO.class);
+    }
+
+    public PetDTO mapToDTO(Pet src) {
+        return modelMapper.map(src, PetDTO.class);
+    }
+
+    public VisitDTO mapToDTO(Visit src) {
+        return modelMapper.map(src, VisitDTO.class);
     }
 }

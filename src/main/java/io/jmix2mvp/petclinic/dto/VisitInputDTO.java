@@ -2,7 +2,7 @@ package io.jmix2mvp.petclinic.dto;
 
 import java.time.LocalDateTime;
 
-public class VisitDTO extends BaseDTO {
+public class VisitInputDTO extends BaseDTO {
     private PetDTO pet;
     private LocalDateTime visitStart;
     private LocalDateTime visitEnd;

@@ -19,13 +19,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.flywaydb:flyway-core'
 
-    implementation 'com.cosium.spring.data:spring-data-jpa-entity-graph:2.5.0'
-
     implementation 'io.leangen.graphql:graphql-spqr-spring-boot-starter:0.0.6'
     runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:11.1.0'
 
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    implementation 'org.modelmapper:modelmapper:2.4.4'
 
     runtimeOnly 'org.postgresql:postgresql'
 

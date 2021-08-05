@@ -1,6 +1,6 @@
 package io.jmix2mvp.petclinic.dto;
 
-public class OwnerDTO extends BaseDTO {
+public class OwnerInputDTO extends BaseDTO {
     private String firstName;
     private String lastName;
     private String address;
