@@ -3,11 +3,6 @@ package io.jmix2mvp.petclinic.dto;
 public class PetTypeDTO extends BaseDTO {
     private String name;
 
-
-    public PetTypeDTO() {
-        int a = 5;
-    }
-
     public String getName() {
         return name;
     }
