@@ -5,8 +5,8 @@ import java.time.LocalDate;
 public class PetInputDTO extends BaseDTO {
     private String identificationNumber;
     private LocalDate birthDate;
-    private PetTypeDTO type;
-    private OwnerDTO owner;
+    private ReferenceInputDTO type;
+    private ReferenceInputDTO owner;
 
     public String getIdentificationNumber() {
         return identificationNumber;
@@ -24,19 +24,19 @@ public class PetInputDTO extends BaseDTO {
         this.birthDate = birthDate;
     }
 
-    public PetTypeDTO getType() {
+    public ReferenceInputDTO getType() {
         return type;
     }
 
-    public void setType(PetTypeDTO type) {
+    public void setType(ReferenceInputDTO type) {
         this.type = type;
     }
 
-    public OwnerDTO getOwner() {
+    public ReferenceInputDTO getOwner() {
         return owner;
     }
 
-    public void setOwner(OwnerDTO owner) {
+    public void setOwner(ReferenceInputDTO owner) {
         this.owner = owner;
     }
 }

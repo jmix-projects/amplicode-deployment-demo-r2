@@ -3,13 +3,13 @@ package io.jmix2mvp.petclinic.graphql;
 import io.jmix2mvp.petclinic.dto.OwnerDTO;
 import io.jmix2mvp.petclinic.dto.OwnerInputDTO;
 import io.jmix2mvp.petclinic.entity.Owner;
+import io.jmix2mvp.petclinic.mapper.DTOMapper;
 import io.jmix2mvp.petclinic.repository.OwnerRepository;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 @Service
 public class OwnerService {
     private final OwnerRepository crudRepository;
-    private final ModelMapper mapper;
+    private final DTOMapper mapper;
 
-    public OwnerService(OwnerRepository crudRepository, ModelMapper mapper) {
+    public OwnerService(OwnerRepository crudRepository, DTOMapper mapper) {
         this.crudRepository = crudRepository;
         this.mapper = mapper;
     }
@@ -34,7 +34,7 @@ public class OwnerService {
     @Transactional
     public OwnerDTO findById(@GraphQLArgument(name = "id") Long id) {
         return crudRepository.findById(id)
-                .map(e -> mapper.map(e, OwnerDTO.class))
+                .map(mapper::ownerToDTO)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
     }
 
@@ -43,7 +43,7 @@ public class OwnerService {
     @Transactional
     public List<OwnerDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
         return crudRepository.findAll(pageable).stream()
-                .map(e -> mapper.map(e, OwnerDTO.class))
+                .map(mapper::ownerToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -59,10 +59,10 @@ public class OwnerService {
         }
 
         Owner entity = new Owner();
-        mapper.map(input, entity);
+        mapper.ownerDTOToEntity(input, entity);
         entity = crudRepository.save(entity);
 
-        return mapper.map(entity, OwnerDTO.class);
+        return mapper.ownerToDTO(entity);
     }
 
     @Secured("ROLE_ADMIN")

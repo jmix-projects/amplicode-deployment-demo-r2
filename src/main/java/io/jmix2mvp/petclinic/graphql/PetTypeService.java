@@ -3,13 +3,13 @@ package io.jmix2mvp.petclinic.graphql;
 import io.jmix2mvp.petclinic.dto.PetTypeDTO;
 import io.jmix2mvp.petclinic.dto.PetTypeInputDTO;
 import io.jmix2mvp.petclinic.entity.PetType;
+import io.jmix2mvp.petclinic.mapper.DTOMapper;
 import io.jmix2mvp.petclinic.repository.PetTypeRepository;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 @Service
 public class PetTypeService {
     private final PetTypeRepository crudRepository;
-    private final ModelMapper mapper;
+    private final DTOMapper mapper;
 
-    public PetTypeService(PetTypeRepository petTypeRepository, ModelMapper mapper) {
+    public PetTypeService(PetTypeRepository petTypeRepository, DTOMapper mapper) {
         this.crudRepository = petTypeRepository;
         this.mapper = mapper;
     }
@@ -34,7 +34,7 @@ public class PetTypeService {
     @Transactional
     public PetTypeDTO findById(@GraphQLArgument(name = "id") Long id) {
         return crudRepository.findById(id)
-                .map(e -> mapper.map(e, PetTypeDTO.class))
+                .map(mapper::petTypeToDTO)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
     }
 
@@ -43,7 +43,7 @@ public class PetTypeService {
     @Transactional
     public List<PetTypeDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
         return crudRepository.findAll(pageable).stream()
-                .map(e -> mapper.map(e, PetTypeDTO.class))
+                .map(mapper::petTypeToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -59,10 +59,10 @@ public class PetTypeService {
         }
 
         PetType entity = new PetType();
-        mapper.map(input, entity);
+        mapper.petTypeDTOToEntity(input, entity);
         entity = crudRepository.save(entity);
 
-        return mapper.map(entity, PetTypeDTO.class);
+        return mapper.petTypeToDTO(entity);
     }
 
     @Secured("ROLE_ADMIN")

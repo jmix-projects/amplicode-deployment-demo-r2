@@ -4,11 +4,11 @@ import io.jmix2mvp.petclinic.dto.PetDTO;
 import io.jmix2mvp.petclinic.dto.VisitDTO;
 import io.jmix2mvp.petclinic.dto.VisitInputDTO;
 import io.jmix2mvp.petclinic.entity.Visit;
+import io.jmix2mvp.petclinic.mapper.DTOMapper;
 import io.jmix2mvp.petclinic.repository.PetRepository;
 import io.jmix2mvp.petclinic.repository.VisitRepository;
 import io.leangen.graphql.annotations.*;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 public class VisitService {
     private final VisitRepository visitRepository;
     private final PetRepository petRepository;
-    private final ModelMapper mapper;
+    private final DTOMapper mapper;
 
-    public VisitService(VisitRepository visitRepository, PetRepository petRepository, ModelMapper mapper) {
+    public VisitService(VisitRepository visitRepository, PetRepository petRepository, DTOMapper mapper) {
         this.visitRepository = visitRepository;
         this.petRepository = petRepository;
         this.mapper = mapper;
@@ -35,7 +35,7 @@ public class VisitService {
     @Transactional
     public VisitDTO findById(@GraphQLArgument(name = "id") Long id) {
         return visitRepository.findById(id)
-                .map(e -> mapper.map(e, VisitDTO.class))
+                .map(mapper::visitToDTO)
                 .orElse(null);
     }
 
@@ -44,7 +44,7 @@ public class VisitService {
     @Transactional
     public List<VisitDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
         return visitRepository.findAll(pageable).stream()
-                .map(e -> mapper.map(e, VisitDTO.class))
+                .map(mapper::visitToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -53,7 +53,7 @@ public class VisitService {
     @Transactional
     public PetDTO getPet(@GraphQLContext VisitDTO visitDTO) {
         return petRepository.findPetByVisit(visitDTO.getId())
-                .map(e -> mapper.map(e, PetDTO.class))
+                .map(mapper::petToDTO)
                 .orElse(null);
     }
 
@@ -69,10 +69,10 @@ public class VisitService {
         }
 
         Visit entity = new Visit();
-        mapper.map(input, entity);
+        mapper.visitDTOToEntity(input, entity);
         entity = visitRepository.save(entity);
 
-        return mapper.map(entity, VisitDTO.class);
+        return mapper.visitToDTO(entity);
     }
 
     @Secured("ROLE_ADMIN")

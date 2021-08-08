@@ -3,20 +3,18 @@ package io.jmix2mvp.petclinic.graphql;
 import io.jmix2mvp.petclinic.dto.PetDTO;
 import io.jmix2mvp.petclinic.dto.PetInputDTO;
 import io.jmix2mvp.petclinic.entity.Pet;
+import io.jmix2mvp.petclinic.mapper.DTOMapper;
 import io.jmix2mvp.petclinic.repository.PetRepository;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +22,9 @@ import java.util.stream.Collectors;
 @Service
 public class PetService {
     private final PetRepository crudRepository;
-    private final ModelMapper mapper;
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final DTOMapper mapper;
 
-    public PetService(PetRepository crudRepository, ModelMapper mapper) {
+    public PetService(PetRepository crudRepository, DTOMapper mapper) {
         this.crudRepository = crudRepository;
         this.mapper = mapper;
     }
@@ -38,7 +34,7 @@ public class PetService {
     @Transactional
     public PetDTO findById(@GraphQLArgument(name = "id") Long id) {
         return crudRepository.findById(id)
-                .map(e -> mapper.map(e, PetDTO.class))
+                .map(mapper::petToDTO)
                 .orElse(null);
     }
 
@@ -47,7 +43,7 @@ public class PetService {
     @Transactional
     public List<PetDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
         return crudRepository.findAll(pageable).stream()
-                .map(e -> mapper.map(e, PetDTO.class))
+                .map(mapper::petToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -62,12 +58,10 @@ public class PetService {
             }
         }
         Pet entity = new Pet();
-        mapper.map(input, entity);
-        entity = crudRepository.saveAndFlush(entity);
+        mapper.petDTOToEntity(input, entity);
+        entity = crudRepository.save(entity);
 
-        entityManager.refresh(entity);
-
-        return mapper.map(entity, PetDTO.class);
+        return mapper.petToDTO(entity);
     }
 
     @Secured("ROLE_ADMIN")
