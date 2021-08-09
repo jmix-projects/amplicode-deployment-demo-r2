@@ -22,11 +22,10 @@ public class PetclinicSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.anonymous().and()
-                .authorizeRequests()
-                .antMatchers("/graphiql").permitAll()
-                .antMatchers("/**").authenticated()
+        http.formLogin()
                 .and()
-                .httpBasic();
+                .authorizeRequests().anyRequest().authenticated()
+                .and()
+                .csrf().disable();
     }
 }
