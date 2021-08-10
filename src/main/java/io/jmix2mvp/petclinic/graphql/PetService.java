@@ -12,6 +12,7 @@ import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +55,7 @@ public class PetService {
                 .collect(Collectors.toList());
     }
 
-    @Secured({ADMIN, VETERINARIAN})
+    @PreAuthorize("hasAnyRole('ADMIN', 'VETERINARIAN')")
     @GraphQLMutation(name = "update_Pet")
     @Transactional
     public PetDTO update(PetInputDTO input) {
