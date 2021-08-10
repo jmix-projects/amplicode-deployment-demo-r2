@@ -18,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static io.jmix2mvp.petclinic.Authorities.ADMIN;
+import static io.jmix2mvp.petclinic.Authorities.VETERINARIAN;
+
 @GraphQLApi
 @Service
 public class PetTypeService {
@@ -29,7 +32,7 @@ public class PetTypeService {
         this.mapper = mapper;
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLQuery(name = "petType")
     @Transactional
     public PetTypeDTO findById(@GraphQLArgument(name = "id") Long id) {
@@ -38,7 +41,7 @@ public class PetTypeService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLQuery(name = "petTypeList")
     @Transactional
     public List<PetTypeDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
@@ -47,7 +50,7 @@ public class PetTypeService {
                 .collect(Collectors.toList());
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLMutation(name = "update_PetType")
     @Transactional
     public PetTypeDTO update(PetTypeInputDTO input) {
@@ -65,7 +68,7 @@ public class PetTypeService {
         return mapper.map(entity, PetTypeDTO.class);
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLMutation(name = "delete_PetType")
     @Transactional
     public void delete(@GraphQLNonNull Long id) {

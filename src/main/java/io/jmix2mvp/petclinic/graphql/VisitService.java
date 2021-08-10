@@ -1,5 +1,6 @@
 package io.jmix2mvp.petclinic.graphql;
 
+import io.jmix2mvp.petclinic.Authorities;
 import io.jmix2mvp.petclinic.dto.PetDTO;
 import io.jmix2mvp.petclinic.dto.VisitDTO;
 import io.jmix2mvp.petclinic.dto.VisitInputDTO;
@@ -17,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static io.jmix2mvp.petclinic.Authorities.ADMIN;
+import static io.jmix2mvp.petclinic.Authorities.VETERINARIAN;
+
 @GraphQLApi
 @Service
 public class VisitService {
@@ -30,7 +34,7 @@ public class VisitService {
         this.mapper = mapper;
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLQuery(name = "visit")
     @Transactional
     public VisitDTO findById(@GraphQLArgument(name = "id") Long id) {
@@ -39,7 +43,7 @@ public class VisitService {
                 .orElse(null);
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLQuery(name = "visitList")
     @Transactional
     public List<VisitDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
@@ -48,7 +52,7 @@ public class VisitService {
                 .collect(Collectors.toList());
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLQuery(name = "pet")
     @Transactional
     public PetDTO getPet(@GraphQLContext VisitDTO visitDTO) {
@@ -57,7 +61,7 @@ public class VisitService {
                 .orElse(null);
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLMutation(name = "update_Visit")
     @Transactional
     public VisitDTO update(VisitInputDTO input) {
@@ -75,7 +79,7 @@ public class VisitService {
         return mapper.map(entity, VisitDTO.class);
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLMutation(name = "delete_Visit")
     @Transactional
     public void delete(@GraphQLNonNull Long id) {

@@ -20,6 +20,9 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static io.jmix2mvp.petclinic.Authorities.ADMIN;
+import static io.jmix2mvp.petclinic.Authorities.VETERINARIAN;
+
 @GraphQLApi
 @Service
 public class PetService {
@@ -33,7 +36,7 @@ public class PetService {
         this.mapper = mapper;
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLQuery(name = "pet")
     @Transactional
     public PetDTO findById(@GraphQLArgument(name = "id") Long id) {
@@ -42,7 +45,7 @@ public class PetService {
                 .orElse(null);
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLQuery(name = "petList")
     @Transactional
     public List<PetDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
@@ -51,7 +54,7 @@ public class PetService {
                 .collect(Collectors.toList());
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLMutation(name = "update_Pet")
     @Transactional
     public PetDTO update(PetInputDTO input) {
@@ -70,7 +73,7 @@ public class PetService {
         return mapper.map(entity, PetDTO.class);
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLMutation(name = "delete_Pet")
     @Transactional
     public void delete(@GraphQLNonNull Long id) {

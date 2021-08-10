@@ -18,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static io.jmix2mvp.petclinic.Authorities.ADMIN;
+import static io.jmix2mvp.petclinic.Authorities.VETERINARIAN;
+
 @GraphQLApi
 @Service
 public class OwnerService {
@@ -29,7 +32,7 @@ public class OwnerService {
         this.mapper = mapper;
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLQuery(name = "owner")
     @Transactional
     public OwnerDTO findById(@GraphQLArgument(name = "id") Long id) {
@@ -38,7 +41,7 @@ public class OwnerService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLQuery(name = "ownerList")
     @Transactional
     public List<OwnerDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
@@ -47,7 +50,7 @@ public class OwnerService {
                 .collect(Collectors.toList());
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLMutation(name = "update_Owner")
     @Transactional
     public OwnerDTO update(OwnerInputDTO input) {
@@ -65,7 +68,7 @@ public class OwnerService {
         return mapper.map(entity, OwnerDTO.class);
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({ADMIN, VETERINARIAN})
     @GraphQLMutation(name = "delete_Owner")
     @Transactional
     public void delete(@GraphQLNonNull Long id) {
