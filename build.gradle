@@ -18,14 +18,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.flywaydb:flyway-core'
-
     implementation 'io.leangen.graphql:graphql-spqr-spring-boot-starter:0.0.6'
     runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:11.1.0'
 
     implementation 'org.modelmapper:modelmapper:2.4.4'
 
-    runtimeOnly 'org.postgresql:postgresql'
-
+//    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.postgresql:postgresql:42.2.9'
+    runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:8.1.1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
