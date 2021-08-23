@@ -2,37 +2,19 @@ import React from 'react';
 import './App.css';
 import { gql, useQuery } from '@apollo/client';
 import {Result, Skeleton} from "antd";
+import {securityStore} from "./index";
+import Login from './login/Login';
+import {observer} from "mobx-react";
+import {Main} from "./main/Main";
 
-const QUERY = gql`
-  query Get_Owner_List($page: PaginationInput) {
-    ownerList(page: $page) {
-      id
-      firstName
-      lastName
-    }
-  }
-`;
-
-function App() {
-  const {loading, error, data} = useQuery(QUERY);
-
-  if (loading) {
-    return <Skeleton/>;
+export const App = observer(() => {
+  if (!securityStore.isLoggedIn) {
+    return (
+      <Login />
+    );
   }
 
-  if (error) {
-    return <Result status='error'
-                   title='Query failed'
-                   subTitle={error.message}
-           />;
-  }
-
-  return (
-    <div className="App">
-      <header className="App-header">jmix2-petclinic</header>
-      <div>{JSON.stringify(data)}</div>
-    </div>
-  );
-}
+  return <Main/>;
+});
 
 export default App;

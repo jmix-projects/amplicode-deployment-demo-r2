@@ -5,19 +5,32 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
 import "antd/dist/antd.min.css";
+import axios from "axios";
+import {SecurityStore} from "./security/security";
+
+export const securityStore = new SecurityStore();
+
+axios.interceptors.response.use(
+  response => {
+    if (response.status === 401) {
+      securityStore.logout();
+    }
+    return response;
+  }
+);
 
 const client = new ApolloClient({
-    // link: authLink.concat(httpLink),
-    uri: 'http://localhost:8080/graphql',
-    cache: new InMemoryCache(),
-    defaultOptions: {
-        query: {
-            fetchPolicy: 'network-only'
-        },
-        watchQuery: {
-            fetchPolicy: "cache-and-network"
-        }
+  // link: authLink.concat(httpLink),
+  uri: 'http://localhost:8080/graphql',
+  cache: new InMemoryCache(),
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'network-only'
     },
+    watchQuery: {
+      fetchPolicy: "cache-and-network"
+    }
+  },
 });
 
 ReactDOM.render(
