@@ -1,7 +1,10 @@
 import { gql, useQuery } from "@apollo/client";
+import { registerScreen } from "@haulmont/jmix-react-ui";
 import {Result, Spin} from "antd";
 import React from "react";
 import './Home.css';
+
+const ROUTING_PATH = "/";
 
 const QUERY = gql`
     query {
@@ -43,3 +46,13 @@ export const Home = () => {
     </>
   );
 };
+
+registerScreen({
+  component: Home,
+  caption: "screen.home",
+  screenId: "HomePage",
+  menuOptions: {
+    pathPattern: ROUTING_PATH,
+    menuLink: ROUTING_PATH
+  }
+});

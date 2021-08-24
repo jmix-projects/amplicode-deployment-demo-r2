@@ -1,20 +1,24 @@
-import { Menu } from "antd";
-import {HomeOutlined} from "@ant-design/icons";
+import {MenuProps} from "antd";
+import {HomeOutlined, MenuOutlined} from "@ant-design/icons";
+import {MenuItem, VerticalMenu } from "@haulmont/jmix-react-ui";
 
-export const AppMenu = () => {
+export interface AppMenuProps extends MenuProps {}
+
+export const AppMenu = (props: AppMenuProps) => {
   return (
-    <Menu
-      mode={"inline"}
-      className='app-menu'
-    >
-      <Menu.Item
-        title="Home"
+    <VerticalMenu {...props}>
+      <MenuItem
+        screenId="HomePage"
         icon={<HomeOutlined />}
+        caption={"screen.home"}
         key={"home"}
-        onClick={() => {}}
-      >
-        Home
-      </Menu.Item>
-    </Menu>
+      />
+      <MenuItem
+        screenId="OwnerList"
+        icon={<MenuOutlined />}
+        caption={"screen.ownerList"}
+        key={"ownerList"}
+      />
+    </VerticalMenu>
   );
 };

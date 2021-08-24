@@ -4,7 +4,14 @@ import {Layout} from "antd";
 import { AppHeader } from "../app-header/AppHeader";
 import './AppMain.css';
 import {AppMenu} from "../app-menu/AppMenu";
-import { Home } from "../home/Home";
+import { Router } from "@haulmont/jmix-react-core";
+import { MultiTabs } from "@haulmont/jmix-react-ui";
+import "../routing";
+
+const routes = {
+  "/": <MultiTabs />,
+  "/:entityName/:entityId?": <MultiTabs />
+};
 
 export const AppMain = observer(() => {
   return (
@@ -24,7 +31,7 @@ export const AppMain = observer(() => {
 
         <Layout className="layout-content">
           <Layout.Content>
-            <Home/>
+            <Router global routes={routes} />
           </Layout.Content>
         </Layout>
       </Layout>

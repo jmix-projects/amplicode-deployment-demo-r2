@@ -8,6 +8,8 @@ import "antd/dist/antd.min.css";
 import axios from "axios";
 import {SecurityStore} from "./security/security";
 import {onError} from "@apollo/client/link/error";
+import { IntlProvider } from 'react-intl';
+import en from "./i18n/en.json";
 
 export const securityStore = new SecurityStore();
 
@@ -50,7 +52,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <App />
+      <IntlProvider locale='en' messages={en}>
+        <App />
+      </IntlProvider>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')

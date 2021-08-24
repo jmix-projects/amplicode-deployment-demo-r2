@@ -1,6 +1,10 @@
 import {gql, useQuery} from "@apollo/client";
 import {Result, Skeleton} from "antd";
 import React from "react";
+import {registerScreen} from "@haulmont/jmix-react-ui";
+import {Home} from "../home/Home";
+
+const ROUTING_PATH = "/owner-list";
 
 const QUERY = gql`
     query Get_Owner_List($page: PaginationInput) {
@@ -12,7 +16,7 @@ const QUERY = gql`
     }
 `;
 
-export const Main = () => {
+export const OwnerList = () => {
   const {loading, error, data} = useQuery(QUERY, {
     variables: {
       page: {
@@ -41,3 +45,13 @@ export const Main = () => {
     </div>
   );
 };
+
+registerScreen({
+  component: OwnerList,
+  caption: "screen.ownerList",
+  screenId: "OwnerList",
+  menuOptions: {
+    pathPattern: ROUTING_PATH,
+    menuLink: ROUTING_PATH
+  }
+});
