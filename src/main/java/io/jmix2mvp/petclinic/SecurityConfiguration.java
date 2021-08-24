@@ -11,15 +11,17 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-
 import java.util.Arrays;
-
-import static org.springframework.security.config.Customizer.withDefaults;
+import java.util.List;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    private static String contentSecurityPolicy = "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:";
+
     @Autowired
     private DataSource dataSource;
 
@@ -31,6 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
+                .successHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
                 .and()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
