@@ -3,7 +3,7 @@ import axios from "axios";
 import qs from 'qs';
 
 export class SecurityStore {
-  @observable isLoggedIn: boolean = false;
+  @observable isLoggedIn: boolean = true;
 
   @action
   async login(username: string, password: string) {

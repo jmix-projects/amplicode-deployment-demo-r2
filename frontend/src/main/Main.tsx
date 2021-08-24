@@ -13,7 +13,15 @@ const QUERY = gql`
 `;
 
 export const Main = () => {
-  const {loading, error, data} = useQuery(QUERY);
+  const {loading, error, data} = useQuery(QUERY, {
+    variables: {
+      page: {
+        pageNumber: 0,
+        pageSize: 20,
+        sort: {orders : []}
+      }
+    }
+  });
 
   if (loading) {
     return <Skeleton/>;

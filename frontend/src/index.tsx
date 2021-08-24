@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
+import {ApolloClient, ApolloProvider, createHttpLink, InMemoryCache} from "@apollo/client";
 import "antd/dist/antd.min.css";
 import axios from "axios";
 import {SecurityStore} from "./security/security";
@@ -19,9 +19,13 @@ axios.interceptors.response.use(
   }
 );
 
+const link = createHttpLink({
+  uri: '/graphql',
+  credentials: 'same-origin'
+});
+
 const client = new ApolloClient({
-  // link: authLink.concat(httpLink),
-  uri: 'http://localhost:8080/graphql',
+  link,
   cache: new InMemoryCache(),
   defaultOptions: {
     query: {
