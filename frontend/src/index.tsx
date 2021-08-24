@@ -7,6 +7,7 @@ import {ApolloClient, ApolloProvider, createHttpLink, InMemoryCache} from "@apol
 import "antd/dist/antd.min.css";
 import axios from "axios";
 import {SecurityStore} from "./security/security";
+import {onError} from "@apollo/client/link/error";
 
 export const securityStore = new SecurityStore();
 
@@ -19,13 +20,22 @@ axios.interceptors.response.use(
   }
 );
 
-const link = createHttpLink({
+const httpLink = createHttpLink({
   uri: '/graphql',
   credentials: 'same-origin'
 });
 
+const logoutLink = onError(({networkError}) => {
+  if (networkError == null || !('statusCode' in networkError)) {
+    return;
+  }
+  if (networkError.statusCode === 401) {
+    securityStore.logout();
+  }
+});
+
 const client = new ApolloClient({
-  link,
+  link: logoutLink.concat(httpLink),
   cache: new InMemoryCache(),
   defaultOptions: {
     query: {

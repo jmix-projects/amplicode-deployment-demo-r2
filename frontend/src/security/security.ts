@@ -1,9 +1,13 @@
-import {action, observable} from "mobx";
+import {action, makeObservable, observable} from "mobx";
 import axios from "axios";
 import qs from 'qs';
 
 export class SecurityStore {
   @observable isLoggedIn: boolean = true;
+
+  constructor() {
+    makeObservable(this);
+  }
 
   @action
   async login(username: string, password: string) {
@@ -15,7 +19,6 @@ export class SecurityStore {
         password
       })
     });
-    console.log(response);
     if (response.status === 200) {
       this.isLoggedIn = true;
     }

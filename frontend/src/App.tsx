@@ -5,7 +5,7 @@ import {Result, Skeleton} from "antd";
 import {securityStore} from "./index";
 import Login from './login/Login';
 import {observer} from "mobx-react";
-import {Main} from "./main/Main";
+import {AppMain} from "./app-main/AppMain";
 
 export const App = observer(() => {
   if (!securityStore.isLoggedIn) {
@@ -14,7 +14,7 @@ export const App = observer(() => {
     );
   }
 
-  return <Main/>;
+  return <AppMain/>;
 });
 
 export default App;
