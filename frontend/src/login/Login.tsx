@@ -27,43 +27,44 @@ const Login = observer(() => {
   }, [setPerformingLoginRequest, username, password]);
 
   return (
-    <div className="login-form">
-      <div className="title">scr-jmix</div>
-
-      <Form layout="vertical" onFinish={doLogin}>
-        <Form.Item>
-          <Input
-            id="input_login"
-            placeholder='Login'
-            onChange={changeLogin}
-            value={username}
-            prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
-            size="large"
-          />
-        </Form.Item>
-        <Form.Item>
-          <Input
-            id="input_password"
-            placeholder='Password'
-            onChange={changePassword}
-            value={password}
-            type="password"
-            prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
-            size="large"
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            size="large"
-            block={true}
-            loading={performingLoginRequest}
-          >
-            Login
-          </Button>
-        </Form.Item>
-      </Form>
+    <div className="login-form-container">
+      <div className="login-form">
+        <div className="title">jmix2-petclinic</div>
+        <Form layout="vertical" onFinish={doLogin}>
+          <Form.Item>
+            <Input
+              id="input_login"
+              placeholder='Login'
+              onChange={changeLogin}
+              value={username}
+              prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+              size="large"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Input
+              id="input_password"
+              placeholder='Password'
+              onChange={changePassword}
+              value={password}
+              type="password"
+              prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+              size="large"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="large"
+              block={true}
+              loading={performingLoginRequest}
+            >
+              Login
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
     </div>
   );
 });
