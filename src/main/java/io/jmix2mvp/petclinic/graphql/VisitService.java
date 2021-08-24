@@ -1,6 +1,5 @@
 package io.jmix2mvp.petclinic.graphql;
 
-import io.jmix2mvp.petclinic.Authorities;
 import io.jmix2mvp.petclinic.dto.PetDTO;
 import io.jmix2mvp.petclinic.dto.VisitDTO;
 import io.jmix2mvp.petclinic.dto.VisitInputDTO;
