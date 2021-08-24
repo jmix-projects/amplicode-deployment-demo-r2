@@ -1,11 +1,11 @@
-import Cookies from 'js-cookie';
-import {observable} from "mobx";
+import {action, observable} from "mobx";
 import axios from "axios";
 import qs from 'qs';
 
 export class SecurityStore {
-  @observable isLoggedIn: boolean = false;
+  @observable isLoggedIn: boolean = true;
 
+  @action
   async login(username: string, password: string) {
     const response = await axios('/login', {
       method: 'POST',
@@ -16,13 +16,13 @@ export class SecurityStore {
       })
     });
     console.log(response);
-    if (response.headers['set-cookie'].indexOf('JSESSIONID') > -1) {
+    if (response.status === 200) {
       this.isLoggedIn = true;
     }
   }
 
+  @action
   async logout() {
-    Cookies.remove('JSESSIONID');
     this.isLoggedIn = false;
   }
 }
