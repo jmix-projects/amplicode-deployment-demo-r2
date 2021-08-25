@@ -10,6 +10,8 @@ import {SecurityStore} from "./security/security";
 import {onError} from "@apollo/client/link/error";
 import { IntlProvider } from 'react-intl';
 import en from "./i18n/en.json";
+import {JmixAppProvider, MainStore} from "@haulmont/jmix-react-core";
+import {Modals} from "@haulmont/jmix-react-ui";
 
 export const securityStore = new SecurityStore();
 
@@ -51,11 +53,17 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <IntlProvider locale='en' messages={en}>
-        <App />
-      </IntlProvider>
-    </ApolloProvider>
+    <JmixAppProvider apolloClient={client}
+                     Modals={Modals as any}
+                     jmixREST={{onLocaleChange: () => {}} as any}
+                     metadata={{entities: [], enums: []} as any}
+    >
+      <ApolloProvider client={client}>
+        <IntlProvider locale='en' messages={en}>
+          <App />
+        </IntlProvider>
+      </ApolloProvider>
+    </JmixAppProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

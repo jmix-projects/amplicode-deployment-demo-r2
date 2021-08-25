@@ -1,11 +1,10 @@
-import React, { useState, useCallback } from "react";
-import { ChangeEvent } from "react";
-import { Form } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Button, Input } from "antd";
-import { observer } from "mobx-react";
+import React, {ChangeEvent, useCallback, useState} from "react";
+import {Button, Form, Input, notification} from "antd";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {observer} from "mobx-react";
 import "./Login.css";
 import {securityStore} from "../index";
+import {LoginAttemptResult} from "../security/security";
 
 const Login = observer(() => {
   const [username, setUsername] = useState("");
@@ -23,7 +22,17 @@ const Login = observer(() => {
 
   const doLogin = useCallback(async () => {
     setPerformingLoginRequest(true);
-    securityStore.login(username, password);
+    const loginAttemptResult = await securityStore.login(username, password);
+    switch (loginAttemptResult) {
+      case LoginAttemptResult.SUCCESS:
+        return;
+      case LoginAttemptResult.UNAUTHORIZED:
+        notification.error({message: 'Login does not exist or incorrect password'});
+        return;
+      case LoginAttemptResult.UNKNOWN_ERRROR:
+        notification.error({message: 'Login failed'});
+        return;
+    }
   }, [setPerformingLoginRequest, username, password]);
 
   return (
