@@ -2,6 +2,8 @@ package io.jmix2mvp.petclinic.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "visit")
@@ -11,7 +13,7 @@ public class Visit extends BaseEntity {
     private Pet pet;
 
     @Column(name = "visit_start", nullable = false)
-    private LocalDateTime visitStart;
+    private OffsetDateTime visitStart;
 
     @Column(name = "visit_end", nullable = false)
     private LocalDateTime visitEnd;
@@ -35,11 +37,11 @@ public class Visit extends BaseEntity {
         this.visitEnd = visitEnd;
     }
 
-    public LocalDateTime getVisitStart() {
+    public OffsetDateTime getVisitStart() {
         return visitStart;
     }
 
-    public void setVisitStart(LocalDateTime visitStart) {
+    public void setVisitStart(OffsetDateTime visitStart) {
         this.visitStart = visitStart;
     }
 

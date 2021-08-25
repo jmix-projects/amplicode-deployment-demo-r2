@@ -1,17 +1,19 @@
 package io.jmix2mvp.petclinic.dto;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 public class VisitDTO extends BaseDTO {
-    private LocalDateTime visitStart;
+    private OffsetDateTime visitStart;
     private LocalDateTime visitEnd;
     private String description;
 
-    public LocalDateTime getVisitStart() {
+    public OffsetDateTime getVisitStart() {
         return visitStart;
     }
 
-    public void setVisitStart(LocalDateTime visitStart) {
+    public void setVisitStart(OffsetDateTime visitStart) {
         this.visitStart = visitStart;
     }
 
