@@ -40,7 +40,9 @@ const logoutLink = onError(({networkError}) => {
 
 const client = new ApolloClient({
   link: logoutLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    addTypename: false
+  }),
   defaultOptions: {
     query: {
       fetchPolicy: 'network-only'
