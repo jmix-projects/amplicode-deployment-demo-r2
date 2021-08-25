@@ -1,7 +1,7 @@
 import {Button, Modal, Space} from "antd";
 import {LogoutOutlined} from "@ant-design/icons";
 import {useCallback} from "react";
-import {securityStore} from "../index";
+import {securityStore} from "../../index";
 import './AppHeader.css';
 
 export const AppHeader = () => {

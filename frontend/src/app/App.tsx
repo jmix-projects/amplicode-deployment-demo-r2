@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { gql, useQuery } from '@apollo/client';
 import {Result, Skeleton} from "antd";
-import {securityStore} from "./index";
+import {securityStore} from "../index";
 import Login from './login/Login';
 import {observer} from "mobx-react";
 import {AppMain} from "./app-main/AppMain";

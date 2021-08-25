@@ -3,7 +3,7 @@ import {Button, Form, Input, notification} from "antd";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {observer} from "mobx-react";
 import "./Login.css";
-import {securityStore} from "../index";
+import {securityStore} from "../../index";
 import {LoginAttemptResult} from "../security/security";
 
 const Login = observer(() => {

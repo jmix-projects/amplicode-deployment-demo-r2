@@ -3,10 +3,10 @@ import {observer} from "mobx-react";
 import {Layout} from "antd";
 import { AppHeader } from "../app-header/AppHeader";
 import './AppMain.css';
-import {AppMenu} from "../app-menu/AppMenu";
+import {AppMenu} from "../AppMenu";
 import { Router } from "@haulmont/jmix-react-core";
 import { MultiTabs } from "@haulmont/jmix-react-ui";
-import "../routing";
+import "../../routing";
 
 const routes = {
   "/": <MultiTabs />,

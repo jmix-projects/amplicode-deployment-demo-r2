@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import {ApolloClient, ApolloProvider, createHttpLink, InMemoryCache} from "@apollo/client";
 import "antd/dist/antd.min.css";
 import axios from "axios";
-import {SecurityStore} from "./security/security";
+import {SecurityStore} from "./app/security/security";
 import {onError} from "@apollo/client/link/error";
 import { IntlProvider } from 'react-intl';
 import en from "./i18n/en.json";
