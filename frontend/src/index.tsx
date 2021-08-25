@@ -12,6 +12,7 @@ import { IntlProvider } from 'react-intl';
 import en from "./i18n/en.json";
 import {JmixAppProvider, MainStore} from "@haulmont/jmix-react-core";
 import {Modals} from "@haulmont/jmix-react-ui";
+import {GRAPHQL_URI} from "./config";
 
 export const securityStore = new SecurityStore();
 
@@ -25,7 +26,7 @@ axios.interceptors.response.use(
 );
 
 const httpLink = createHttpLink({
-  uri: '/graphql',
+  uri: GRAPHQL_URI,
   credentials: 'same-origin'
 });
 
