@@ -1,3 +1,2 @@
 import { menuItems } from "@haulmont/jmix-react-ui";
 import "./app/home/Home";
-import "./app/owner-list/OwnerList";

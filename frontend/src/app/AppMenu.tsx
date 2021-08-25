@@ -13,12 +13,6 @@ export const AppMenu = (props: AppMenuProps) => {
         caption={"screen.home"}
         key={"home"}
       />
-      <MenuItem
-        screenId="OwnerList"
-        icon={<MenuOutlined />}
-        caption={"screen.ownerList"}
-        key={"ownerList"}
-      />
     </VerticalMenu>
   );
 };
