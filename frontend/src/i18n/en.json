@@ -8,5 +8,7 @@
   "common.next": "Next",
   "common.previous": "Previous",
   "editor.doesNotExist": "Editor does not exist",
-  "screen.home": "Home"
+  "screen.home": "Home",
+  "screen.OwnerList": "Owner List",
+  "screen.OwnerEditor": "Owner Editor"
 }
