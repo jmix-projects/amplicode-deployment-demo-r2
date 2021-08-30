@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
+import java.util.Currency;
 
 @Entity
 @Table(name = "visit")
@@ -20,6 +21,16 @@ public class Visit extends BaseEntity {
 
     @Column(name = "description", length = 4000)
     private String description;
+
+    private Currency currency;
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
 
     public String getDescription() {
         return description;

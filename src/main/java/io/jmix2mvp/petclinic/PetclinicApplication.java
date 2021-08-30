@@ -7,6 +7,7 @@ import graphql.schema.GraphQLSchemaElement;
 import graphql.schema.GraphQLTypeVisitor;
 import graphql.util.TraversalControl;
 import graphql.util.TraverserContext;
+import io.jmix2mvp.petclinic.graphql.scalar.CurrencyScalar;
 import io.jmix2mvp.petclinic.graphql.scalar.LocalDateTimeScalar;
 import io.leangen.graphql.ExtensionProvider;
 import io.leangen.graphql.GeneratorConfiguration;
@@ -28,34 +29,35 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
+import java.util.Currency;
 import java.util.Set;
 
 @SpringBootApplication
 public class PetclinicApplication {
 
-    @Bean
-    public ExtensionProvider<GeneratorConfiguration, TypeMapper> customTypeMappers() {
-        //Insert a custom mapper after the built-in IdAdapter (which is generally a safe position)
-        return (config, current) -> current.insertAfter(IdAdapter.class,
-                new TypeMapper() {
-                    @Override
-                    public GraphQLOutputType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
-                        return new LocalDateTimeScalar();
-                    }
-
-                    @Override
-                    public GraphQLInputType toGraphQLInputType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
-                        return new LocalDateTimeScalar();
-                    }
-
-                    @Override
-                    public boolean supports(AnnotatedElement element, AnnotatedType type) {
-                        return type.getType() == LocalDateTime.class;
-                    }
-
-                }
-        );
-    }
+//    @Bean
+//    public ExtensionProvider<GeneratorConfiguration, TypeMapper> customTypeMappers() {
+//        //Insert a custom mapper after the built-in IdAdapter (which is generally a safe position)
+//        return (config, current) -> current.insertAfter(IdAdapter.class,
+//                new TypeMapper() {
+//                    @Override
+//                    public GraphQLOutputType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
+//                        return new CurrencyScalar();
+//                    }
+//
+//                    @Override
+//                    public GraphQLInputType toGraphQLInputType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
+//                        return new CurrencyScalar();
+//                    }
+//
+//                    @Override
+//                    public boolean supports(AnnotatedElement element, AnnotatedType type) {
+//                        return type.getType() == Currency.class;
+//                    }
+//
+//                }
+//        );
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(PetclinicApplication.class, args);
