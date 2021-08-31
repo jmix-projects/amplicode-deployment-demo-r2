@@ -14,7 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,7 @@ import static io.jmix2mvp.petclinic.Authorities.VETERINARIAN;
 
 @GraphQLApi
 @Service
+@Validated
 public class PetTypeService {
     private final PetTypeRepository crudRepository;
     private final ModelMapper mapper;
@@ -53,7 +56,7 @@ public class PetTypeService {
     @Secured({ADMIN, VETERINARIAN})
     @GraphQLMutation(name = "update_PetType")
     @Transactional
-    public PetTypeDTO update(PetTypeInputDTO input) {
+    public PetTypeDTO update(@Valid PetTypeInputDTO input) {
         if (input.getId() != null) {
             if (!crudRepository.existsById(input.getId())) {
                 throw new ResourceNotFoundException(
