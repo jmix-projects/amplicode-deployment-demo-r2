@@ -25,6 +25,18 @@ export const AppMenu = (props: AppMenuProps) => {
         caption={"screen.OwnerEditor"}
         key={"1e7c52c6-0256-4f5d-9f0f-fe13cb0c9346"}
       />
+      <MenuItem
+        screenId={"PetList"}
+        icon={<BarsOutlined />}
+        caption={"screen.PetList"}
+        key={"53953958-1995-46dc-86e5-ac594b0e5dc6"}
+      />
+      <MenuItem
+        screenId={"PetEditor"}
+        icon={<BarsOutlined />}
+        caption={"screen.PetEditor"}
+        key={"364abbe0-a9f6-4a03-bbe7-89eaaed6b469"}
+      />
     </VerticalMenu>
   );
 };

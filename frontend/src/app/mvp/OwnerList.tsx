@@ -9,17 +9,20 @@ import {
 } from "@apollo/client";
 import {
   registerEntityList,
-  openEntityEditorScreen
+  openEntityEditorScreen, useParentScreen
 } from "@haulmont/jmix-react-ui";
-import { useScreens } from "@haulmont/jmix-react-core";
+import {Screens, useScreens} from "@haulmont/jmix-react-core";
 import {
   DeleteOutlined,
   EditOutlined,
   PlusOutlined,
-  LeftOutlined
+  SelectOutlined
 } from "@ant-design/icons";
 import { Button, Card, Tooltip, List, Modal, Spin, Empty, Result } from "antd";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage, IntlShape, useIntl } from "react-intl";
+import {EntityListProps} from "../../framework/entity-list-props/EntityListProps";
+import {FetchResult} from "@apollo/client/link/core";
+import {MutationFunctionOptions} from "@apollo/client/react/types/types";
 
 const ENTITY_NAME = "OwnerDTO";
 const ROUTING_PATH = "/ownerList";
@@ -44,12 +47,22 @@ const DELETE__OWNER = gql`
   }
 `;
 
-const OwnerList = observer(() => {
+const OwnerList = observer((props: EntityListProps) => {
+  const {
+    mode = 'crud',
+    onSelect
+  } = props;
+
   const screens = useScreens();
   const intl = useIntl();
+  const goToParentScreen = useParentScreen(ROUTING_PATH);
 
   const { loading, error, data } = useQuery(OWNER_LIST);
   const [executeDeleteMutation] = useMutation(DELETE__OWNER);
+
+  if (mode === 'select' && onSelect == null) {
+    throw new Error('Missing onSelect callback');
+  }
 
   if (loading) {
     return <Spin />;
@@ -67,64 +80,42 @@ const OwnerList = observer(() => {
 
   return (
     <div className="narrow-layout">
-      <div style={{ marginBottom: "12px" }}>
-        <Button
-          htmlType="button"
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => {
-            openEntityEditorScreen({
-              screens,
-              entityName: ENTITY_NAME,
-              intl
-            });
-            window.scrollTo(0, 0);
-          }}
-        >
+      {mode === 'crud' && (
+        <div style={{ marginBottom: "12px" }}>
+          <Button
+            htmlType="button"
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              openEntityEditorScreen({
+                screens,
+                entityName: ENTITY_NAME,
+                intl
+              });
+              window.scrollTo(0, 0);
+            }}
+          >
           <span>
             <FormattedMessage id="common.create" />
           </span>
-        </Button>
-      </div>
+          </Button>
+        </div>
+      )}
 
       {items.map((e: any) => (
         <Card
           key={e["id"]}
           title={e["firstName"]}
           style={{ marginBottom: "12px" }}
-          actions={[
-            <DeleteOutlined
-              key="delete"
-              onClick={() => {
-                Modal.confirm({
-                  content: "Are you sure you want to delete this record?",
-                  okText: "OK",
-                  cancelText: intl.formatMessage({ id: "common.cancel" }),
-                  onOk: () => {
-                    executeDeleteMutation({
-                      variables: {
-                        id: e.id
-                      },
-                      update: getUpdateFn(e)
-                    });
-                  }
-                });
-              }}
-            />,
-            <EditOutlined
-              key="edit"
-              onClick={() => {
-                openEntityEditorScreen({
-                  screens,
-                  entityName: ENTITY_NAME,
-                  intl,
-                  entityIdToLoad: e.id,
-                  routingPath: ROUTING_PATH // TODO: can we get rid of it?
-                });
-                window.scrollTo(0, 0);
-              }}
-            />
-          ]}
+          actions={getCardActions({
+            mode,
+            executeDeleteMutation,
+            intl,
+            entityInstance: e,
+            screens,
+            onSelect,
+            goToParentScreen
+          })}
         >
           <Fields entity={e} />
         </Card>
@@ -161,6 +152,77 @@ function renderFieldValue(entity: any, property: string): string {
 function renderLabel(property: string): string {
   const split = property.replace(/([^A-Z])([A-Z])/g, "$1 $2");
   return split[0].toUpperCase() + split.slice(1);
+}
+
+interface CardActionsInput {
+  mode: 'crud' | 'select',
+  executeDeleteMutation: (options?: MutationFunctionOptions) => Promise<FetchResult>,
+  intl: IntlShape,
+  entityInstance: any,
+  screens: Screens,
+  onSelect?: (entityInstance: this['entityInstance']) => void,
+  goToParentScreen?: () => void;
+}
+
+function getCardActions({
+  mode,
+  executeDeleteMutation,
+  intl,
+  entityInstance,
+  screens,
+  onSelect,
+  goToParentScreen
+}: CardActionsInput) {
+  if (mode === 'crud') {
+    return [
+      <DeleteOutlined
+        key="delete"
+        onClick={() => {
+          Modal.confirm({
+            content: "Are you sure you want to delete this record?",
+            okText: "OK",
+            cancelText: intl.formatMessage({ id: "common.cancel" }),
+            onOk: () => {
+              executeDeleteMutation({
+                variables: {
+                  id: entityInstance.id
+                },
+                update: getUpdateFn(entityInstance)
+              });
+            }
+          });
+        }}
+      />,
+      <EditOutlined
+        key="edit"
+        onClick={() => {
+          openEntityEditorScreen({
+            screens,
+            entityName: ENTITY_NAME,
+            intl,
+            entityIdToLoad: entityInstance.id,
+            routingPath: ROUTING_PATH // TODO: can we get rid of it?
+          });
+          window.scrollTo(0, 0);
+        }}
+      />
+    ];
+  }
+
+  if (mode === 'select') {
+    return [
+      <SelectOutlined
+        key='select'
+        onClick={() => {
+          if (onSelect != null && goToParentScreen != null) {
+            onSelect(entityInstance);
+            goToParentScreen();
+            window.scrollTo(0, 0);
+          }
+        }}
+      />
+    ];
+  }
 }
 
 function getUpdateFn(e: any) {

@@ -10,5 +10,7 @@
   "editor.doesNotExist": "Editor does not exist",
   "screen.home": "Home",
   "screen.OwnerList": "Owner List",
-  "screen.OwnerEditor": "Owner Editor"
+  "screen.OwnerEditor": "Owner Editor",
+  "screen.PetList": "Pet List",
+  "screen.PetEditor": "Pet Editor"
 }
