@@ -3,12 +3,16 @@ package io.jmix2mvp.petclinic.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Locale;
 
 @Entity
 @Table(name = "owner")
 public class Owner extends BaseEntity {
     @Column(name = "first_name", nullable = false)
     private String firstName;
+
+    @Column(name = "locale")
+    private Locale locale;
 
     @Column(name = "last_name", nullable = false)
     private String lastName;
@@ -24,6 +28,14 @@ public class Owner extends BaseEntity {
 
     @Column(name = "telephone")
     private String telephone;
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
 
     public String getEmail() {
         return email;

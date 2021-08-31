@@ -22,16 +22,6 @@ public class Visit extends BaseEntity {
     @Column(name = "description", length = 4000)
     private String description;
 
-    private Currency currency;
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-
     public String getDescription() {
         return description;
     }
