@@ -30,15 +30,14 @@ public class GraphQLSchemaConfiguration {
 //    final
 //    GraphQLSchemaGenerator graphQLSchemaGenerator;
 
-    final
-    GraphQLSchemaGenerator generator;
+//    final
+//    GraphQLSchemaGenerator generator;
 
-    public GraphQLSchemaConfiguration(GraphQLSchemaGenerator generator) {
-        this.generator = generator;
-        this.generator.withTypeMappers(new LocaleType());
-    }
-
-    class LocaleType implements TypeMapper {
+    @Bean
+    public ExtensionProvider<GeneratorConfiguration, TypeMapper> customTypeMappers() {
+        //Insert a custom mapper after the built-in IdAdapter (which is generally a safe position)
+        return (config, current) -> current.replaceOrAppend(IdAdapter.class,
+    new TypeMapper() {
         @Override
         public GraphQLScalarType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
             return LocalType.getLocal();
@@ -53,7 +52,7 @@ public class GraphQLSchemaConfiguration {
         public boolean supports(AnnotatedElement element, AnnotatedType type) {
             return type.getType() == Locale.class;
         }
-    }
+    });}
 
 
 
