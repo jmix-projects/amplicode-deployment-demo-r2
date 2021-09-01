@@ -24,7 +24,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.util.StringUtils;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -47,7 +46,7 @@ public class GraphQLConfiguration {
     //TODO: pageable bugfix
     @Bean
     public ExtensionProvider<GeneratorConfiguration, SchemaTransformer> sortingSchemaTransformer() {
-        return (config, current) -> current.prepend(
+        return (config, current) -> current.append(
                 new DefaultValueSchemaTransformer() {
                     @Override
                     public Object getDefaultValue() {

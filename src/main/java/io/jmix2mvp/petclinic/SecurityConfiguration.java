@@ -16,8 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-@Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+//@Configuration
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
