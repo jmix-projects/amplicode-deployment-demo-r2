@@ -7,6 +7,6 @@ import io.jmix2mvp.petclinic.graphql.scalar.coercing.LocalCoercing;
 public class LocalType {
 
     public static GraphQLScalarType getLocal() {
-        return new GraphQLScalarType("Locale", "Locale", new LocalCoercing());
+        return new GraphQLScalarType("Locale123", "Locale", new LocalCoercing());
     }
 }

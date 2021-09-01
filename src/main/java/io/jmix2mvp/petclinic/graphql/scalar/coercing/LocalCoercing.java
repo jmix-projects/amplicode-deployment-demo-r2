@@ -9,9 +9,9 @@ import graphql.schema.CoercingSerializeException;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-public class LocalCoercing implements Coercing {
+public class LocalCoercing implements Coercing<Locale, Locale> {
     @Override
-    public Object serialize(Object dataFetcherResult) throws CoercingSerializeException {
+    public Locale serialize(Object dataFetcherResult) throws CoercingSerializeException {
         StringTokenizer tempStringTokenizer = new StringTokenizer((String) dataFetcherResult,",");
         String locale = "";
         String country = "";
@@ -25,12 +25,17 @@ public class LocalCoercing implements Coercing {
     }
 
     @Override
-    public Object parseValue(Object input) throws CoercingParseValueException {
-        return ((Locale) input).toString();
+    public Locale parseValue(Object input) throws CoercingParseValueException {
+        return null;
     }
 
+//    @Override
+//    public Locale parseValue(Object input) throws CoercingParseValueException {
+//        return ((Locale) input).toString();
+//    }
+
     @Override
-    public Object parseLiteral(Object input) throws CoercingParseLiteralException {
+    public Locale parseLiteral(Object input) throws CoercingParseLiteralException {
         return (input instanceof StringValue) ? parseValue(((StringValue) input).getValue()) : null;
     }
 }

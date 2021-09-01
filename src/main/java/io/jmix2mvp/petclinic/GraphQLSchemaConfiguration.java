@@ -2,13 +2,20 @@ package io.jmix2mvp.petclinic;
 
 import graphql.schema.GraphQLInputType;
 import graphql.schema.GraphQLOutputType;
+import graphql.schema.GraphQLScalarType;
+import graphql.schema.GraphQLSchemaElement;
+import graphql.schema.GraphQLTypeVisitor;
+import graphql.util.TraversalControl;
+import graphql.util.TraverserContext;
 import io.jmix2mvp.petclinic.graphql.scalar.LocalType;
+import io.jmix2mvp.petclinic.graphql.scalar.coercing.LocalCoercing;
 import io.leangen.graphql.ExtensionProvider;
 import io.leangen.graphql.GeneratorConfiguration;
 import io.leangen.graphql.GraphQLSchemaGenerator;
 import io.leangen.graphql.generator.mapping.TypeMapper;
 import io.leangen.graphql.generator.mapping.TypeMappingEnvironment;
 import io.leangen.graphql.generator.mapping.common.IdAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,27 +30,29 @@ public class GraphQLSchemaConfiguration {
 //    final
 //    GraphQLSchemaGenerator graphQLSchemaGenerator;
 
-    @Bean
-    public ExtensionProvider<GeneratorConfiguration, TypeMapper> customTypeMappers() {
-        //Insert a custom mapper after the built-in IdAdapter (which is generally a safe position)
-        return (config, current) -> current.insertAfter(IdAdapter.class,
-                new TypeMapper() {
-                    @Override
-                    public GraphQLOutputType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
-                        return LocalType.getLocal();
-                    }
+    final
+    GraphQLSchemaGenerator generator;
 
-                    @Override
-                    public GraphQLInputType toGraphQLInputType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
-                        return LocalType.getLocal();
-                    }
+    public GraphQLSchemaConfiguration(GraphQLSchemaGenerator generator) {
+        this.generator = generator;
+        this.generator.withTypeMappers(new LocaleType());
+    }
 
-                    @Override
-                    public boolean supports(AnnotatedElement element, AnnotatedType type) {
-                        return type.getType() == Locale.class;
-                    }
-                }
-        );
+    class LocaleType implements TypeMapper {
+        @Override
+        public GraphQLScalarType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
+            return LocalType.getLocal();
+        }
+
+        @Override
+        public GraphQLScalarType toGraphQLInputType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
+            return toGraphQLType(javaType, mappersToSkip, env);
+        }
+
+        @Override
+        public boolean supports(AnnotatedElement element, AnnotatedType type) {
+            return type.getType() == Locale.class;
+        }
     }
 
 
