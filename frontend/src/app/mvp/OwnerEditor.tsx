@@ -42,12 +42,13 @@ const UPDATE__OWNER = gql`
   }
 `;
 
-const OwnerEditor = observer(() => {
-  const multiScreen = useMultiScreen();
+export interface OwnerEditorProps {
+  id: string;
+}
+
+const OwnerEditor = observer(({id}: OwnerEditorProps) => {
   const [form] = useForm();
   const intl = useIntl();
-
-  const id = multiScreen?.params?.entityId;
 
   // TODO: id variable name
   const [

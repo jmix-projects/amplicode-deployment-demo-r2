@@ -21,6 +21,8 @@ import {
 import { Button, Card, Tooltip, List, Modal, Spin, Empty, Result } from "antd";
 import { FormattedMessage, useIntl } from "react-intl";
 import { instanceName } from "../../framework/instance-name/instanceName";
+import {openBreadcrumb} from "../../framework/screen-api/openBreadcrumb";
+import PetEditor from "./PetEditor";
 
 const ENTITY_NAME = "PetDTO";
 const ROUTING_PATH = "/petList";
@@ -73,12 +75,11 @@ const PetList = observer(() => {
           type="primary"
           icon={<PlusOutlined />}
           onClick={() => {
-            openEntityEditorScreen({
+            openBreadcrumb({
+              component: PetEditor,
+              title: 'Pet Editor',
               screens,
-              entityName: ENTITY_NAME,
-              intl
             });
-            window.scrollTo(0, 0);
           }}
         >
           <span>

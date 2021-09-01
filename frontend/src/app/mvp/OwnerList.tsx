@@ -9,10 +9,12 @@ import {
 } from "@apollo/client";
 import {
   registerEntityList,
-  openEntityEditorScreen, useParentScreen
+  useParentScreen
 } from "@haulmont/jmix-react-ui";
 import {Screens, useScreens} from "@haulmont/jmix-react-core";
 import {
+  CheckOutlined,
+  CloseOutlined,
   DeleteOutlined,
   EditOutlined,
   PlusOutlined,
@@ -23,6 +25,8 @@ import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import {EntityListProps} from "../../framework/entity-list-props/EntityListProps";
 import {FetchResult} from "@apollo/client/link/core";
 import {MutationFunctionOptions} from "@apollo/client/react/types/types";
+import {openBreadcrumb} from "../../framework/screen-api/openBreadcrumb";
+import OwnerEditor from "./OwnerEditor";
 
 const ENTITY_NAME = "OwnerDTO";
 const ROUTING_PATH = "/ownerList";
@@ -80,27 +84,38 @@ const OwnerList = observer((props: EntityListProps) => {
 
   return (
     <div className="narrow-layout">
-      {mode === 'crud' && (
-        <div style={{ marginBottom: "12px" }}>
+      <div style={{ marginBottom: "12px" }}>
+        {mode === 'crud' && (
           <Button
             htmlType="button"
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => {
-              openEntityEditorScreen({
+              openBreadcrumb({
+                component: OwnerEditor,
+                title: 'Owner Editor',
                 screens,
-                entityName: ENTITY_NAME,
-                intl
               });
-              window.scrollTo(0, 0);
             }}
           >
-          <span>
-            <FormattedMessage id="common.create" />
-          </span>
+            <span>
+              <FormattedMessage id="common.create" />
+            </span>
           </Button>
-        </div>
-      )}
+        )}
+        {mode === 'select' && (
+          <Button
+            htmlType="button"
+            type="primary"
+            icon={<CloseOutlined />}
+            onClick={goToParentScreen}
+          >
+            <span>
+              Close
+            </span>
+          </Button>
+        )}
+      </div>
 
       {items.map((e: any) => (
         <Card
@@ -164,6 +179,7 @@ interface CardActionsInput {
   goToParentScreen?: () => void;
 }
 
+// TODO convert to React component
 function getCardActions({
   mode,
   executeDeleteMutation,
@@ -196,14 +212,14 @@ function getCardActions({
       <EditOutlined
         key="edit"
         onClick={() => {
-          openEntityEditorScreen({
+          openBreadcrumb({
+            component: OwnerEditor,
+            props: {
+              id: entityInstance.id
+            },
+            title: 'Owner Editor',
             screens,
-            entityName: ENTITY_NAME,
-            intl,
-            entityIdToLoad: entityInstance.id,
-            routingPath: ROUTING_PATH // TODO: can we get rid of it?
           });
-          window.scrollTo(0, 0);
         }}
       />
     ];
@@ -211,8 +227,9 @@ function getCardActions({
 
   if (mode === 'select') {
     return [
-      <SelectOutlined
+      <CheckOutlined
         key='select'
+        title='Select'
         onClick={() => {
           if (onSelect != null && goToParentScreen != null) {
             onSelect(entityInstance);

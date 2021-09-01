@@ -16,7 +16,9 @@ import {
   useParentScreen,
   registerEntityEditor
 } from "@haulmont/jmix-react-ui";
-import {RelationInput} from "../../framework/relation-input/RelationInput";
+import {ReferenceField} from "../../framework/reference-field/ReferenceField";
+import OwnerList from "./OwnerList";
+import { defaultGetDisplayName } from "../../framework/reference-field/defaultGetDisplayName";
 
 const ENTITY_NAME = "PetDTO";
 const ROUTING_PATH = "/petEditor";
@@ -27,6 +29,7 @@ const PET = gql`
       id
       identificationNumber
       owner {
+        id
         firstName
         lastName
       }
@@ -148,7 +151,9 @@ const PetEditor = observer(() => {
         </Form.Item>
 
         <Form.Item name="owner" label="Owner" style={{ marginBottom: "12px" }}>
-          <RelationInput entityName='OwnerDTO' />
+          <ReferenceField listComponent={OwnerList}
+                          getDisplayName={defaultGetDisplayName}
+          />
         </Form.Item>
 
         <Form.Item name="type" label="Type" style={{ marginBottom: "12px" }}>

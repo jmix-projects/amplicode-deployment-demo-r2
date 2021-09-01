@@ -5,22 +5,25 @@ import { openEntityListScreen } from "@haulmont/jmix-react-ui";
 import {useScreens} from "@haulmont/jmix-react-core";
 import {useIntl} from "react-intl";
 import { instanceName } from "../instance-name/instanceName";
+import {ReactComponent} from "../screen-api/ReactComponent";
+import {openBreadcrumb} from "../screen-api/openBreadcrumb";
 
-interface Props {
+export interface ReferenceFieldProps {
   value?: any;
   onChange?: (value: this['value']) => void;
-  entityName?: string;
-  entityBrowserScreenId?: string;
+  listComponent: ReactComponent;
+  listComponentProps?: any;
+  getDisplayName: (value: this['value']) => string;
 }
 
-export function RelationInput(props: Props) {
-  const {value, onChange, entityName, entityBrowserScreenId} = props;
+export function ReferenceField(props: ReferenceFieldProps) {
+  const {value, onChange, listComponent, listComponentProps, getDisplayName} = props;
 
   const screens = useScreens();
   const intl = useIntl();
 
   const handleClick = useCallback(() => {
-    const screenProps = {
+    const enableSelectModeProps = {
       mode: 'select',
       onSelect: (entityInstance: any) => {
         if (onChange != null) {
@@ -29,26 +32,21 @@ export function RelationInput(props: Props) {
       }
     };
 
-    if (entityBrowserScreenId != null) {
-      // TODO open screen by id
-      return;
-    }
-
-    if (entityName != null) {
-      openEntityListScreen({
-        entityName,
-        screens,
-        screenProps,
-        intl
-      });
-      return;
-    }
-  }, [onChange, entityName, entityBrowserScreenId]);
+    openBreadcrumb({
+      component: listComponent,
+      props: {
+        ...enableSelectModeProps,
+        ...listComponentProps
+      },
+      title: 'Select entity instance',
+      screens
+    });
+  }, [onChange, listComponent]);
 
   return (
     <Input prefix={<LinkOutlined />}
            onClick={handleClick}
-           value={instanceName(entityName)(value)}
+           value={value ? getDisplayName(value) : ''}
     />
   );
 }
