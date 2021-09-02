@@ -6,6 +6,7 @@ import io.leangen.graphql.ExtensionProvider;
 import io.leangen.graphql.GeneratorConfiguration;
 import io.leangen.graphql.generator.mapping.TypeMapper;
 import io.leangen.graphql.generator.mapping.TypeMappingEnvironment;
+import io.leangen.graphql.generator.mapping.common.IdAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,7 +20,7 @@ public class GraphQLSchemaConfiguration {
 
     @Bean
     public ExtensionProvider<GeneratorConfiguration, TypeMapper> customTypeMappers() {
-        return (config, current) -> current.append(
+        return (config, current) -> current.insertBefore(IdAdapter.class,
                 new TypeMapper() {
                     @Override
                     public GraphQLScalarType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
