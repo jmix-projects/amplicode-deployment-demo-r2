@@ -19,7 +19,7 @@ public class GraphQLSchemaConfiguration {
 
     @Bean
     public ExtensionProvider<GeneratorConfiguration, TypeMapper> customTypeMappers() {
-        return (config, current) -> current.append(
+        return (config, current) -> current.insertBefore(IdAdapter.class,
                 new TypeMapper() {
                     @Override
                     public GraphQLScalarType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
