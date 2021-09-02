@@ -20,7 +20,7 @@ import {
   PlusOutlined,
   SelectOutlined
 } from "@ant-design/icons";
-import { Button, Card, Tooltip, List, Modal, Spin, Empty, Result } from "antd";
+import { Button, Card, Modal, Spin, Empty, Result } from "antd";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import {EntityListProps} from "../../framework/entity-list-props/EntityListProps";
 import {FetchResult} from "@apollo/client/link/core";
@@ -52,10 +52,11 @@ const DELETE__OWNER = gql`
 `;
 
 const OwnerList = observer((props: EntityListProps) => {
-  const {
-    mode = 'crud',
-    onSelect
-  } = props;
+  const {onSelect} = props;
+
+  // Entity list can work in select mode, which means that you can select an entity instance and it will be passed to onSelect callback.
+  // This functionality is used in EntityLookupField.
+  const isSelectMode = (onSelect != null);
 
   const screens = useScreens();
   const intl = useIntl();
@@ -63,10 +64,6 @@ const OwnerList = observer((props: EntityListProps) => {
 
   const { loading, error, data } = useQuery(OWNER_LIST);
   const [executeDeleteMutation] = useMutation(DELETE__OWNER);
-
-  if (mode === 'select' && onSelect == null) {
-    throw new Error('Missing onSelect callback');
-  }
 
   if (loading) {
     return <Spin />;
@@ -85,7 +82,7 @@ const OwnerList = observer((props: EntityListProps) => {
   return (
     <div className="narrow-layout">
       <div style={{ marginBottom: "12px" }}>
-        {mode === 'crud' && (
+        {!isSelectMode && (
           <Button
             htmlType="button"
             type="primary"
@@ -103,7 +100,7 @@ const OwnerList = observer((props: EntityListProps) => {
             </span>
           </Button>
         )}
-        {mode === 'select' && (
+        {isSelectMode && (
           <Button
             htmlType="button"
             type="primary"
@@ -123,7 +120,7 @@ const OwnerList = observer((props: EntityListProps) => {
           title={e["firstName"]}
           style={{ marginBottom: "12px" }}
           actions={getCardActions({
-            mode,
+            isSelectMode,
             executeDeleteMutation,
             intl,
             entityInstance: e,
@@ -170,7 +167,7 @@ function renderLabel(property: string): string {
 }
 
 interface CardActionsInput {
-  mode: 'crud' | 'select',
+  isSelectMode: boolean,
   executeDeleteMutation: (options?: MutationFunctionOptions) => Promise<FetchResult>,
   intl: IntlShape,
   entityInstance: any,
@@ -181,7 +178,7 @@ interface CardActionsInput {
 
 // TODO convert to React component
 function getCardActions({
-  mode,
+  isSelectMode,
   executeDeleteMutation,
   intl,
   entityInstance,
@@ -189,7 +186,7 @@ function getCardActions({
   onSelect,
   goToParentScreen
 }: CardActionsInput) {
-  if (mode === 'crud') {
+  if (!isSelectMode) {
     return [
       <DeleteOutlined
         key="delete"
@@ -225,7 +222,7 @@ function getCardActions({
     ];
   }
 
-  if (mode === 'select') {
+  if (isSelectMode) {
     return [
       <CheckOutlined
         key='select'

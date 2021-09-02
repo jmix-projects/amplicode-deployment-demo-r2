@@ -16,6 +16,7 @@ import {
   useParentScreen,
   registerEntityEditor
 } from "@haulmont/jmix-react-ui";
+import {EntityDetailsProps} from "../../framework/entity-editor-props/EntityDetailsProps";
 
 const ENTITY_NAME = "OwnerDTO";
 const ROUTING_PATH = "/ownerEditor";
@@ -42,11 +43,7 @@ const UPDATE__OWNER = gql`
   }
 `;
 
-export interface OwnerEditorProps {
-  id: string;
-}
-
-const OwnerEditor = observer(({id}: OwnerEditorProps) => {
+const OwnerEditor = observer(({id}: EntityDetailsProps) => {
   const [form] = useForm();
   const intl = useIntl();
 

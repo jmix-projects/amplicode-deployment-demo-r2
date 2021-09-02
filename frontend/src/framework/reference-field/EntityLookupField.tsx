@@ -17,7 +17,7 @@ export interface ReferenceFieldProps {
   label: string;
 }
 
-export function ReferenceField(props: ReferenceFieldProps) {
+export function EntityLookupField(props: ReferenceFieldProps) {
   const {value, onChange, listComponent, listComponentProps, getDisplayName, label} = props;
 
   const screens = useScreens();
