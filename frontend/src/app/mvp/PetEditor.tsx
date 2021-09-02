@@ -151,8 +151,9 @@ const PetEditor = observer(() => {
         </Form.Item>
 
         <Form.Item name="owner" label="Owner" style={{ marginBottom: "12px" }}>
-          <ReferenceField listComponent={OwnerList}
-                          getDisplayName={defaultGetDisplayName}
+          <ReferenceField getDisplayName={(value: any) => `${value.firstName} ${value.lastName}`}
+                          label="Owner"
+                          listComponent={OwnerList}
           />
         </Form.Item>
 

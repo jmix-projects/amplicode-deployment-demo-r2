@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import {Input, notification} from "antd";
 import {LinkOutlined} from "@ant-design/icons";
 import {useCallback} from "react";
 import { openEntityListScreen } from "@haulmont/jmix-react-ui";
@@ -11,16 +11,16 @@ import {openBreadcrumb} from "../screen-api/openBreadcrumb";
 export interface ReferenceFieldProps {
   value?: any;
   onChange?: (value: this['value']) => void;
-  listComponent: ReactComponent;
+  listComponent?: ReactComponent;
   listComponentProps?: any;
   getDisplayName: (value: this['value']) => string;
+  label: string;
 }
 
 export function ReferenceField(props: ReferenceFieldProps) {
-  const {value, onChange, listComponent, listComponentProps, getDisplayName} = props;
+  const {value, onChange, listComponent, listComponentProps, getDisplayName, label} = props;
 
   const screens = useScreens();
-  const intl = useIntl();
 
   const handleClick = useCallback(() => {
     const enableSelectModeProps = {
@@ -31,6 +31,11 @@ export function ReferenceField(props: ReferenceFieldProps) {
         }
       }
     };
+
+    if (listComponent == null) {
+      notification.warn({message: `Please define lookup screen for reference field "${label}"`});
+      return;
+    }
 
     openBreadcrumb({
       component: listComponent,
