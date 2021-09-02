@@ -17,12 +17,6 @@ import java.util.Set;
 @Configuration
 public class GraphQLSchemaConfiguration {
 
-//    final
-//    GraphQLSchemaGenerator graphQLSchemaGenerator;
-
-//    final
-//    GraphQLSchemaGenerator generator;
-
     @Bean
     public ExtensionProvider<GeneratorConfiguration, TypeMapper> customTypeMappers() {
         return (config, current) -> current.append(
@@ -34,7 +28,7 @@ public class GraphQLSchemaConfiguration {
 
                     @Override
                     public GraphQLScalarType toGraphQLInputType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
-                        return toGraphQLType(javaType, mappersToSkip, env);
+                        return ScalarTypes.LOCALE_TYPE;
                     }
 
                     @Override
@@ -44,25 +38,4 @@ public class GraphQLSchemaConfiguration {
                 });
     }
 
-
-//    public GraphQLSchemaConfiguration(GraphQLSchemaGenerator graphQLSchemaGenerator) {
-//        this.graphQLSchemaGenerator = graphQLSchemaGenerator;
-//        this.graphQLSchemaGenerator.withTypeMappers((conf, current) ->
-//                current.insertAfterOrAppend(IdAdapter.class, new TypeMapper() {
-//                    @Override
-//                    public GraphQLOutputType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
-//                        return LocalType.getLocal();
-//                    }
-//
-//                    @Override
-//                    public GraphQLInputType toGraphQLInputType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
-//                        return LocalType.getLocal();
-//                    }
-//
-//                    @Override
-//                    public boolean supports(AnnotatedElement element, AnnotatedType type) {
-//                        return type.getType() == Locale.class;
-//                    }
-//                }));
-//    }
 }
