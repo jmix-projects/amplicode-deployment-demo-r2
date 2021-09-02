@@ -12,6 +12,7 @@ import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -54,6 +55,7 @@ public class PetTypeService {
     }
 
     @Secured({ADMIN, VETERINARIAN})
+    //@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_VETERINARIAN')")
     @GraphQLMutation(name = "update_PetType")
     @Transactional
     public PetTypeDTO update(@Valid PetTypeInputDTO input) {
