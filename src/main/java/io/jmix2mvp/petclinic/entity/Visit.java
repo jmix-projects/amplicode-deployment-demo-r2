@@ -1,10 +1,13 @@
 package io.jmix2mvp.petclinic.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
-import java.util.Currency;
 
 @Entity
 @Table(name = "visit")
@@ -14,7 +17,7 @@ public class Visit extends BaseEntity {
     private Pet pet;
 
     @Column(name = "visit_start", nullable = false)
-    private OffsetDateTime visitStart;
+    private LocalDateTime visitStart;
 
     @Column(name = "visit_end", nullable = false)
     private LocalDateTime visitEnd;
@@ -38,11 +41,11 @@ public class Visit extends BaseEntity {
         this.visitEnd = visitEnd;
     }
 
-    public OffsetDateTime getVisitStart() {
+    public LocalDateTime getVisitStart() {
         return visitStart;
     }
 
-    public void setVisitStart(OffsetDateTime visitStart) {
+    public void setVisitStart(LocalDateTime visitStart) {
         this.visitStart = visitStart;
     }
 

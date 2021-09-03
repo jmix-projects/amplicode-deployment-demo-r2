@@ -3,8 +3,6 @@ package io.jmix2mvp.petclinic.graphql.scalar;
 import graphql.schema.GraphQLInputType;
 import graphql.schema.GraphQLOutputType;
 import graphql.schema.GraphQLScalarType;
-import io.leangen.graphql.generator.BuildContext;
-import io.leangen.graphql.generator.OperationMapper;
 import io.leangen.graphql.generator.mapping.TypeMapper;
 import io.leangen.graphql.generator.mapping.TypeMappingEnvironment;
 

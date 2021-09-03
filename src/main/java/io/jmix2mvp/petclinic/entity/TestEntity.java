@@ -12,7 +12,6 @@ import java.net.URL;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Date;
-import java.sql.NClob;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Duration;

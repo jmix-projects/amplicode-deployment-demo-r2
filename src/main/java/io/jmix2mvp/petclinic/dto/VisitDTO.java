@@ -2,11 +2,10 @@ package io.jmix2mvp.petclinic.dto;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
 import java.util.Currency;
 
 public class VisitDTO extends BaseDTO {
-    private OffsetDateTime visitStart;
+    private LocalDateTime visitStart;
     private LocalDateTime visitEnd;
     private String description;
     private Currency currency;
@@ -19,11 +18,11 @@ public class VisitDTO extends BaseDTO {
         this.currency = currency;
     }
 
-    public OffsetDateTime getVisitStart() {
+    public LocalDateTime getVisitStart() {
         return visitStart;
     }
 
-    public void setVisitStart(OffsetDateTime visitStart) {
+    public void setVisitStart(LocalDateTime visitStart) {
         this.visitStart = visitStart;
     }
 

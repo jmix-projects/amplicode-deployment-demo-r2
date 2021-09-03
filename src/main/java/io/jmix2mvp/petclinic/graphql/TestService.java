@@ -1,6 +1,5 @@
 package io.jmix2mvp.petclinic.graphql;
 
-import io.jmix2mvp.petclinic.dto.PetInputDTO;
 import io.jmix2mvp.petclinic.dto.TestDTO;
 import io.jmix2mvp.petclinic.dto.TestInputDTO;
 import io.jmix2mvp.petclinic.entity.TestEntity;
