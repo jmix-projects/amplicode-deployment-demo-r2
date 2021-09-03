@@ -3,13 +3,18 @@ package io.jmix2mvp.petclinic;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.execution.DataFetcherResult;
+import graphql.schema.GraphQLScalarType;
 import io.jmix2mvp.petclinic.graphql.ErrorType;
+import io.jmix2mvp.petclinic.graphql.scalar.ScalarTypes;
 import io.leangen.graphql.ExtensionProvider;
 import io.leangen.graphql.GeneratorConfiguration;
 import io.leangen.graphql.execution.InvocationContext;
 import io.leangen.graphql.execution.ResolverInterceptor;
 import io.leangen.graphql.execution.ResolverInterceptorFactory;
 import io.leangen.graphql.generator.mapping.SchemaTransformer;
+import io.leangen.graphql.generator.mapping.TypeMapper;
+import io.leangen.graphql.generator.mapping.TypeMappingEnvironment;
+import io.leangen.graphql.generator.mapping.common.IdAdapter;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import io.leangen.graphql.spqr.spring.modules.data.DefaultValueSchemaTransformer;
 import io.leangen.graphql.spqr.spring.modules.data.Order;
@@ -28,6 +33,7 @@ import org.springframework.util.StringUtils;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -89,6 +95,27 @@ public class GraphQLConfiguration {
                 return result;
             }
         });
+    }
+
+    @Bean
+    public ExtensionProvider<GeneratorConfiguration, TypeMapper> customTypeMappers() {
+        return (config, current) -> current.insertBefore(IdAdapter.class,
+                new TypeMapper() {
+                    @Override
+                    public GraphQLScalarType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
+                        return ScalarTypes.CURRENCY_TYPE;
+                    }
+
+                    @Override
+                    public GraphQLScalarType toGraphQLInputType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
+                        return ScalarTypes.CURRENCY_TYPE;
+                    }
+
+                    @Override
+                    public boolean supports(AnnotatedElement element, AnnotatedType type) {
+                        return type.getType() == Currency.class;
+                    }
+                });
     }
 
     protected List<ResolverInterceptor> getResolverInterceptors() {

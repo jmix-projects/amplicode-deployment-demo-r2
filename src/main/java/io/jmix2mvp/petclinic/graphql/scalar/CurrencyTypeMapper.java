@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class CurrencyTypeMapper implements TypeMapper {
 
-    private static final GraphQLScalarType type = CurrencyScalarType.type;
+    private static final GraphQLScalarType type = ScalarTypes.CURRENCY_TYPE;
 
     @Override
     public GraphQLOutputType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
