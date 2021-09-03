@@ -8,15 +8,7 @@ public class VisitInputDTO extends BaseDTO {
     private LocalDateTime visitStart;
     private LocalDateTime visitEnd;
     private String description;
-    private Currency currency;
 
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
     public PetDTO getPet() {
         return pet;
     }

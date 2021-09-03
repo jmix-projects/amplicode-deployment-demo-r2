@@ -27,6 +27,7 @@ import java.util.Currency;
 import java.util.Locale;
 import java.util.UUID;
 
+//TODO: NClob type from JPA Buddy
 @Table(name = "test_entity")
 @Entity
 public class TestEntity extends BaseEntity {
@@ -304,14 +305,6 @@ public class TestEntity extends BaseEntity {
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
-
-//    public NClob getNclob() {
-//        return nclob;
-//    }
-//
-//    public void setNclob(NClob nclob) {
-//        this.nclob = nclob;
-//    }
 
     public Clob getClob() {
         return clob;
