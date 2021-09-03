@@ -94,10 +94,6 @@ public class TestEntity extends BaseEntity {
     @Column(name = "clob")
     private Clob clob;
 
-//    @Lob
-//    @Column(name = "nclob")
-//    private NClob nclob;
-
     @Column(name = "duration")
     private Duration duration;
 
@@ -126,8 +122,8 @@ public class TestEntity extends BaseEntity {
     @Column(name = "calendar")
     private Calendar calendar;
 
-//    @Column(name = "currency")
-//    private Currency currency;
+    @Column(name = "currency")
+    private Currency currency;
 
     @Column(name = "locale")
     private Locale locale;
@@ -230,13 +226,13 @@ public class TestEntity extends BaseEntity {
         this.locale = locale;
     }
 
-//    public Currency getCurrency() {
-//        return currency;
-//    }
-//
-//    public void setCurrency(Currency currency) {
-//        this.currency = currency;
-//    }
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
 
     public Calendar getCalendar() {
         return calendar;

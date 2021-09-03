@@ -79,7 +79,7 @@ CREATE TABLE test_entity
     offset_time          TIME WITH TIME ZONE,
     zoned_date_time      TIMESTAMP with time zone,
     calendar             date,
-    currency             DECIMAL,
+    currency             VARCHAR(255),
     locale               VARCHAR(255),
     bool_primitive       BOOLEAN,
     byte_primitive       SMALLINT,

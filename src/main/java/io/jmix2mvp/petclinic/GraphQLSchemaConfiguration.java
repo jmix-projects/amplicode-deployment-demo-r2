@@ -1,7 +1,7 @@
 package io.jmix2mvp.petclinic;
 
 import graphql.schema.GraphQLScalarType;
-import io.jmix2mvp.petclinic.graphql.scalar.ScalarTypes;
+import io.jmix2mvp.petclinic.graphql.scalar.CurrencyScalarType;
 import io.leangen.graphql.ExtensionProvider;
 import io.leangen.graphql.GeneratorConfiguration;
 import io.leangen.graphql.generator.mapping.TypeMapper;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
-import java.util.Locale;
+import java.util.Currency;
 import java.util.Set;
 
 @Configuration
@@ -22,19 +22,20 @@ public class GraphQLSchemaConfiguration {
     public ExtensionProvider<GeneratorConfiguration, TypeMapper> customTypeMappers() {
         return (config, current) -> current.insertBefore(IdAdapter.class,
                 new TypeMapper() {
+
                     @Override
                     public GraphQLScalarType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
-                        return ScalarTypes.LOCALE_TYPE;
+                        return CurrencyScalarType.type;
                     }
 
                     @Override
                     public GraphQLScalarType toGraphQLInputType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
-                        return ScalarTypes.LOCALE_TYPE;
+                        return CurrencyScalarType.type;
                     }
 
                     @Override
                     public boolean supports(AnnotatedElement element, AnnotatedType type) {
-                        return type.getType() == Locale.class;
+                        return type.getType() == Currency.class;
                     }
                 });
     }

@@ -47,41 +47,41 @@ public class TestService {
                 .orElse(null);
     }
 
-//    @Secured({ADMIN, VETERINARIAN})
-//    @GraphQLQuery(name = "testList")
-//    @Transactional
-//    public List<TestDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
-//        return crudRepository.findAll(pageable).stream()
-//                .map(e -> mapper.map(e, TestDTO.class))
-//                .collect(Collectors.toList());
-//    }
-//
-//    @PreAuthorize("hasAnyRole('ADMIN', 'VETERINARIAN')")
-//    @GraphQLMutation(name = "update_Test")
-//    @Transactional
-//    public TestDTO update(TestInputDTO input) {
-//        if (input.getId() != null) {
-//            if (!crudRepository.existsById(input.getId())) {
-//                throw new ResourceNotFoundException(
-//                        String.format("Unable to find entity by id: %s ", input.getId()));
-//            }
-//        }
-//        TestEntity entity = new TestEntity();
-//        mapper.map(input, entity);
-//        entity = crudRepository.saveAndFlush(entity);
-//
-//        entityManager.refresh(entity);
-//
-//        return mapper.map(entity, TestDTO.class);
-//    }
-//
-//    @Secured({ADMIN, VETERINARIAN})
-//    @GraphQLMutation(name = "delete_Test")
-//    @Transactional
-//    public void delete(@GraphQLNonNull Long id) {
-//        TestEntity entity = crudRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
-//
-//        crudRepository.delete(entity);
-//    }
+    @Secured({ADMIN, VETERINARIAN})
+    @GraphQLQuery(name = "testList")
+    @Transactional
+    public List<TestDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
+        return crudRepository.findAll(pageable).stream()
+                .map(e -> mapper.map(e, TestDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'VETERINARIAN')")
+    @GraphQLMutation(name = "update_Test")
+    @Transactional
+    public TestDTO update(TestInputDTO input) {
+        if (input.getId() != null) {
+            if (!crudRepository.existsById(input.getId())) {
+                throw new ResourceNotFoundException(
+                        String.format("Unable to find entity by id: %s ", input.getId()));
+            }
+        }
+        TestEntity entity = new TestEntity();
+        mapper.map(input, entity);
+        entity = crudRepository.saveAndFlush(entity);
+
+        entityManager.refresh(entity);
+
+        return mapper.map(entity, TestDTO.class);
+    }
+
+    @Secured({ADMIN, VETERINARIAN})
+    @GraphQLMutation(name = "delete_Test")
+    @Transactional
+    public void delete(@GraphQLNonNull Long id) {
+        TestEntity entity = crudRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
+
+        crudRepository.delete(entity);
+    }
 }
