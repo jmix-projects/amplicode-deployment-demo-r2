@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import {
   gql,
   useLazyQuery,
@@ -12,11 +12,10 @@ import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react";
 import { FormattedMessage, useIntl } from "react-intl";
 import {
-  useMultiScreen,
   useParentScreen,
   registerEntityEditor
 } from "@haulmont/jmix-react-ui";
-import {EntityDetailsProps} from "../../framework/entity-editor-props/EntityDetailsProps";
+import {EntityDetailsScreenProps} from "../../framework/components/entity-details-screen/EntityDetailsScreenProps";
 
 const ENTITY_NAME = "OwnerDTO";
 const ROUTING_PATH = "/ownerEditor";
@@ -43,7 +42,7 @@ const UPDATE__OWNER = gql`
   }
 `;
 
-const OwnerEditor = observer(({id}: EntityDetailsProps) => {
+const OwnerEditor = observer(({id}: EntityDetailsScreenProps) => {
   const [form] = useForm();
   const intl = useIntl();
 
@@ -63,7 +62,7 @@ const OwnerEditor = observer(({id}: EntityDetailsProps) => {
     window.scrollTo(0, 0);
   }, [goToParentScreen]);
 
-  const [executeUpsertMutation] = useMutation(UPDATE__OWNER);
+  const [executeUpsertMutation, {loading: upsertInProcess}] = useMutation(UPDATE__OWNER);
 
   const [formError, setFormError] = useState<string | undefined>();
 
@@ -79,24 +78,24 @@ const OwnerEditor = observer(({id}: EntityDetailsProps) => {
           if (errors == null || errors.length === 0) {
             goToParentScreen();
             window.scrollTo(0, 0);
-            message.success("Saved successfully");
+            message.success(<FormattedMessage id='EntityDetailsScreen.savedSuccessfully' />);
             return;
           }
           setFormError(errors.join("\n"));
-          console.log(errors);
-          message.error(intl.formatMessage({ id: "common.requestFailed" }));
+          console.error(errors);
+          message.error(<FormattedMessage id='common.requestFailed'/>);
         })
         .catch((e: Error | ApolloError) => {
           setFormError(e.message);
-          console.log(e);
-          message.error(intl.formatMessage({ id: "common.requestFailed" }));
+          console.error(e);
+          message.error(<FormattedMessage id='common.requestFailed'/>);
         });
     },
     [executeUpsertMutation]
   );
 
   const handleSubmitFailed = useCallback(() => {
-    message.error("Validation Error. Please check the data you entered.");
+    message.error(<FormattedMessage id='EntityDetailsScreen.validationError'/>);
   }, []);
 
   useEffect(() => {
@@ -118,7 +117,9 @@ const OwnerEditor = observer(({id}: EntityDetailsProps) => {
   }
 
   if (queryError) {
-    return <Result status="error" title="Query failed" />;
+    return <Result status="error"
+                   title={<FormattedMessage id='common.requestFailed' />}
+           />;
   }
 
   return (
@@ -184,7 +185,7 @@ const OwnerEditor = observer(({id}: EntityDetailsProps) => {
           <Button
             type="primary"
             htmlType="submit"
-            loading={false} // TODO
+            loading={upsertInProcess}
             style={{ marginLeft: "8px" }}
           >
             <FormattedMessage id={"common.submit"} />

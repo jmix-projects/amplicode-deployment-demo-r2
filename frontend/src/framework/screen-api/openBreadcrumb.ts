@@ -2,6 +2,9 @@ import { Screens } from "@haulmont/jmix-react-core";
 import {ReactComponent} from "./ReactComponent";
 import React from "react";
 
+// *** SUBJECT TO CHANGE ***
+// Currently depends heavily on Jmix Screen API
+
 export interface OpenBreadcrumbInput {
   component: ReactComponent,
   props?: any,

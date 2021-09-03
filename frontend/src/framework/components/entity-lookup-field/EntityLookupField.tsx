@@ -4,28 +4,27 @@ import {useCallback} from "react";
 import { openEntityListScreen } from "@haulmont/jmix-react-ui";
 import {useScreens} from "@haulmont/jmix-react-core";
 import {useIntl} from "react-intl";
-import { instanceName } from "../instance-name/instanceName";
-import {ReactComponent} from "../screen-api/ReactComponent";
-import {openBreadcrumb} from "../screen-api/openBreadcrumb";
+import {ReactComponent} from "../../screen-api/ReactComponent";
+import {openBreadcrumb} from "../../screen-api/openBreadcrumb";
 
-export interface ReferenceFieldProps {
-  value?: any;
+export interface EntityLookupFieldProps {
+  value?: Record<string, unknown>;
   onChange?: (value: this['value']) => void;
   listComponent?: ReactComponent;
-  listComponentProps?: any;
-  getDisplayName: (value: this['value']) => string;
+  listComponentProps?: Record<string, unknown>;
+  getDisplayName: (value: Record<string, unknown>) => string;
   label: string;
 }
 
-export function EntityLookupField(props: ReferenceFieldProps) {
+export function EntityLookupField(props: EntityLookupFieldProps) {
   const {value, onChange, listComponent, listComponentProps, getDisplayName, label} = props;
 
   const screens = useScreens();
+  const intl = useIntl();
 
   const handleClick = useCallback(() => {
     const enableSelectModeProps = {
-      mode: 'select',
-      onSelect: (entityInstance: any) => {
+      onSelect: (entityInstance: Record<string, unknown>) => {
         if (onChange != null) {
           onChange(entityInstance);
         }
@@ -43,7 +42,7 @@ export function EntityLookupField(props: ReferenceFieldProps) {
         ...enableSelectModeProps,
         ...listComponentProps
       },
-      title: 'Select entity instance',
+      title: intl.formatMessage({id: 'EntityLookupField.selectEntityInstance'}),
       screens
     });
   }, [onChange, listComponent]);

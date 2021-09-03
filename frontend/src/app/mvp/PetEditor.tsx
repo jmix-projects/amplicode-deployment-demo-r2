@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import {
   gql,
   useLazyQuery,
@@ -16,9 +16,9 @@ import {
   useParentScreen,
   registerEntityEditor
 } from "@haulmont/jmix-react-ui";
-import {EntityLookupField} from "../../framework/reference-field/EntityLookupField";
+import {EntityLookupField} from "../../framework/components/entity-lookup-field/EntityLookupField";
 import OwnerList from "./OwnerList";
-import { defaultGetDisplayName } from "../../framework/reference-field/defaultGetDisplayName";
+import { guessDisplayName } from "../../framework/util/guessDisplayName";
 
 const ENTITY_NAME = "PetDTO";
 const ROUTING_PATH = "/petEditor";
@@ -151,7 +151,7 @@ const PetEditor = observer(() => {
         </Form.Item>
 
         <Form.Item name="owner" label="Owner" style={{ marginBottom: "12px" }}>
-          <EntityLookupField getDisplayName={(value: any) => defaultGetDisplayName(value)}
+          <EntityLookupField getDisplayName={(value: Record<string, unknown>) => guessDisplayName(value)}
                              label="Owner"
                              // TODO: Please choose your list component or pick any option {@option: opt1, opt2, opt3}
                              // listComponent={YourListComponentName}

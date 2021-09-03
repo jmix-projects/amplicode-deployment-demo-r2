@@ -1,4 +1,3 @@
-import React, { useCallback } from "react";
 import { observer } from "mobx-react";
 import {
   gql,
@@ -22,7 +21,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Card, Modal, Spin, Empty, Result } from "antd";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
-import {EntityListProps} from "../../framework/entity-list-props/EntityListProps";
+import {EntityListScreenProps} from "../../framework/components/entity-list-screen/EntityListScreenProps";
 import {FetchResult} from "@apollo/client/link/core";
 import {MutationFunctionOptions} from "@apollo/client/react/types/types";
 import {openBreadcrumb} from "../../framework/screen-api/openBreadcrumb";
@@ -51,7 +50,7 @@ const DELETE__OWNER = gql`
   }
 `;
 
-const OwnerList = observer((props: EntityListProps) => {
+const OwnerList = observer((props: EntityListScreenProps) => {
   const {onSelect} = props;
 
   // Entity list can work in select mode, which means that you can select an entity instance and it will be passed to onSelect callback.
@@ -70,7 +69,9 @@ const OwnerList = observer((props: EntityListProps) => {
   }
 
   if (error) {
-    return <Result status="error" title="Query failed" />;
+    return <Result status="error"
+                   title={<FormattedMessage id='common.requestFailed' />}
+    />;
   }
 
   const items = data?.["ownerList"];
@@ -90,7 +91,7 @@ const OwnerList = observer((props: EntityListProps) => {
             onClick={() => {
               openBreadcrumb({
                 component: OwnerEditor,
-                title: 'Owner Editor',
+                title: intl.formatMessage({id: 'screen.OwnerEditor'}),
                 screens,
               });
             }}
@@ -176,7 +177,6 @@ interface CardActionsInput {
   goToParentScreen?: () => void;
 }
 
-// TODO convert to React component
 function getCardActions({
   isSelectMode,
   executeDeleteMutation,

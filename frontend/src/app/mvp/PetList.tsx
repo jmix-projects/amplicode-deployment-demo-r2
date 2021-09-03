@@ -1,4 +1,3 @@
-import React, { useCallback } from "react";
 import { observer } from "mobx-react";
 import {
   gql,
@@ -18,11 +17,11 @@ import {
   PlusOutlined,
   LeftOutlined
 } from "@ant-design/icons";
-import { Button, Card, Tooltip, List, Modal, Spin, Empty, Result } from "antd";
+import { Button, Card, Modal, Spin, Empty, Result } from "antd";
 import { FormattedMessage, useIntl } from "react-intl";
-import { instanceName } from "../../framework/instance-name/instanceName";
 import {openBreadcrumb} from "../../framework/screen-api/openBreadcrumb";
 import PetEditor from "./PetEditor";
+import {guessDisplayName} from "../../framework/util/guessDisplayName";
 
 const ENTITY_NAME = "PetDTO";
 const ROUTING_PATH = "/petList";
@@ -155,7 +154,7 @@ const Fields = (props: FieldsProps) => {
 
 function renderFieldValue(entity: any, property: string): string {
   return typeof entity[property] === "object"
-    ? instanceName('OwnerDTO')(entity[property])
+    ? guessDisplayName(entity[property])
     : entity[property].toString();
 }
 
