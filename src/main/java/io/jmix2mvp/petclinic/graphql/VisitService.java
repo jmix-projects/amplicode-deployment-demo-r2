@@ -1,13 +1,16 @@
 package io.jmix2mvp.petclinic.graphql;
 
-import io.jmix2mvp.petclinic.Authorities;
 import io.jmix2mvp.petclinic.dto.PetDTO;
 import io.jmix2mvp.petclinic.dto.VisitDTO;
 import io.jmix2mvp.petclinic.dto.VisitInputDTO;
 import io.jmix2mvp.petclinic.entity.Visit;
 import io.jmix2mvp.petclinic.repository.PetRepository;
 import io.jmix2mvp.petclinic.repository.VisitRepository;
-import io.leangen.graphql.annotations.*;
+import io.leangen.graphql.annotations.GraphQLArgument;
+import io.leangen.graphql.annotations.GraphQLContext;
+import io.leangen.graphql.annotations.GraphQLMutation;
+import io.leangen.graphql.annotations.GraphQLNonNull;
+import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;

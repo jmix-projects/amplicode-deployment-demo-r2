@@ -1,5 +1,7 @@
 package io.jmix2mvp.petclinic.dto;
 
+import java.util.Locale;
+
 public class OwnerDTO extends BaseDTO {
     private String firstName;
     private String lastName;
@@ -7,6 +9,15 @@ public class OwnerDTO extends BaseDTO {
     private String city;
     private String email;
     private String telephone;
+    private Locale locale;
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
 
     public String getFirstName() {
         return firstName;

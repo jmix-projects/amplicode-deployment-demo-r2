@@ -1,13 +1,22 @@
 package io.jmix2mvp.petclinic.dto;
 
 import java.time.LocalDateTime;
+import java.util.Currency;
 
 public class VisitInputDTO extends BaseDTO {
     private PetDTO pet;
     private LocalDateTime visitStart;
     private LocalDateTime visitEnd;
     private String description;
+    private Currency currency;
 
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
     public PetDTO getPet() {
         return pet;
     }

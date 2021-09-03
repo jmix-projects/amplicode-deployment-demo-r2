@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 
 @Configuration
 public class GraphQLConfiguration {
+
     private static final Set<Class<?>> SUPPORTED_CLASSES = new HashSet<>(Arrays.asList(
             Pageable.class, PageRequest.class, AbstractPageRequest.class, Pageable.unpaged().getClass()
     ));
