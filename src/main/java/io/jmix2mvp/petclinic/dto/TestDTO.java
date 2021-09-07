@@ -6,14 +6,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Locale;
@@ -93,13 +86,13 @@ public class TestDTO extends BaseDTO {
 
     private short shortPrimitive;
 
-//    private Byte[] byteArray;
-//
-//    private Character[] charArray;
-//
-//    private byte[] bytePrimitiveArray;
-//
-//    private char[] charPrimitiveArray;
+    private Byte[] byteArray;
+
+    private Character[] charArray;
+
+    private byte[] bytePrimitiveArray;
+
+    private char[] charPrimitiveArray;
 
     public String getString() {
         return string;
@@ -389,35 +382,35 @@ public class TestDTO extends BaseDTO {
         this.shortPrimitive = shortPrimitive;
     }
 
-//    public Byte[] getByteArray() {
-//        return byteArray;
-//    }
-//
-//    public void setByteArray(Byte[] byteArray) {
-//        this.byteArray = byteArray;
-//    }
-//
-//    public Character[] getCharArray() {
-//        return charArray;
-//    }
-//
-//    public void setCharArray(Character[] charArray) {
-//        this.charArray = charArray;
-//    }
-//
-//    public byte[] getBytePrimitiveArray() {
-//        return bytePrimitiveArray;
-//    }
-//
-//    public void setBytePrimitiveArray(byte[] bytePrimitiveArray) {
-//        this.bytePrimitiveArray = bytePrimitiveArray;
-//    }
-//
-//    public char[] getCharPrimitiveArray() {
-//        return charPrimitiveArray;
-//    }
-//
-//    public void setCharPrimitiveArray(char[] charPrimitiveArray) {
-//        this.charPrimitiveArray = charPrimitiveArray;
-//    }
+    public Byte[] getByteArray() {
+        return byteArray;
+    }
+
+    public void setByteArray(Byte[] byteArray) {
+        this.byteArray = byteArray;
+    }
+
+    public Character[] getCharArray() {
+        return charArray;
+    }
+
+    public void setCharArray(Character[] charArray) {
+        this.charArray = charArray;
+    }
+
+    public byte[] getBytePrimitiveArray() {
+        return bytePrimitiveArray;
+    }
+
+    public void setBytePrimitiveArray(byte[] bytePrimitiveArray) {
+        this.bytePrimitiveArray = bytePrimitiveArray;
+    }
+
+    public char[] getCharPrimitiveArray() {
+        return charPrimitiveArray;
+    }
+
+    public void setCharPrimitiveArray(char[] charPrimitiveArray) {
+        this.charPrimitiveArray = charPrimitiveArray;
+    }
 }

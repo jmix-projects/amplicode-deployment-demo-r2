@@ -3,6 +3,8 @@ package io.jmix2mvp.petclinic;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.execution.DataFetcherResult;
+import graphql.schema.GraphQLInputType;
+import graphql.schema.GraphQLOutputType;
 import graphql.schema.GraphQLScalarType;
 import io.jmix2mvp.petclinic.graphql.ErrorType;
 import io.jmix2mvp.petclinic.graphql.scalar.ScalarTypes;
@@ -14,12 +16,13 @@ import io.leangen.graphql.execution.ResolverInterceptorFactory;
 import io.leangen.graphql.generator.mapping.SchemaTransformer;
 import io.leangen.graphql.generator.mapping.TypeMapper;
 import io.leangen.graphql.generator.mapping.TypeMappingEnvironment;
-import io.leangen.graphql.generator.mapping.common.IdAdapter;
+import io.leangen.graphql.generator.mapping.common.ScalarMapper;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import io.leangen.graphql.spqr.spring.modules.data.DefaultValueSchemaTransformer;
 import io.leangen.graphql.spqr.spring.modules.data.Order;
 import io.leangen.graphql.spqr.spring.modules.data.Pagination;
 import io.leangen.graphql.spqr.spring.modules.data.Sorting;
+import io.leangen.graphql.util.Scalars;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +32,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.util.StringUtils;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -99,23 +101,40 @@ public class GraphQLConfiguration {
 
     @Bean
     public ExtensionProvider<GeneratorConfiguration, TypeMapper> customTypeMappers() {
-        return (config, current) -> current.insertBefore(IdAdapter.class,
-                new TypeMapper() {
-                    @Override
-                    public GraphQLScalarType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
-                        return ScalarTypes.CURRENCY_TYPE;
-                    }
+        return (config, current) ->
+                current.insertBefore(ScalarMapper.class,
+                                new TypeMapper() {
+                                    @Override
+                                    public GraphQLScalarType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
+                                        return ScalarTypes.CURRENCY_TYPE;
+                                    }
 
-                    @Override
-                    public GraphQLScalarType toGraphQLInputType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
-                        return ScalarTypes.CURRENCY_TYPE;
-                    }
+                                    @Override
+                                    public GraphQLScalarType toGraphQLInputType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
+                                        return ScalarTypes.CURRENCY_TYPE;
+                                    }
 
-                    @Override
-                    public boolean supports(AnnotatedElement element, AnnotatedType type) {
-                        return type.getType() == Currency.class;
-                    }
-                });
+                                    @Override
+                                    public boolean supports(AnnotatedElement element, AnnotatedType type) {
+                                        return Currency.class.equals(type.getType());
+                                    }
+                                })
+                        .insertBefore(ScalarMapper.class, new TypeMapper() {
+                            @Override
+                            public GraphQLOutputType toGraphQLType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
+                                return ScalarTypes.BASE_64_STRING;
+                            }
+
+                            @Override
+                            public GraphQLInputType toGraphQLInputType(AnnotatedType javaType, Set<Class<? extends TypeMapper>> mappersToSkip, TypeMappingEnvironment env) {
+                                return ScalarTypes.BASE_64_STRING;
+                            }
+
+                            @Override
+                            public boolean supports(AnnotatedElement element, AnnotatedType type) {
+                                return Byte[].class.equals(type.getType());
+                            }
+                        });
     }
 
     protected List<ResolverInterceptor> getResolverInterceptors() {
