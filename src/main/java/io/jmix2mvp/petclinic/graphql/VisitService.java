@@ -14,6 +14,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,18 @@ public class VisitService {
     @Transactional
     public List<VisitDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
         return visitRepository.findAll(pageable).stream()
+                .map(e -> mapper.map(e, VisitDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Secured({ADMIN, VETERINARIAN})
+    @GraphQLQuery(name = "visitListByDateRange")
+    @Transactional
+    public List<VisitDTO> findVisitsByDateRange(
+            @GraphQLArgument(name = "page") Pageable pageable,
+            @GraphQLArgument(name = "fromDate") LocalDateTime from,
+            @GraphQLArgument(name = "toDate") LocalDateTime to) {
+        return visitRepository.findByDateRange(from, to, pageable).stream()
                 .map(e -> mapper.map(e, VisitDTO.class))
                 .collect(Collectors.toList());
     }
