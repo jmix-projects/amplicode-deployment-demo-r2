@@ -4,35 +4,37 @@
  *
  * @param entityInstance
  */
-export function guessDisplayName(entityInstance: Record<string, unknown>): string {
-  if ('name' in entityInstance) {
+export function guessDisplayName(
+  entityInstance: Record<string, unknown>
+): string {
+  if ("name" in entityInstance) {
     return String(entityInstance.name);
   }
-  if ('title' in entityInstance) {
+  if ("title" in entityInstance) {
     return String(entityInstance.title);
   }
-  if ('caption' in entityInstance) {
+  if ("caption" in entityInstance) {
     return String(entityInstance.caption);
   }
-  if ('label' in entityInstance) {
+  if ("label" in entityInstance) {
     return String(entityInstance.label);
   }
-  if ('summary' in entityInstance) {
+  if ("summary" in entityInstance) {
     return String(entityInstance.summary);
   }
-  if ('description' in entityInstance) {
+  if ("description" in entityInstance) {
     return String(entityInstance.description);
   }
-  if ('firstName' in entityInstance && 'lastName' in entityInstance) {
+  if ("firstName" in entityInstance && "lastName" in entityInstance) {
     return String(`${entityInstance.firstName} ${entityInstance.lastName}`);
   }
-  if ('firstName' in entityInstance) {
+  if ("firstName" in entityInstance) {
     return String(entityInstance.firstName);
   }
-  if ('lastName' in entityInstance) {
+  if ("lastName" in entityInstance) {
     return String(entityInstance.lastName);
   }
-  if ('id' in entityInstance) {
+  if ("id" in entityInstance) {
     return String(entityInstance.id);
   }
   return JSON.stringify(entityInstance);

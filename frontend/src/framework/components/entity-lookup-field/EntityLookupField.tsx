@@ -1,15 +1,15 @@
-import {Input, notification} from "antd";
-import {LinkOutlined} from "@ant-design/icons";
-import {useCallback} from "react";
+import { Input, notification } from "antd";
+import { LinkOutlined } from "@ant-design/icons";
+import { useCallback } from "react";
 import { openEntityListScreen } from "@haulmont/jmix-react-ui";
-import {useScreens} from "@haulmont/jmix-react-core";
-import {useIntl} from "react-intl";
-import {ReactComponent} from "../../screen-api/ReactComponent";
-import {openBreadcrumb} from "../../screen-api/openBreadcrumb";
+import { useScreens } from "@haulmont/jmix-react-core";
+import { useIntl } from "react-intl";
+import { ReactComponent } from "../../screen-api/ReactComponent";
+import { openBreadcrumb } from "../../screen-api/openBreadcrumb";
 
 export interface EntityLookupFieldProps {
   value?: Record<string, unknown>;
-  onChange?: (value: this['value']) => void;
+  onChange?: (value: this["value"]) => void;
   listComponent?: ReactComponent;
   listComponentProps?: Record<string, unknown>;
   getDisplayName: (value: Record<string, unknown>) => string;
@@ -17,7 +17,14 @@ export interface EntityLookupFieldProps {
 }
 
 export function EntityLookupField(props: EntityLookupFieldProps) {
-  const {value, onChange, listComponent, listComponentProps, getDisplayName, label} = props;
+  const {
+    value,
+    onChange,
+    listComponent,
+    listComponentProps,
+    getDisplayName,
+    label
+  } = props;
 
   const screens = useScreens();
   const intl = useIntl();
@@ -32,7 +39,9 @@ export function EntityLookupField(props: EntityLookupFieldProps) {
     };
 
     if (listComponent == null) {
-      notification.warn({message: `Please define lookup screen for reference field "${label}"`});
+      notification.warn({
+        message: `Please define lookup screen for reference field "${label}"`
+      });
       return;
     }
 
@@ -42,15 +51,18 @@ export function EntityLookupField(props: EntityLookupFieldProps) {
         ...enableSelectModeProps,
         ...listComponentProps
       },
-      title: intl.formatMessage({id: 'EntityLookupField.selectEntityInstance'}),
+      title: intl.formatMessage({
+        id: "EntityLookupField.selectEntityInstance"
+      }),
       screens
     });
   }, [onChange, listComponent]);
 
   return (
-    <Input prefix={<LinkOutlined />}
-           onClick={handleClick}
-           value={value ? getDisplayName(value) : ''}
+    <Input
+      prefix={<LinkOutlined />}
+      onClick={handleClick}
+      value={value ? getDisplayName(value) : ""}
     />
   );
 }
