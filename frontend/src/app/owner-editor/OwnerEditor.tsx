@@ -42,7 +42,6 @@ const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
   const [form] = useForm();
   const intl = useIntl();
 
-  // TODO: id variable name
   const [
     loadItem,
     { loading: queryLoading, error: queryError, data }

@@ -12,4 +12,5 @@ ${gjf} react-typescript:mvp-app \\
   --dest ../frontend
 `;
 
+runCmdSync('mkdir ../frontend');
 runCmdSync(appCommand);

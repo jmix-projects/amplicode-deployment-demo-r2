@@ -17,25 +17,25 @@ export const AppMenu = (props: AppMenuProps) => {
         screenId={"OwnerList"}
         icon={<BarsOutlined />}
         caption={"screen.OwnerList"}
-        key={"3607afaa-52f5-43f2-a267-59608f97d1b2"}
+        key={"ce22d23e-340d-4a0c-ba70-d26a51a045f9"}
       />
       <MenuItem
         screenId={"OwnerEditor"}
         icon={<BarsOutlined />}
         caption={"screen.OwnerEditor"}
-        key={"2797bc65-abbe-464a-8cb6-554d56fa1e7e"}
+        key={"3f2019b4-6945-4591-a8f1-a3521e64023a"}
       />
       <MenuItem
         screenId={"PetList"}
         icon={<BarsOutlined />}
         caption={"screen.PetList"}
-        key={"74e70596-e754-4a6c-8a93-09c36714a632"}
+        key={"0423b6c5-d8d3-4502-a23f-b660f28bb582"}
       />
       <MenuItem
         screenId={"PetEditor"}
         icon={<BarsOutlined />}
         caption={"screen.PetEditor"}
-        key={"d3e8e635-eb59-42ab-aac8-b6d1e3190f70"}
+        key={"51c17ae2-5fa5-44e5-808f-ec25d067434b"}
       />
     </VerticalMenu>
   );

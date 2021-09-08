@@ -63,7 +63,7 @@ ${gjf} react-typescript:mvp-entity-browser \\
 `;
 const readOnlyOwnerDetailsCommand = `
 ${gjf} react-typescript:mvp-entity-editor \\
-  --answers ${readOnlyOwnerDetailsAnswers}
+  --answers ${readOnlyOwnerDetailsAnswers} \\
   --schema ../schema.json \\
   --dest ../frontend/src/app/read-only-owner-details \\
   --dirShift ../../

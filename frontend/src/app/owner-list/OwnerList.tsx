@@ -22,7 +22,7 @@ import { FetchResult } from "@apollo/client/link/core";
 import { EntityListScreenProps } from "../../framework/components/entity-list-screen/EntityListScreenProps";
 import { openBreadcrumb } from "../../framework/screen-api/openBreadcrumb";
 import { guessDisplayName } from "../../framework/util/guessDisplayName";
-import OwnerEditor from "../owner-editor/OwnerEditor";
+import { guessLabel } from "../../framework/util/guessLabel";
 
 const ENTITY_NAME = "OwnerDTO";
 const ROUTING_PATH = "/ownerList";
@@ -87,11 +87,13 @@ const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => {
-              openBreadcrumb({
-                component: OwnerEditor,
-                title: 'Owner Editor',
-                screens,
-              });
+              // TODO Uncomment the code, specify the editor component and remove the alert
+              alert("Please specify the editor component");
+              // openBreadcrumb({
+              //   component: YourEntityEditorComponentName,
+              //   title: 'Entity Editor Component Title',
+              //   screens,
+              // });
             }}
           >
             <span>
@@ -144,7 +146,7 @@ const Fields = ({ entity }: { entity: any }) => (
       .filter(p => p !== "id" && entity[p] != null)
       .map(p => (
         <div>
-          <strong>{renderLabel(p)}:</strong> {renderFieldValue(entity, p)}
+          <strong>{guessLabel(p)}:</strong> {renderFieldValue(entity, p)}
         </div>
       ))}
   </>
@@ -152,13 +154,8 @@ const Fields = ({ entity }: { entity: any }) => (
 
 function renderFieldValue(entity: any, property: string): string {
   return typeof entity[property] === "object"
-    ? JSON.stringify(entity[property])
-    : entity[property].toString();
-}
-
-function renderLabel(property: string): string {
-  const split = property.replace(/([^A-Z])([A-Z])/g, "$1 $2");
-  return split[0].toUpperCase() + split.slice(1);
+    ? guessDisplayName(entity[property])
+    : String(entity[property]);
 }
 
 interface CardActionsInput {
@@ -209,14 +206,16 @@ function getCardActions(input: CardActionsInput) {
         key="edit"
         title={intl.formatMessage({ id: "common.edit" })}
         onClick={() => {
-          openBreadcrumb({
-            component: OwnerEditor,
-            props: {
-              id: entityInstance.id
-            },
-            title: 'Owner List',
-            screens,
-          });
+          // TODO Uncomment the code, specify the editor component and remove the alert
+          alert("Please specify the editor component");
+          // openBreadcrumb({
+          //   component: YourEntityEditorComponentName,
+          //   props: {
+          //     id: entityInstance.id
+          //   },
+          //   title: 'Entity Editor Component Title',
+          //   screens,
+          // });
         }}
       />
     ];
