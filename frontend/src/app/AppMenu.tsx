@@ -37,6 +37,24 @@ export const AppMenu = (props: AppMenuProps) => {
         caption={"screen.PetEditor"}
         key={"51c17ae2-5fa5-44e5-808f-ec25d067434b"}
       />
+      <MenuItem
+        screenId={"ReadOnlyOwnerList"}
+        icon={<BarsOutlined />}
+        caption={"screen.ReadOnlyOwnerList"}
+        key={"3060c437-a047-4059-b6d2-f97170d55324"}
+      />
+      <MenuItem
+        screenId={"ReadOnlyOwnerListWithDetails"}
+        icon={<BarsOutlined />}
+        caption={"screen.ReadOnlyOwnerListWithDetails"}
+        key={"13730b3e-d332-45af-8b8e-84f44046e466"}
+      />
+      <MenuItem
+        screenId={"ReadOnlyOwnerDetails"}
+        icon={<BarsOutlined />}
+        caption={"screen.ReadOnlyOwnerDetails"}
+        key={"61dd0825-87cb-41b3-b75b-261bb83753d3"}
+      />
     </VerticalMenu>
   );
 };
