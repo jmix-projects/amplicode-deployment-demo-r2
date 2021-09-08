@@ -23,6 +23,7 @@ import { EntityListScreenProps } from "../../framework/components/entity-list-sc
 import { openBreadcrumb } from "../../framework/screen-api/openBreadcrumb";
 import { guessDisplayName } from "../../framework/util/guessDisplayName";
 import { guessLabel } from "../../framework/util/guessLabel";
+import OwnerEditor from "../owner-editor/OwnerEditor";
 
 const ENTITY_NAME = "OwnerDTO";
 const ROUTING_PATH = "/ownerList";
@@ -87,13 +88,11 @@ const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => {
-              // TODO Uncomment the code, specify the editor component and remove the alert
-              alert("Please specify the editor component");
-              // openBreadcrumb({
-              //   component: YourEntityEditorComponentName,
-              //   title: 'Entity Editor Component Title',
-              //   screens,
-              // });
+              openBreadcrumb({
+                component: OwnerEditor,
+                title: 'Owner Editor',
+                screens,
+              });
             }}
           >
             <span>
@@ -206,16 +205,14 @@ function getCardActions(input: CardActionsInput) {
         key="edit"
         title={intl.formatMessage({ id: "common.edit" })}
         onClick={() => {
-          // TODO Uncomment the code, specify the editor component and remove the alert
-          alert("Please specify the editor component");
-          // openBreadcrumb({
-          //   component: YourEntityEditorComponentName,
-          //   props: {
-          //     id: entityInstance.id
-          //   },
-          //   title: 'Entity Editor Component Title',
-          //   screens,
-          // });
+          openBreadcrumb({
+            component: OwnerEditor,
+            props: {
+              id: entityInstance.id
+            },
+            title: 'Owner Editor',
+            screens,
+          });
         }}
       />
     ];
