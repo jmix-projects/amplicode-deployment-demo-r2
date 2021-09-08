@@ -15,6 +15,7 @@ import { useParentScreen, registerEntityEditor } from "@haulmont/jmix-react-ui";
 import { EntityDetailsScreenProps } from "../../framework/components/entity-details-screen/EntityDetailsScreenProps";
 import { EntityLookupField } from "../../framework/components/entity-lookup-field/EntityLookupField";
 import { guessDisplayName } from "../../framework/util/guessDisplayName";
+import OwnerList from "../owner-list/OwnerList";
 
 const ROUTING_PATH = "/petEditor";
 
@@ -160,8 +161,7 @@ const PetEditor = observer(({ id }: EntityDetailsScreenProps) => {
               guessDisplayName(value)
             }
             label="Owner"
-            // TODO Uncomment the code, specify the list component and remove the alert
-            // listComponent={YourEntityListComponentName}
+            listComponent={OwnerList}
           />
         </Form.Item>
 
