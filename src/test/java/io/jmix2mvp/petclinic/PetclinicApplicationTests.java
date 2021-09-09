@@ -1,5 +1,7 @@
 package io.jmix2mvp.petclinic;
 
+import io.jmix2mvp.petclinic.cassandra.COwnerRepository;
+import io.jmix2mvp.petclinic.cassandra.entity.COwner;
 import io.jmix2mvp.petclinic.entity.TestEntity;
 import io.jmix2mvp.petclinic.repository.TestRepository;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,8 @@ import java.util.stream.IntStream;
 class PetclinicApplicationTests {
     @Autowired
     private TestRepository testRepository;
+    @Autowired
+    private COwnerRepository cOwnerRepository;
 
     private static final String STRING_VALUE = "VALUE";
 
@@ -97,4 +101,11 @@ class PetclinicApplicationTests {
         testRepository.save(testEntity);
     }
 
+    @Test
+    public void testCOwnerRepository() {
+        COwner owner = new COwner();
+        cOwnerRepository.save(owner);
+
+
+    }
 }
