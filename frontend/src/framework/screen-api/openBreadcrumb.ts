@@ -23,13 +23,7 @@ export function openBreadcrumb({
 }: OpenBreadcrumbInput) {
   screens.push({
     title,
-    content: React.createElement(component, props),
-    key: generateKey()
+    content: React.createElement(component, props)
   });
   window.scrollTo(0, 0);
-}
-
-function generateKey() {
-  // TODO Consider replacing with uuid.v4()
-  return String(window.crypto.getRandomValues(new Uint32Array(10))[1]);
 }
