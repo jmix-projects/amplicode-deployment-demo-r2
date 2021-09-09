@@ -1,3 +1,6 @@
+import "./app/read-only-owner-details/ReadOnlyOwnerDetails";
+import "./app/read-only-owner-list-with-details/ReadOnlyOwnerListWithDetails";
+import "./app/read-only-owner-list/ReadOnlyOwnerList";
 import "./app/petEditor/PetEditor";
 import "./app/pet-list/PetList";
 import "./app/owner-editor/OwnerEditor";
