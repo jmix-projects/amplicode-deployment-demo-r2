@@ -7,11 +7,7 @@ import { AppMenu } from "../AppMenu";
 import { Router } from "@haulmont/jmix-react-core";
 import { MultiTabs } from "@haulmont/jmix-react-ui";
 import "../../routing";
-
-const routes = {
-  "/": <MultiTabs />,
-  "/:entityName/:entityId?": <MultiTabs />
-};
+import {AppScreenArea} from "../app-content-area/AppScreenArea";
 
 export const AppMain = observer(() => {
   return (
@@ -31,7 +27,7 @@ export const AppMain = observer(() => {
 
         <Layout className="layout-content">
           <Layout.Content>
-            <Router global routes={routes} />
+            <AppScreenArea />
           </Layout.Content>
         </Layout>
       </Layout>
