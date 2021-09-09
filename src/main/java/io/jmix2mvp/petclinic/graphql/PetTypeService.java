@@ -10,7 +10,6 @@ import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,8 +46,8 @@ public class PetTypeService {
     @Secured({ADMIN, VETERINARIAN})
     @GraphQLQuery(name = "petTypeList")
     @Transactional
-    public List<PetTypeDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
-        return crudRepository.findAll(pageable).stream()
+    public List<PetTypeDTO> findAll() {
+        return crudRepository.findAll().stream()
                 .map(e -> mapper.map(e, PetTypeDTO.class))
                 .collect(Collectors.toList());
     }

@@ -99,6 +99,8 @@ public class GraphQLConfiguration {
         });
     }
 
+
+    //TODO: support custom scalar types (doesn't required for MVP)
     @Bean
     public ExtensionProvider<GeneratorConfiguration, TypeMapper> customTypeMappers() {
         return (config, current) ->
@@ -141,6 +143,7 @@ public class GraphQLConfiguration {
         return Arrays.asList(new AccessDeniedResolverInterceptor(), new ValidationInterceptor());
     }
 
+    //TODO: access denied bugfix
     private static class AccessDeniedResolverInterceptor implements ResolverInterceptor {
         @Override
         public Object aroundInvoke(InvocationContext context, Continuation continuation) throws Exception {
@@ -158,6 +161,7 @@ public class GraphQLConfiguration {
         }
     }
 
+    //TODO: Bean validation: Add constraints into GraphQL error (doesn't required for MVP)
     private static class ValidationInterceptor implements ResolverInterceptor {
         @Override
         public Object aroundInvoke(InvocationContext context, Continuation continuation) throws Exception {

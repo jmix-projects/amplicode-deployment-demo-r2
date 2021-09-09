@@ -6,14 +6,9 @@ import io.jmix2mvp.petclinic.dto.VisitInputDTO;
 import io.jmix2mvp.petclinic.entity.Visit;
 import io.jmix2mvp.petclinic.repository.PetRepository;
 import io.jmix2mvp.petclinic.repository.VisitRepository;
-import io.leangen.graphql.annotations.GraphQLArgument;
-import io.leangen.graphql.annotations.GraphQLContext;
-import io.leangen.graphql.annotations.GraphQLMutation;
-import io.leangen.graphql.annotations.GraphQLNonNull;
-import io.leangen.graphql.annotations.GraphQLQuery;
+import io.leangen.graphql.annotations.*;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,8 +44,8 @@ public class VisitService {
     @Secured({ADMIN, VETERINARIAN})
     @GraphQLQuery(name = "visitList")
     @Transactional
-    public List<VisitDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
-        return visitRepository.findAll(pageable).stream()
+    public List<VisitDTO> findAll() {
+        return visitRepository.findAll().stream()
                 .map(e -> mapper.map(e, VisitDTO.class))
                 .collect(Collectors.toList());
     }
