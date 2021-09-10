@@ -17,9 +17,4 @@
   "screen.home": "Home",
   "screen.OwnerList": "Owner List",
   "screen.OwnerEditor": "Owner Editor",
-  "screen.PetList": "Pet List",
-  "screen.PetEditor": "Pet Editor",
-  "screen.ReadOnlyOwnerList": "Read Only Owner List",
-  "screen.ReadOnlyOwnerListWithDetails": "Read Only Owner List With Details",
-  "screen.ReadOnlyOwnerDetails": "Read Only Owner Details"
 }
