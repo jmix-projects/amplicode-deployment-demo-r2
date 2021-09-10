@@ -4,10 +4,8 @@ import { Layout } from "antd";
 import { AppHeader } from "../app-header/AppHeader";
 import "./AppMain.css";
 import { AppMenu } from "../AppMenu";
-import { Router } from "@haulmont/jmix-react-core";
-import { MultiTabs } from "@haulmont/jmix-react-ui";
 import "../../routing";
-import {AppScreenArea} from "../app-content-area/AppScreenArea";
+import {AppWorkspace} from "../app-workspace/AppWorkspace";
 
 export const AppMain = observer(() => {
   return (
@@ -27,7 +25,7 @@ export const AppMain = observer(() => {
 
         <Layout className="layout-content">
           <Layout.Content>
-            <AppScreenArea />
+            <AppWorkspace />
           </Layout.Content>
         </Layout>
       </Layout>

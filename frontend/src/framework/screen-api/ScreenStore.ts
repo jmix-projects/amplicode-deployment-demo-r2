@@ -1,85 +1,42 @@
-import { ReactComponent } from "./ReactComponent";
-import {observable} from "mobx";
-
-export class TabStore {
-  @observable breadcrumbs: Record<string, BreadcrumbStore> = {};
-  @observable activeBreadcrumbKey?: string;
-
-  get activeBreadcrumb() {
-    if (this.activeBreadcrumbKey == null) {
-      return undefined;
-    }
-    return this.breadcrumbs[this.activeBreadcrumbKey];
-  }
-
-  constructor(component?: ReactComponent) {
-    if (component != null) {
-      this.newBreadcrumb(component);
-    }
-  }
-
-  newBreadcrumb(component: ReactComponent) {
-    const breadcrumbKey = generateKey();
-    this.activeBreadcrumbKey = breadcrumbKey;
-    this.breadcrumbs[breadcrumbKey] = new BreadcrumbStore(component);
-  }
-
-  activateBreadcrumb(key: string) {
-    this.activeBreadcrumbKey = key;
-  }
-
-  closeBreadcrumb(key: string) {
-    delete this.breadcrumbs[key];
-  }
-}
-
-export class BreadcrumbStore {
-  component?: ReactComponent;
-
-  constructor(component?: ReactComponent) {
-    this.component = component;
-  }
-}
+import {ReactComponent} from "./ReactComponent";
+import {computed, observable} from "mobx";
+import {TabState} from "./TabState";
 
 export class ScreenStore {
-  @observable tabs: Record<string, TabStore> = {};
-  @observable activeTabKey?: string;
+  @observable tabs: TabState[] = [];
+  @observable activeIndex?: number;
 
+  @computed
   get activeTab() {
-    if (this.activeTabKey == null) {
+    if (this.activeIndex == null) {
       return undefined;
     }
-    return this.tabs[this.activeTabKey];
+    return this.tabs[this.activeIndex];
   }
 
-  newTab(component: ReactComponent) {
-    const key = generateKey();
-    this.tabs[key] = new TabStore(component);
-    this.activeTabKey = key;
+  newTab(tabCaption: string, breadcrumbCaption?: string, component?: ReactComponent, props?: any) {
+    this.tabs.push(new TabState(tabCaption, breadcrumbCaption, component, props));
+    window.scrollTo(0, 0);
   }
 
-  newBreadcrumb(component: ReactComponent) {
-    this.activeTab?.newBreadcrumb(component);
+  newBreadcrumb(breadcrumbCaption: string, component: ReactComponent, props?: any) {
+    this.activeTab?.newBreadcrumb(breadcrumbCaption, component, props);
+    window.scrollTo(0, 0);
   }
 
-  activateTab(key: string) {
-    this.activeTabKey = key;
+  makeTabActive(key: string) {
+    this.activeIndex = this.tabs.findIndex(t => t.key === key);
   }
 
-  activateBreadcrumb(key: string) {
-    this.activeTab?.activateBreadcrumb(key);
+  makeBreadcrumbActive(key: string) {
+    this.activeTab?.makeBreadcrumbActive(key);
   }
 
   closeTab(key: string) {
-    delete this.tabs[key];
+    this.tabs = this.tabs.filter(t => t.key !== key);
   }
 
   closeBreadcrumb(key: string) {
     this.activeTab?.closeBreadcrumb(key);
   }
-}
-
-function generateKey() {
-  // TODO Consider replacing with uuid.v4()
-  return String(window.crypto.getRandomValues(new Uint32Array(1))[0]);
 }
