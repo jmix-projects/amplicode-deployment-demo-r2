@@ -1,28 +1,27 @@
-package io.jmix2mvp.petclinic.cassandra.entity;
+package io.jmix2mvp.petclinic.mongodb.entity;
 
-import org.springframework.data.cassandra.core.mapping.Column;
-import org.springframework.data.cassandra.core.mapping.Table;
+public class MOwner {
+    private String id;
 
-
-@Table("owner")
-public class COwner extends CBaseEntity {
-    @Column("first_name")
     private String firstName;
 
-    @Column("last_name")
     private String lastName;
 
-    @Column("address")
     private String address;
 
-    @Column("city")
     private String city;
 
-    @Column("email")
     private String email;
 
-    @Column("telephone")
     private String telephone;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
