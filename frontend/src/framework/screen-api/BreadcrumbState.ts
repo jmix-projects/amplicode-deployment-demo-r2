@@ -1,4 +1,4 @@
-import {generateKey} from "./generateKey";
+import {generateKey} from "../util/generateKey";
 import {ReactNode} from "react";
 
 export class BreadcrumbState {

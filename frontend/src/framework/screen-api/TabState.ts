@@ -1,6 +1,6 @@
 import {computed, observable} from "mobx";
 import {ReactComponent} from "./ReactComponent";
-import {generateKey} from "./generateKey";
+import {generateKey} from "../util/generateKey";
 import {BreadcrumbState} from "./BreadcrumbState";
 import React from "react";
 
