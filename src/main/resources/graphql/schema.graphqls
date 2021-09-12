@@ -59,7 +59,7 @@ type Owner {
 input PetInput {
     id: ID
     identificationNumber: String
-    birthDate: String
+    birthDate: Date
     type: PetTypeInput
     owner: OwnerInput
 }
@@ -67,7 +67,7 @@ input PetInput {
 type Pet {
     id: ID
     identificationNumber: String,
-    birthDate: String,
+    birthDate: Date,
     type: PetType,
     owner: Owner,
 }
@@ -86,8 +86,8 @@ type PetType {
 # Visit
 type Visit {
     id: ID
-    visitStart: String
-    visitEnd: String
+    visitStart: DateTime
+    visitEnd: DateTime
     description: String
 }
 
@@ -98,7 +98,6 @@ input VisitInput {
     description: String
 }
 
-
 # Test
 type Test {
     id: ID
@@ -106,38 +105,38 @@ type Test {
     bool: Boolean
     doubleTest: Float
     intTest: Int
-    longTest: String
-    bigDecimal: String
-    date: String
-    time: String
-    timeStamp: String
-    dateUtil: String
+    longTest: BigInteger
+    bigDecimal: BigDecimal
+    #    date: String
+    #    time: String
+    #    timeStamp: String
+    #    dateUtil: String
     uuidTest: String
-    byteTest: String
-    character: String
+    byteTest: Int
+    #    character: String
     floatTest: Float
     shortTest: Int
-    bigInt: String
+    bigInt: BigInteger
     url: String
-    duration: String
-    instant: String
-    localDate: String
-    localDateTime: String
-    localTime: String
-    offsetDateTime: String
-    offsetTime: String
-    zonedDateTime: String
-    calendar: String
+    #    duration: String
+    #    instant: String
+    localDate: Date
+    localDateTime: DateTime
+    localTime: Time
+    offsetDateTime: DateTime
+    offsetTime: Time
+    zonedDateTime: DateTime
+    #    calendar: String
     currency: String
     locale: String
     boolPrimitive: Boolean
-    bytePrimitive: String
-    charPrimitive: String
-    shortPrimitive: String
-    byteArray: String
-    charArray: String
-    bytePrimitiveArray: String
-    charPrimitiveArray: String
+    bytePrimitive: Int
+    #    charPrimitive: String
+    shortPrimitive: Int
+    #    byteArray: String
+    #    charArray: String
+    #    bytePrimitiveArray: String
+    #    charPrimitiveArray: String
 }
 
 input TestInput {
@@ -146,38 +145,44 @@ input TestInput {
     bool: Boolean
     doubleTest: Float
     intTest: Int
-    longTest: String
-    bigDecimal: String
-    date: String
-    time: String
-    timeStamp: String
-    dateUtil: String
+    longTest: BigInteger
+    bigDecimal: BigDecimal
+#    date: String
+#    time: String
+#    timeStamp: String
+#    dateUtil: String
     uuidTest: String
-    byteTest: String
-    character: String
+    byteTest: Int
+#    character: String
     floatTest: Float
     shortTest: Int
-    bigInt: String
+    bigInt: BigInteger
     url: String
-    duration: String
-    instant: String
-    localDate: String
-    localDateTime: String
-    localTime: String
-    offsetDateTime: String
-    offsetTime: String
-    zonedDateTime: String
-    calendar: String
+#    duration: String
+#    instant: String
+    localDate: Date
+    localDateTime: DateTime
+    localTime: Time
+    offsetDateTime: DateTime
+    offsetTime: Time
+    zonedDateTime: DateTime
+#    calendar: String
     currency: String
     locale: String
     boolPrimitive: Boolean
-    bytePrimitive: String
-    charPrimitive: String
-    shortPrimitive: String
-    byteArray: String
-    charArray: String
-    bytePrimitiveArray: String
-    charPrimitiveArray: String
+    bytePrimitive: Int
+#    charPrimitive: String
+    shortPrimitive: Int
+#    byteArray: String
+#    charArray: String
+#    bytePrimitiveArray: String
+#    charPrimitiveArray: String
 }
+
+scalar Date
+scalar DateTime
+scalar Time
+scalar BigInteger
+scalar BigDecimal
 
 

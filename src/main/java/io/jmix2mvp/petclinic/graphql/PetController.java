@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +54,7 @@ public class PetController {
     @PreAuthorize("hasAnyRole('ADMIN', 'VETERINARIAN')")
     @MutationMapping(name = "update_Pet")
     @Transactional
-    public PetDTO update(@Argument PetInputDTO input, @Argument LocalDate localDate) {
+    public PetDTO update(@Argument PetInputDTO input) {
         if (input.getId() != null) {
             if (!crudRepository.existsById(input.getId())) {
                 throw new ResourceNotFoundException(

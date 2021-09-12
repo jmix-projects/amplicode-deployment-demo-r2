@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.graphql.execution.DataFetcherExceptionResolver;
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.ConstraintViolation;
@@ -16,6 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static io.jmix2mvp.petclinic.scalars.ExtendedScalars.*;
 
 @Configuration
 public class GraphQLConfiguration {
@@ -63,5 +66,14 @@ public class GraphQLConfiguration {
         } else {
             return constraintViolation.getPropertyPath().toString();
         }
+    }
+
+    @Bean
+    public RuntimeWiringConfigurer runtimeWiringConfigurer() {
+        return builder -> builder.scalar(DATE)
+                .scalar(DATETIME)
+                .scalar(TIME)
+                .scalar(BIGINTEGER)
+                .scalar(BIG_DECIMAL);
     }
 }
