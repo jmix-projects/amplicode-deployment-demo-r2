@@ -4,14 +4,12 @@ import io.jmix2mvp.petclinic.dto.OwnerDTO;
 import io.jmix2mvp.petclinic.dto.OwnerInputDTO;
 import io.jmix2mvp.petclinic.entity.Owner;
 import io.jmix2mvp.petclinic.repository.OwnerRepository;
-import io.leangen.graphql.annotations.GraphQLArgument;
-import io.leangen.graphql.annotations.GraphQLMutation;
-import io.leangen.graphql.annotations.GraphQLNonNull;
-import io.leangen.graphql.annotations.GraphQLQuery;
-import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.modelmapper.ModelMapper;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -20,28 +18,27 @@ import java.util.stream.Collectors;
 import static io.jmix2mvp.petclinic.Authorities.ADMIN;
 import static io.jmix2mvp.petclinic.Authorities.VETERINARIAN;
 
-@GraphQLApi
-@Service
-public class OwnerService {
+@Controller
+public class OwnerController {
     private final OwnerRepository crudRepository;
     private final ModelMapper mapper;
 
-    public OwnerService(OwnerRepository crudRepository, ModelMapper mapper) {
+    public OwnerController(OwnerRepository crudRepository, ModelMapper mapper) {
         this.crudRepository = crudRepository;
         this.mapper = mapper;
     }
 
     @Secured({ADMIN, VETERINARIAN})
-    @GraphQLQuery(name = "owner")
+    @QueryMapping(name = "owner")
     @Transactional
-    public OwnerDTO findById(@GraphQLArgument(name = "id") Long id) {
+    public OwnerDTO findById(@Argument Long id) {
         return crudRepository.findById(id)
                 .map(e -> mapper.map(e, OwnerDTO.class))
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
     }
 
     @Secured({ADMIN, VETERINARIAN})
-    @GraphQLQuery(name = "ownerList")
+    @QueryMapping(name = "ownerList")
     @Transactional
     public List<OwnerDTO> findAll() {
         return crudRepository.findAll().stream()
@@ -50,9 +47,9 @@ public class OwnerService {
     }
 
     @Secured({ADMIN, VETERINARIAN})
-    @GraphQLMutation(name = "update_Owner")
+    @MutationMapping(name = "update_Owner")
     @Transactional
-    public OwnerDTO update(OwnerInputDTO input) {
+    public OwnerDTO update(@Argument OwnerInputDTO input) {
         if (input.getId() != null) {
             if (!crudRepository.existsById(input.getId())) {
                 throw new ResourceNotFoundException(
@@ -68,9 +65,9 @@ public class OwnerService {
     }
 
     @Secured({ADMIN, VETERINARIAN})
-    @GraphQLMutation(name = "delete_Owner")
+    @MutationMapping(name = "delete_Owner")
     @Transactional
-    public void delete(@GraphQLNonNull Long id) {
+    public void delete(@Argument Long id) {
         Owner entity = crudRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
 

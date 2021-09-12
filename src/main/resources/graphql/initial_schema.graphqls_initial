@@ -1,0 +1,99 @@
+#type Query {
+#    #Owner
+#    ownerList : [Owner]
+#    owner(id : ID!) : Owner
+#    #Pet
+#    petList : [Pet]
+#    pet(id : ID!) : Pet
+#    #PetType
+#    petTypeList : [PetType]
+#    petType(id : ID!) : PetType
+#    #Visit
+#    visitList : [Visit]
+#    visit(id : ID!) : Visit
+#}
+#
+#type Mutation {
+#    #Owner
+#    delete_Owner(id : ID!): Boolean
+#    update_Owner(input: OwnerInput): Owner
+#    #Pet
+#    delete_Pet(id : ID!): Boolean
+#    update_Pet(input: PetInput): Pet
+#    #PetType
+#    delete_PetType(id : ID!): Boolean
+#    update_PetType(input: PetTypeInput): PetType
+#    #Visit
+#    delete_Visit(id : ID!): Boolean
+#    update_Visit(input: VisitInput): Visit
+#}
+#
+## Owner
+#input OwnerInput {
+#    id: ID
+#    firstName: String
+#    lastName: String
+#    address: String
+#    city: String
+#    email: String
+#    telephone: String
+#}
+#
+#type Owner {
+#    id: ID
+#    firstName: String!
+#    lastName: String!
+#    address: String!
+#    city: String!
+#    email: String
+#    telephone: String
+#}
+#
+## Pet
+#input PetInput {
+#    id: ID
+#    identificationNumber: String
+#    birthDate: Date
+#    type: PetTypeInput
+#    owner: OwnerInput
+#}
+#
+#type Pet {
+#    id: ID
+#    identificationNumber: String,
+#    birthDate: Date,
+#    type: PetType,
+#    owner: Owner,
+#}
+#
+## PetType
+#input PetTypeInput {
+#    id: ID
+#    name: String
+#}
+#
+#type PetType {
+#    id: ID
+#    name: String
+#}
+#
+## Visit
+#type Visit {
+#    id: ID
+#    visitStart: DateTime
+#    visitEnd: DateTime
+#    description: String
+#}
+#
+#input VisitInput {
+#    id: ID
+#    visitStart: DateTime
+#    visitEnd: DateTime
+#    description: String
+#}
+#
+## Scalars
+#scalar Date
+#scalar DateTime
+#scalar Time
+#scalar BigInteger

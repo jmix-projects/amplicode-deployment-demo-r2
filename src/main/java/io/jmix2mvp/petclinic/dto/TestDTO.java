@@ -1,5 +1,7 @@
 package io.jmix2mvp.petclinic.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
@@ -12,6 +14,8 @@ import java.util.Currency;
 import java.util.Locale;
 import java.util.UUID;
 
+//TODO: Class, Blob, Clob, NClob
+//TODO: Calendar, Char array, Byte array
 public class TestDTO extends BaseDTO {
 
     private String string;
@@ -86,12 +90,16 @@ public class TestDTO extends BaseDTO {
 
     private short shortPrimitive;
 
+    @JsonFormat(shape = JsonFormat.Shape.BINARY)
     private Byte[] byteArray;
 
+    @JsonFormat(shape = JsonFormat.Shape.BINARY)
     private Character[] charArray;
 
+    @JsonFormat(shape = JsonFormat.Shape.BINARY)
     private byte[] bytePrimitiveArray;
 
+    @JsonFormat(shape = JsonFormat.Shape.BINARY)
     private char[] charPrimitiveArray;
 
     public String getString() {

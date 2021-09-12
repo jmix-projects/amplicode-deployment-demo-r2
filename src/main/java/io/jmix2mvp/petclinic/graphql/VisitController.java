@@ -6,11 +6,13 @@ import io.jmix2mvp.petclinic.dto.VisitInputDTO;
 import io.jmix2mvp.petclinic.entity.Visit;
 import io.jmix2mvp.petclinic.repository.PetRepository;
 import io.jmix2mvp.petclinic.repository.VisitRepository;
-import io.leangen.graphql.annotations.*;
-import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.modelmapper.ModelMapper;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,30 +21,29 @@ import java.util.stream.Collectors;
 import static io.jmix2mvp.petclinic.Authorities.ADMIN;
 import static io.jmix2mvp.petclinic.Authorities.VETERINARIAN;
 
-@GraphQLApi
-@Service
-public class VisitService {
+@Controller
+public class VisitController {
     private final VisitRepository visitRepository;
     private final PetRepository petRepository;
     private final ModelMapper mapper;
 
-    public VisitService(VisitRepository visitRepository, PetRepository petRepository, ModelMapper mapper) {
+    public VisitController(VisitRepository visitRepository, PetRepository petRepository, ModelMapper mapper) {
         this.visitRepository = visitRepository;
         this.petRepository = petRepository;
         this.mapper = mapper;
     }
 
     @Secured({ADMIN, VETERINARIAN})
-    @GraphQLQuery(name = "visit")
+    @QueryMapping(name = "visit")
     @Transactional
-    public VisitDTO findById(@GraphQLArgument(name = "id") Long id) {
+    public VisitDTO findById(@Argument Long id) {
         return visitRepository.findById(id)
                 .map(e -> mapper.map(e, VisitDTO.class))
                 .orElse(null);
     }
 
     @Secured({ADMIN, VETERINARIAN})
-    @GraphQLQuery(name = "visitList")
+    @QueryMapping(name = "visitList")
     @Transactional
     public List<VisitDTO> findAll() {
         return visitRepository.findAll().stream()
@@ -51,18 +52,18 @@ public class VisitService {
     }
 
     @Secured({ADMIN, VETERINARIAN})
-    @GraphQLQuery(name = "pet")
+    @SchemaMapping(value = "pet")
     @Transactional
-    public PetDTO getPet(@GraphQLContext VisitDTO visitDTO) {
+    public PetDTO getPet(VisitDTO visitDTO) {
         return petRepository.findPetByVisit(visitDTO.getId())
                 .map(e -> mapper.map(e, PetDTO.class))
                 .orElse(null);
     }
 
     @Secured({ADMIN, VETERINARIAN})
-    @GraphQLMutation(name = "update_Visit")
+    @MutationMapping(name = "update_Visit")
     @Transactional
-    public VisitDTO update(VisitInputDTO input) {
+    public VisitDTO update(@Argument VisitInputDTO input) {
         if (input.getId() != null) {
             if (!visitRepository.existsById(input.getId())) {
                 throw new ResourceNotFoundException(
@@ -78,9 +79,9 @@ public class VisitService {
     }
 
     @Secured({ADMIN, VETERINARIAN})
-    @GraphQLMutation(name = "delete_Visit")
+    @MutationMapping(name = "delete_Visit")
     @Transactional
-    public void delete(@GraphQLNonNull Long id) {
+    public void delete(@Argument Long id) {
         Visit entity = visitRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
 
