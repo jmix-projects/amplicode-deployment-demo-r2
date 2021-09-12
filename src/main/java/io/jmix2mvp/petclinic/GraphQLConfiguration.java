@@ -73,7 +73,7 @@ public class GraphQLConfiguration {
         return builder -> builder.scalar(DATE)
                 .scalar(DATETIME)
                 .scalar(TIME)
-                .scalar(BIGINTEGER)
+                .scalar(BIG_INTEGER)
                 .scalar(BIG_DECIMAL);
     }
 }

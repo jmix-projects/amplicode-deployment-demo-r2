@@ -88,6 +88,7 @@ type Visit {
     id: ID
     visitStart: DateTime
     visitEnd: DateTime
+    pet: Pet
     description: String
 }
 

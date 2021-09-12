@@ -52,7 +52,7 @@ public class VisitController {
     }
 
     @Secured({ADMIN, VETERINARIAN})
-    @SchemaMapping(value = "pet")
+    @SchemaMapping(value = "pet", typeName = "Visit")
     @Transactional
     public PetDTO getPet(VisitDTO visitDTO) {
         return petRepository.findPetByVisit(visitDTO.getId())

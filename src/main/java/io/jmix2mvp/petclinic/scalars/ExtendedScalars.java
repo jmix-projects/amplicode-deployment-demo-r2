@@ -22,7 +22,7 @@ public interface ExtendedScalars {
             .coercing(new BaseCoercing(LocalTime.class, OffsetTime.class))
             .build();
 
-    GraphQLScalarType BIGINTEGER = GraphQLScalarType.newScalar()
+    GraphQLScalarType BIG_INTEGER = GraphQLScalarType.newScalar()
             .name("BigInteger")
             .coercing(new BaseCoercing(BigInteger.class, Long.class, long.class))
             .build();
