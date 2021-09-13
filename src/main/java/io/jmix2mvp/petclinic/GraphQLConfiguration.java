@@ -1,8 +1,11 @@
 package io.jmix2mvp.petclinic;
 
+import com.fasterxml.jackson.databind.ser.std.NumberSerializer;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -13,6 +16,8 @@ import org.springframework.stereotype.Controller;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -75,5 +80,13 @@ public class GraphQLConfiguration {
                 .scalar(TIME)
                 .scalar(BIG_INTEGER)
                 .scalar(BIG_DECIMAL);
+    }
+
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer objectMapperBuilderCustomizer() {
+        return jacksonObjectMapperBuilder -> jacksonObjectMapperBuilder.serializerByType(Long.class, ToStringSerializer.instance)
+                .serializerByType(long.class, ToStringSerializer.instance)
+                .serializerByType(BigInteger.class, ToStringSerializer.instance)
+                .serializerByType(BigDecimal.class, NumberSerializer.bigDecimalAsStringSerializer());
     }
 }
