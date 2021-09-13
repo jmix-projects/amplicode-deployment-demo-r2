@@ -10,9 +10,9 @@ export const AppHeader = () => {
       content: "Are you sure you want to logout?",
       okText: "OK",
       cancelText: "Cancel",
-      onOk: () => securityStore.logout()
+      onOk: securityStore.logout
     });
-  }, [securityStore]);
+  }, []);
 
   return (
     <>

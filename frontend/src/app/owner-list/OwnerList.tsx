@@ -6,8 +6,6 @@ import {
   ApolloCache,
   Reference
 } from "@apollo/client";
-import { registerEntityList, useParentScreen } from "@haulmont/jmix-react-ui";
-import { useScreens, Screens } from "@haulmont/jmix-react-core";
 import {
   CheckOutlined,
   CloseOutlined,
@@ -19,14 +17,12 @@ import { Button, Card, Modal, Spin, Empty, Result } from "antd";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { MutationFunctionOptions } from "@apollo/client/react/types/types";
 import { FetchResult } from "@apollo/client/link/core";
-import { EntityListScreenProps } from "../../framework/components/entity-list-screen/EntityListScreenProps";
-import { openBreadcrumb } from "../../framework/screen-api/openBreadcrumb";
+import { EntityListScreenProps } from "../../framework/components/crud/entity-list-screen/EntityListScreenProps";
 import { guessDisplayName } from "../../framework/util/guessDisplayName";
 import { guessLabel } from "../../framework/util/guessLabel";
 import OwnerEditor from "../owner-editor/OwnerEditor";
-
-const ENTITY_NAME = "OwnerDTO";
-const ROUTING_PATH = "/ownerList";
+import {Screens} from "../../framework/screen-api/Screens";
+import { useScreens } from "../../framework/screen-api/ScreenContext";
 
 const OWNER_LIST = gql`
   query Get_Owner_List($page: PaginationInput) {
@@ -48,7 +44,6 @@ const DELETE__OWNER = gql`
 const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
   const screens: Screens = useScreens();
   const intl = useIntl();
-  const goToParentScreen = useParentScreen(ROUTING_PATH);
 
   const { loading, error, data } = useQuery(OWNER_LIST);
 
@@ -88,10 +83,9 @@ const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => {
-              openBreadcrumb({
-                component: OwnerEditor,
-                title: 'Owner Editor',
-                screens,
+              screens.openInBreadcrumb({
+                breadcrumbCaption: 'Owner Editor',
+                component: OwnerEditor
               });
             }}
           >
@@ -109,7 +103,7 @@ const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
             title='intl.formatMessage({id: "common.close"})'
             type="primary"
             icon={<CloseOutlined />}
-            onClick={goToParentScreen}
+            onClick={screens.closeActiveBreadcrumb}
           >
             <span>
               <FormattedMessage id="common.close" />
@@ -129,7 +123,6 @@ const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
             executeDeleteMutation,
             screens,
             intl,
-            goToParentScreen
           })}
         >
           <Fields entity={e} />
@@ -165,7 +158,6 @@ interface CardActionsInput {
   ) => Promise<FetchResult>;
   screens: Screens;
   intl: IntlShape;
-  goToParentScreen: () => void;
 }
 
 function getCardActions(input: CardActionsInput) {
@@ -175,7 +167,6 @@ function getCardActions(input: CardActionsInput) {
     executeDeleteMutation,
     screens,
     intl,
-    goToParentScreen
   } = input;
 
   if (onSelect == null) {
@@ -205,13 +196,10 @@ function getCardActions(input: CardActionsInput) {
         key="edit"
         title={intl.formatMessage({ id: "common.edit" })}
         onClick={() => {
-          openBreadcrumb({
+          screens.openInBreadcrumb({
+            breadcrumbCaption: 'Owner Editor',
             component: OwnerEditor,
-            props: {
-              id: entityInstance.id
-            },
-            title: 'Owner Editor',
-            screens,
+            props: {id: entityInstance.id}
           });
         }}
       />
@@ -226,10 +214,9 @@ function getCardActions(input: CardActionsInput) {
           id: "EntityLookupField.selectEntityInstance"
         })}
         onClick={() => {
-          if (onSelect != null && goToParentScreen != null) {
+          if (onSelect != null) {
             onSelect(entityInstance);
-            goToParentScreen();
-            window.scrollTo(0, 0);
+            screens.closeActiveBreadcrumb();
           }
         }}
       />
@@ -241,7 +228,7 @@ function getUpdateFn(e: any) {
   return (cache: ApolloCache<any>) => {
     cache.modify({
       fields: {
-        ["ownerList"](existingRefs, { readField }) {
+        ownerList(existingRefs, { readField }) {
           return existingRefs.filter(
             (ref: Reference) => e["id"] !== readField("id", ref)
           );
@@ -250,16 +237,5 @@ function getUpdateFn(e: any) {
     });
   };
 }
-
-registerEntityList({
-  component: OwnerList,
-  caption: "screen.OwnerList",
-  screenId: "OwnerList",
-  entityName: ENTITY_NAME,
-  menuOptions: {
-    pathPattern: `${ROUTING_PATH}/:entityId?`,
-    menuLink: ROUTING_PATH
-  }
-});
 
 export default OwnerList;

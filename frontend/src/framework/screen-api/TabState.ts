@@ -1,42 +1,65 @@
-import {computed, observable} from "mobx";
+import {action, computed, observable} from "mobx";
 import {ReactComponent} from "./ReactComponent";
 import {generateKey} from "../util/generateKey";
 import {BreadcrumbState} from "./BreadcrumbState";
 import React from "react";
 
+export interface TabParams {
+  tabKey?: string;
+  tabCaption: string;
+  breadcrumbCaption: string;
+  component: ReactComponent;
+  props?: any
+}
+
 export class TabState {
   @observable breadcrumbs: BreadcrumbState[] = [];
-  @observable activeIndex?: number;
+  @observable activeBreadcrumbIndex?: number;
   caption: string;
   key: string;
 
   @computed
   get activeBreadcrumb() {
-    if (this.activeIndex == null) {
+    if (this.activeBreadcrumbIndex == null) {
       return undefined;
     }
-    return this.breadcrumbs[this.activeIndex];
+    return this.breadcrumbs[this.activeBreadcrumbIndex];
   }
 
-  constructor(tabCaption: string, breadcrumbTitle?: string, component?: ReactComponent, props?: any) {
+  @computed
+  get content() {
+    return this.activeBreadcrumb?.node;
+  }
+
+  constructor(tabInput: TabParams) {
+    const {tabCaption, breadcrumbCaption, component, props, tabKey} = tabInput;
+
     this.caption = tabCaption;
-    this.key = generateKey();
-    if (breadcrumbTitle != null && component != null) {
-      this.newBreadcrumb(breadcrumbTitle, component, props);
+    this.key = tabKey ?? generateKey();
+    if (breadcrumbCaption != null && component != null) {
+      this.newBreadcrumb(breadcrumbCaption, component, props);
     }
   }
 
-  newBreadcrumb(breadcrumbCaption: string, component: ReactComponent, props?: any) {
+  @action
+  newBreadcrumb = (breadcrumbCaption: string, component: ReactComponent, props?: any) => {
     const node = React.createElement(component, props);
     this.breadcrumbs.push(new BreadcrumbState(breadcrumbCaption, node));
-    this.activeIndex = this.breadcrumbs.length - 1;
-  }
+    this.activeBreadcrumbIndex = this.breadcrumbs.length - 1;
+  };
 
-  makeBreadcrumbActive(key: string) {
-    this.activeIndex = this.breadcrumbs.findIndex(b => b.key === key);
-  }
+  @action
+  makeBreadcrumbActive = (key: string) => {
+    this.activeBreadcrumbIndex = this.breadcrumbs.findIndex(b => b.key === key);
+  };
 
-  closeBreadcrumb(key: string) {
+  @action
+  closeBreadcrumb = (key: string) => {
     this.breadcrumbs = this.breadcrumbs.filter(b => b.key !== key);
-  }
+  };
+
+  @action
+  closeActiveBreadcrumb = () => {
+    this.breadcrumbs = this.breadcrumbs.slice(0, this.activeBreadcrumbIndex);
+  };
 }

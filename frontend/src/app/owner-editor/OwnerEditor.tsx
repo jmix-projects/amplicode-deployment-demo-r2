@@ -11,10 +11,8 @@ import { Form, Button, Card, message, Alert, Spin, Result, Input } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useParentScreen, registerEntityEditor } from "@haulmont/jmix-react-ui";
-import { EntityDetailsScreenProps } from "../../framework/components/entity-details-screen/EntityDetailsScreenProps";
-
-const ROUTING_PATH = "/ownerEditor";
+import { EntityDetailsScreenProps } from "../../framework/components/crud/entity-details-screen/EntityDetailsScreenProps";
+import {useScreens} from "../../framework/screen-api/ScreenContext";
 
 const OWNER = gql`
   query Get_Owner($id: Long) {
@@ -41,6 +39,7 @@ const UPDATE__OWNER = gql`
 const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
   const [form] = useForm();
   const intl = useIntl();
+  const screens = useScreens();
 
   const [
     loadItem,
@@ -50,12 +49,6 @@ const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
       id
     }
   });
-
-  const goToParentScreen = useParentScreen(ROUTING_PATH);
-  const handleCancel = useCallback(() => {
-    goToParentScreen();
-    window.scrollTo(0, 0);
-  }, [goToParentScreen]);
 
   const [executeUpsertMutation, { loading: upsertInProcess }] = useMutation(
     UPDATE__OWNER
@@ -73,8 +66,7 @@ const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
       })
         .then(({ errors }: FetchResult) => {
           if (errors == null || errors.length === 0) {
-            goToParentScreen();
-            window.scrollTo(0, 0);
+            screens.closeActiveBreadcrumb();
             message.success(
               intl.formatMessage({
                 id: "EntityDetailsScreen.savedSuccessfully"
@@ -92,20 +84,20 @@ const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
           message.error(intl.formatMessage({ id: "common.requestFailed" }));
         });
     },
-    [executeUpsertMutation]
+    [executeUpsertMutation, id, intl, screens]
   );
 
   const handleSubmitFailed = useCallback(() => {
     message.error(
       intl.formatMessage({ id: "EntityDetailsScreen.validationError" })
     );
-  }, []);
+  }, [intl]);
 
   useEffect(() => {
     if (id != null) {
       loadItem();
     }
-  }, [loadItem]);
+  }, [loadItem, id]);
 
   const item = data?.["owner"];
 
@@ -185,7 +177,7 @@ const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
         )}
 
         <Form.Item style={{ textAlign: "center" }}>
-          <Button htmlType="button" onClick={handleCancel}>
+          <Button htmlType="button" onClick={screens.closeActiveBreadcrumb}>
             <FormattedMessage id="common.cancel" />
           </Button>
           <Button
@@ -219,7 +211,7 @@ function getUpdateFn(values: any) {
     // Reflect the update in Apollo cache
     cache.modify({
       fields: {
-        ["ownerList"](existingRefs = []) {
+        ownerList(existingRefs = []) {
           const updatedItemRef = cache.writeFragment({
             id: `OwnerDTO:${updateResult.id}`,
             data: values,

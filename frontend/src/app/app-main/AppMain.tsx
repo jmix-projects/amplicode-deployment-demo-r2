@@ -4,7 +4,6 @@ import { Layout } from "antd";
 import { AppHeader } from "../app-header/AppHeader";
 import "./AppMain.css";
 import { AppMenu } from "../AppMenu";
-import "../../routing";
 import {AppWorkspace} from "../app-workspace/AppWorkspace";
 
 export const AppMain = observer(() => {

@@ -1,24 +1,29 @@
-import { ScreenContext, useScreens } from "../../framework/screen-api/ScreenContext";
+import { useScreens } from "../../framework/screen-api/ScreenContext";
 import {Tabs} from "antd";
-import {useCallback} from "react";
 import {observer} from "mobx-react";
-import { TabContent } from "../../framework/components/tab-content/TabContent";
+import { TabContent } from "../../framework/components/tabs/tab-content/TabContent";
+import {TabHeading} from "../../framework/components/tabs/tab-heading/TabHeading";
 
 export const AppWorkspace = observer(() => {
   const {
     tabs,
-    activeTab,
-    makeTabActive
+    activeTabKey,
+    makeTabActive,
+    closeTab
   } = useScreens();
 
   return (
-    <Tabs activeKey={activeTab?.key}
+    <Tabs activeKey={activeTabKey}
           onChange={makeTabActive}
     >
       {
-        Object.keys(tabs).map(tabKey => (
-          <Tabs.TabPane key={tabKey}>
-            <TabContent />
+        tabs.map(tab => (
+          <Tabs.TabPane tab={<TabHeading caption={tab.caption}
+                                         onClose={() => closeTab(tab.key)}
+                             />}
+                        key={tab.key}
+          >
+            <TabContent tab={tab} />
           </Tabs.TabPane>
         ))
       }

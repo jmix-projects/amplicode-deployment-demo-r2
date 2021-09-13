@@ -1,8 +1,8 @@
 import React, {useContext} from "react";
-import {ScreenStore} from "./ScreenStore";
+import {Screens} from "./Screens";
 
-export const ScreenContext = React.createContext<ScreenStore>(new ScreenStore());
+export const ScreenContext = React.createContext<Screens>(new Screens());
 
-export function useScreens(): ScreenStore {
+export function useScreens(): Screens {
   return useContext(ScreenContext);
 }

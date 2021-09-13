@@ -1,6 +1,6 @@
 import {Menu } from "antd";
 import {HomeOutlined, MenuOutlined} from "@ant-design/icons";
-import {useIntl} from "react-intl";
+import {FormattedMessage, useIntl} from "react-intl";
 import OwnerList from "./owner-list/OwnerList";
 import OwnerEditor from "./owner-editor/OwnerEditor";
 import {useScreens} from "../framework/screen-api/ScreenContext";
@@ -24,26 +24,32 @@ export const AppMenu = () => {
     });
     const {component} = menuItemInfo;
 
-    screens.newTab(tabCaption, breadcrumbCaption, component);
-  }, [menuComponentRegistry, intl, screens]);
+    screens.openInTab({tabCaption, breadcrumbCaption, component, tabKey: key});
+  }, [intl, screens]);
 
   return (
     <Menu onClick={handleClick}>
       <Menu.Item
         icon={<HomeOutlined />}
-        title={intl.formatMessage({id: "screen.home"})}
+        title={'Home'}
         key={"home"}
-      />
+      >
+        Home
+      </Menu.Item>
       <Menu.Item
         icon={<MenuOutlined />}
         title={intl.formatMessage({id: "screen.OwnerList"})}
         key={"ce22d23e-340d-4a0c-ba70-d26a51a045f9"}
-      />
+      >
+        <FormattedMessage id="screen.OwnerList" />
+      </Menu.Item>
       <Menu.Item
         icon={<MenuOutlined />}
         title={intl.formatMessage({id: "screen.OwnerEditor"})}
         key={"3f2019b4-6945-4591-a8f1-a3521e64023a"}
-      />
+      >
+        <FormattedMessage id="screen.OwnerEditor" />
+      </Menu.Item>
     </Menu>
   );
 };

@@ -17,7 +17,7 @@ import { IntlProvider } from "react-intl";
 import en from "./i18n/en.json";
 import { GRAPHQL_URI } from "./config";
 import { ScreenContext } from "./framework/screen-api/ScreenContext";
-import { ScreenStore } from "./framework/screen-api/ScreenStore";
+import { Screens } from "./framework/screen-api/Screens";
 
 export const securityStore = new SecurityStore();
 
@@ -57,7 +57,7 @@ const client = new ApolloClient({
   }
 });
 
-const screens = new ScreenStore();
+const screens = new Screens();
 
 ReactDOM.render(
   <React.StrictMode>
