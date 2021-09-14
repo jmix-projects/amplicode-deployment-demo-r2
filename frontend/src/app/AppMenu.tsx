@@ -7,8 +7,9 @@ import {useScreens} from "../framework/screen-api/ScreenContext";
 import {useCallback} from "react";
 import {ReactComponent} from "../framework/screen-api/ReactComponent";
 import {Home} from "./home/Home";
+import {observer} from "mobx-react";
 
-export const AppMenu = () => {
+export const AppMenu = observer(() => {
   const intl = useIntl();
   const screens = useScreens();
 
@@ -28,7 +29,9 @@ export const AppMenu = () => {
   }, [intl, screens]);
 
   return (
-    <Menu onClick={handleClick}>
+    <Menu onClick={handleClick}
+          selectedKeys={screens.activeTabKey ? [screens.activeTabKey] : []}
+    >
       <Menu.Item
         icon={<HomeOutlined />}
         title={'Home'}
@@ -37,14 +40,12 @@ export const AppMenu = () => {
         Home
       </Menu.Item>
       <Menu.Item
-        icon={<MenuOutlined />}
         title={intl.formatMessage({id: "screen.OwnerList"})}
         key={"ce22d23e-340d-4a0c-ba70-d26a51a045f9"}
       >
         <FormattedMessage id="screen.OwnerList" />
       </Menu.Item>
       <Menu.Item
-        icon={<MenuOutlined />}
         title={intl.formatMessage({id: "screen.OwnerEditor"})}
         key={"3f2019b4-6945-4591-a8f1-a3521e64023a"}
       >
@@ -52,7 +53,7 @@ export const AppMenu = () => {
       </Menu.Item>
     </Menu>
   );
-};
+});
 
 export interface MenuItemInfo {
   tabCaptionI18nKey: string;

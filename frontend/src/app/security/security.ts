@@ -16,7 +16,7 @@ export class SecurityStore {
   }
 
   @action
-  async login(username: string, password: string): Promise<LoginAttemptResult> {
+  login = async (username: string, password: string): Promise<LoginAttemptResult> => {
     const response = await axios("/login", {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -36,7 +36,8 @@ export class SecurityStore {
   }
 
   @action
-  async logout() {
+  logout = async () => {
+    // TODO Logout on server
     this.isLoggedIn = false;
   }
 }

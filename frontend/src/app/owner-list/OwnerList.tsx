@@ -17,7 +17,7 @@ import { Button, Card, Modal, Spin, Empty, Result } from "antd";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { MutationFunctionOptions } from "@apollo/client/react/types/types";
 import { FetchResult } from "@apollo/client/link/core";
-import { EntityListScreenProps } from "../../framework/components/crud/entity-list-screen/EntityListScreenProps";
+import { EntityListScreenProps } from "../../framework/components/entity-list-screen/EntityListScreenProps";
 import { guessDisplayName } from "../../framework/util/guessDisplayName";
 import { guessLabel } from "../../framework/util/guessLabel";
 import OwnerEditor from "../owner-editor/OwnerEditor";

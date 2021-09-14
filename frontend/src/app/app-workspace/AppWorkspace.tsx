@@ -1,15 +1,17 @@
 import { useScreens } from "../../framework/screen-api/ScreenContext";
 import {Tabs} from "antd";
 import {observer} from "mobx-react";
-import { TabContent } from "../../framework/components/tabs/tab-content/TabContent";
-import {TabHeading} from "../../framework/components/tabs/tab-heading/TabHeading";
+import {TabHeading} from "../../framework/components/tab-heading/TabHeading";
+import {BreadcrumbsArea} from "../../framework/components/breadcrumbs-area/BreadcrumbsArea";
 
 export const AppWorkspace = observer(() => {
   const {
     tabs,
     activeTabKey,
     makeTabActive,
-    closeTab
+    closeTab,
+    activeBreadcrumb,
+    activeTabIndex
   } = useScreens();
 
   return (
@@ -18,12 +20,16 @@ export const AppWorkspace = observer(() => {
     >
       {
         tabs.map(tab => (
-          <Tabs.TabPane tab={<TabHeading caption={tab.caption}
-                                         onClose={() => closeTab(tab.key)}
+          <Tabs.TabPane key={tab.key}
+                        tab={<TabHeading caption={tab.caption}
+                                         onClose={(e) => {
+                                           closeTab(tab.key);
+                                           e.stopPropagation();
+                                         }}
                              />}
-                        key={tab.key}
           >
-            <TabContent tab={tab} />
+            <BreadcrumbsArea breadcrumbs={tab.breadcrumbs} />
+            {activeBreadcrumb?.content}
           </Tabs.TabPane>
         ))
       }

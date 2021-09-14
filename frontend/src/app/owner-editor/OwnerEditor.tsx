@@ -11,7 +11,7 @@ import { Form, Button, Card, message, Alert, Spin, Result, Input } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { EntityDetailsScreenProps } from "../../framework/components/crud/entity-details-screen/EntityDetailsScreenProps";
+import { EntityDetailsScreenProps } from "../../framework/components/entity-details-screen/EntityDetailsScreenProps";
 import {useScreens} from "../../framework/screen-api/ScreenContext";
 
 const OWNER = gql`
