@@ -15,7 +15,7 @@ export const BreadcrumbsArea = observer(({breadcrumbs}: BreadcrumbsAreaProps) =>
     return (
       <Breadcrumb style={{marginBottom: '12px'}}>
         {breadcrumbs.map((breadcrumb: BreadcrumbState, index: number) => (
-          <Breadcrumb.Item>
+          <Breadcrumb.Item key={breadcrumb.key}>
             {breadcrumb.key === screens.activeBreadcrumb?.key && (
               <span className='amplifront-breadcrumb amplifront-breadcrumb_active'>
                 {breadcrumb.caption}

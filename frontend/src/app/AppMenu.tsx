@@ -1,5 +1,5 @@
 import {Menu } from "antd";
-import {HomeOutlined, MenuOutlined} from "@ant-design/icons";
+import {HomeOutlined} from "@ant-design/icons";
 import {FormattedMessage, useIntl} from "react-intl";
 import OwnerList from "./owner-list/OwnerList";
 import OwnerEditor from "./owner-editor/OwnerEditor";

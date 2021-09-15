@@ -11,7 +11,6 @@ export const AppWorkspace = observer(() => {
     makeTabActive,
     closeTab,
     activeBreadcrumb,
-    activeTabIndex
   } = useScreens();
 
   return (

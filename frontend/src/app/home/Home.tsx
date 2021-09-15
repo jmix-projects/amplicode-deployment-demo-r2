@@ -34,9 +34,9 @@ export const Home = () => {
       <p>
         <strong>Example query result:</strong>
       </p>
-      <p className="home-example-query">
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      </p>
+      <pre className="home-example-query">
+        {JSON.stringify(data, null, 2)}
+      </pre>
     </>
   );
 };

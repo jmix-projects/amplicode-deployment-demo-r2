@@ -137,7 +137,7 @@ const Fields = ({ entity }: { entity: any }) => (
     {Object.keys(entity)
       .filter(p => p !== "id" && entity[p] != null)
       .map(p => (
-        <div>
+        <div key={p}>
           <strong>{guessLabel(p)}:</strong> {renderFieldValue(entity, p)}
         </div>
       ))}
