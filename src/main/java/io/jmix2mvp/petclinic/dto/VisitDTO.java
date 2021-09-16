@@ -1,11 +1,16 @@
 package io.jmix2mvp.petclinic.dto;
 
+import io.jmix2mvp.petclinic.entity.VisitState;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class VisitDTO extends BaseDTO {
     private LocalDateTime visitStart;
     private LocalDateTime visitEnd;
     private String description;
+    private List<AttachmentDTO> attachments;
+    private VisitState visitState;
 
     public LocalDateTime getVisitStart() {
         return visitStart;
@@ -29,5 +34,21 @@ public class VisitDTO extends BaseDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<AttachmentDTO> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<AttachmentDTO> attachments) {
+        this.attachments = attachments;
+    }
+
+    public VisitState getVisitState() {
+        return visitState;
+    }
+
+    public void setVisitState(VisitState visitState) {
+        this.visitState = visitState;
     }
 }

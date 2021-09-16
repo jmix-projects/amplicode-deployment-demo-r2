@@ -4,6 +4,7 @@ import io.jmix2mvp.petclinic.dto.PetDTO;
 import io.jmix2mvp.petclinic.dto.VisitDTO;
 import io.jmix2mvp.petclinic.dto.VisitInputDTO;
 import io.jmix2mvp.petclinic.entity.Visit;
+import io.jmix2mvp.petclinic.entity.VisitState;
 import io.jmix2mvp.petclinic.repository.PetRepository;
 import io.jmix2mvp.petclinic.repository.VisitRepository;
 import io.leangen.graphql.annotations.*;
@@ -53,13 +54,17 @@ public class VisitService {
     }
 
     @Secured({ADMIN, VETERINARIAN})
-    @GraphQLQuery(name = "visitListByDateRange")
+    @GraphQLQuery(name = "findVisits")
     @Transactional
-    public List<VisitDTO> findVisitsByDateRange(
+    public List<VisitDTO> findVisits(
             @GraphQLArgument(name = "page") Pageable pageable,
             @GraphQLArgument(name = "fromDate") LocalDateTime from,
-            @GraphQLArgument(name = "toDate") LocalDateTime to) {
-        return visitRepository.findByDateRange(from, to, pageable).stream()
+            @GraphQLArgument(name = "toDate") LocalDateTime to,
+            @GraphQLArgument(name = "state") VisitState visitState) {
+        List<Visit> visits = visitState == null
+                ? visitRepository.findByDateRange(from, to, pageable)
+                : visitRepository.findByDateRangeAndState(from, to, visitState, pageable);
+        return visits.stream()
                 .map(e -> mapper.map(e, VisitDTO.class))
                 .collect(Collectors.toList());
     }

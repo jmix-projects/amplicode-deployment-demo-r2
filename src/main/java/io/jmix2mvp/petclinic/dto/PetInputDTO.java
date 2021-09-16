@@ -7,6 +7,7 @@ public class PetInputDTO extends BaseDTO {
     private LocalDate birthDate;
     private PetTypeDTO type;
     private OwnerDTO owner;
+    private String avatarUrl;
 
     public String getIdentificationNumber() {
         return identificationNumber;
@@ -38,5 +39,13 @@ public class PetInputDTO extends BaseDTO {
 
     public void setOwner(OwnerDTO owner) {
         this.owner = owner;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }
