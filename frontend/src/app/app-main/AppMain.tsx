@@ -5,6 +5,7 @@ import { AppHeader } from "../app-header/AppHeader";
 import "./AppMain.css";
 import { AppMenu } from "../AppMenu";
 import {AppWorkspace} from "../app-workspace/AppWorkspace";
+import {HashRouter} from "react-router-dom";
 
 export const AppMain = observer(() => {
   return (
@@ -24,7 +25,9 @@ export const AppMain = observer(() => {
 
         <Layout className="layout-content">
           <Layout.Content>
-            <AppWorkspace />
+            <HashRouter>
+              <AppWorkspace/>
+            </HashRouter>
           </Layout.Content>
         </Layout>
       </Layout>

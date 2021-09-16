@@ -1,80 +1,57 @@
 import {Menu } from "antd";
 import {HomeOutlined} from "@ant-design/icons";
-import {FormattedMessage, useIntl} from "react-intl";
-import OwnerList from "./owner-list/OwnerList";
-import OwnerEditor from "./owner-editor/OwnerEditor";
+import {useIntl} from "react-intl";
 import {useScreens} from "../framework/screen-api/ScreenContext";
 import {useCallback} from "react";
-import {ReactComponent} from "../framework/screen-api/ReactComponent";
-import {Home} from "./home/Home";
 import {observer} from "mobx-react";
+import {screenRegistry} from "./screenRegistry";
 
 export const AppMenu = observer(() => {
   const intl = useIntl();
   const screens = useScreens();
 
   const handleClick = useCallback(({key}: {key: string}) => {
-    const menuItemInfo = menuComponentRegistry[key];
+    const menuItemInfo = screenRegistry[key];
     if (menuItemInfo == null) {
       console.error(`MenuItemInfo is not found for menu item with key ${key}`);
       return;
     }
-    const tabCaption = intl.formatMessage({id: menuItemInfo.tabCaptionI18nKey});
+    const tabCaption = intl.formatMessage({id: menuItemInfo.captionKey});
     const breadcrumbCaption = intl.formatMessage({
-      id: menuItemInfo.breadcrumbCaptionI18nKey ?? menuItemInfo.tabCaptionI18nKey
+      id: menuItemInfo.captionKey
     });
     const {component} = menuItemInfo;
 
     screens.openInTab({tabCaption, breadcrumbCaption, component, tabKey: key});
   }, [intl, screens]);
 
+  const getCaption = useCallback((key: string) => {
+    return intl.formatMessage({id: screenRegistry[key].captionKey});
+  }, [intl]);
+
   return (
     <Menu onClick={handleClick}
-          selectedKeys={screens.activeTabKey ? [screens.activeTabKey] : []}
+          selectedKeys={screens.activeTab?.key ? [screens.activeTab.key] : []}
     >
       <Menu.Item
         icon={<HomeOutlined />}
-        title={'Home'}
-        key={"home"}
+        title={getCaption('home')}
+        key={'home'}
       >
-        Home
+        {getCaption('home')}
       </Menu.Item>
       <Menu.Item
-        title={intl.formatMessage({id: "screen.OwnerList"})}
-        key={"ce22d23e-340d-4a0c-ba70-d26a51a045f9"}
+        title={getCaption('owner-list')}
+        key={'owner-list'}
       >
-        <FormattedMessage id="screen.OwnerList" />
+        {getCaption('owner-list')}
       </Menu.Item>
       <Menu.Item
-        title={intl.formatMessage({id: "screen.OwnerEditor"})}
-        key={"3f2019b4-6945-4591-a8f1-a3521e64023a"}
+        title={getCaption('owner-editor')}
+        key={'owner-editor'}
       >
-        <FormattedMessage id="screen.OwnerEditor" />
+        {getCaption('owner-editor')}
       </Menu.Item>
     </Menu>
   );
 });
-
-export interface MenuItemInfo {
-  tabCaptionI18nKey: string;
-  /**
-   * If omitted, {@link tabCaptionI18nKey} will be used in its place
-   */
-  breadcrumbCaptionI18nKey?: string;
-  component: ReactComponent;
-}
-
-export const menuComponentRegistry: Record<string, MenuItemInfo> = {
-  'home': {
-    component: Home,
-    tabCaptionI18nKey: 'screen.home',
-  },
-  'ce22d23e-340d-4a0c-ba70-d26a51a045f9': {
-    component: OwnerList,
-    tabCaptionI18nKey: 'screen.OwnerList',
-  },
-  '3f2019b4-6945-4591-a8f1-a3521e64023a': {
-    component: OwnerEditor,
-    tabCaptionI18nKey: 'screen.OwnerEditor',
-  }
-};
