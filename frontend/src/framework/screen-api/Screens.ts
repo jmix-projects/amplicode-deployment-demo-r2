@@ -1,5 +1,5 @@
 import {ReactComponent} from "./ReactComponent";
-import {action, computed, makeObservable, observable} from "mobx";
+import {action, autorun, computed, makeObservable, observable, reaction} from "mobx";
 import React, {ReactNode} from "react";
 import {generateKey} from "../util/generateKey";
 import {getScreenKey} from "./getScreenKey";
@@ -93,6 +93,11 @@ export class Screens {
      * See {@link this.saveTabUrl} for details.
      */
     window.addEventListener('hashchange', this.saveTabUrl);
+
+    reaction(
+      () => [this.activeTab, this.activeBreadcrumb],
+      this.updatePageTitle
+    );
   }
 
   openInTab = (params: OpenInTabParams) => {
@@ -173,14 +178,12 @@ export class Screens {
     this.activeTab.activeBreadcrumbIndex = this.activeTab.breadcrumbs.length - 1;
   };
 
-  private updatePageTitle() {
+  private updatePageTitle = () => {
     const getPageTitle = this.config?.getPageTitle ?? defaultGetPageTitle.bind(null, this.appTitle);
     document.title = getPageTitle(this.activeTab?.caption, this.activeBreadcrumb?.caption);
-  }
+  };
 
   private onActiveTabChange() {
-    this.updatePageTitle();
-
     if (this.activeTab == null) {
       // We have closed all tabs
       // Clear the URL.
