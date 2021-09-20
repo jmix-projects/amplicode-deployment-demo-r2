@@ -1,5 +1,5 @@
 import {ReactComponent} from "./ReactComponent";
-import {action, autorun, computed, makeObservable, observable, reaction} from "mobx";
+import {action, computed, makeObservable, observable, reaction} from "mobx";
 import React, {ReactNode} from "react";
 import {generateKey} from "../util/generateKey";
 import {getScreenKey} from "./getScreenKey";

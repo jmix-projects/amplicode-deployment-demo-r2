@@ -6,7 +6,7 @@ import {BreadcrumbsArea} from "../../framework/components/breadcrumbs-area/Bread
 import {useLocation} from "react-router-dom";
 import {screenRegistry} from "../screenRegistry";
 import {useIntl} from "react-intl";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import { getScreenKey } from "../../framework/screen-api/getScreenKey";
 
 export const AppWorkspace = observer(() => {
@@ -22,13 +22,15 @@ export const AppWorkspace = observer(() => {
   const location = useLocation();
   const intl = useIntl();
 
+  const [initTab] = useState(activeTab);
+
   useEffect(() => {
-    // Check the URL and if it doesn't match to activeTab.key then open the correct tab
+    // Check the URL and if it doesn't match to initTab.key then open the correct tab
     const screenKey = getScreenKey(location.pathname);
     if (screenKey == null || screenKey?.length === 0) {
       return;
     }
-    if (activeTab?.key !== screenKey) {
+    if (initTab?.key !== screenKey) {
       const tabItem = screenRegistry[screenKey];
       if (tabItem != null) {
         const {component, props, captionKey} = tabItem;
@@ -41,14 +43,14 @@ export const AppWorkspace = observer(() => {
         });
       }
     }
-  }, [openInTab, intl, location.pathname]);
+  }, [openInTab, intl, location.pathname, initTab]);
 
   return (
     <Tabs activeKey={activeTab?.key}
           onChange={makeTabActive}
     >
       {
-        tabs.map(tab => (
+        tabs.map((tab, index) => (
           <Tabs.TabPane key={tab.key}
                         tab={<TabHeading caption={tab.caption}
                                          onClose={(e) => {
@@ -58,7 +60,7 @@ export const AppWorkspace = observer(() => {
                              />}
           >
             <BreadcrumbsArea breadcrumbs={tab.breadcrumbs} />
-            {activeBreadcrumb?.content}
+            {tabs[index].breadcrumbs[tabs[index].activeBreadcrumbIndex!].content}
           </Tabs.TabPane>
         ))
       }

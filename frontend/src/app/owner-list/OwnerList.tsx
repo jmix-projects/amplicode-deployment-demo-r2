@@ -21,8 +21,10 @@ import { EntityListScreenProps } from "../../framework/components/entity-list-sc
 import { guessDisplayName } from "../../framework/util/guessDisplayName";
 import { guessLabel } from "../../framework/util/guessLabel";
 import OwnerEditor from "../owner-editor/OwnerEditor";
-import {Screens} from "../../framework/screen-api/Screens";
+import {OpenInBreadcrumbParams, Screens} from "../../framework/screen-api/Screens";
 import { useScreens } from "../../framework/screen-api/ScreenContext";
+import {useCallback, useEffect} from "react";
+import {useHistory, useRouteMatch} from "react-router-dom";
 
 const OWNER_LIST = gql`
   query Get_Owner_List($page: PaginationInput) {
@@ -41,9 +43,13 @@ const DELETE__OWNER = gql`
   }
 `;
 
+const ROUTE = 'owner-list';
+
 const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
   const screens: Screens = useScreens();
   const intl = useIntl();
+  const match = useRouteMatch<{entityId: string}>(`/${ROUTE}/:entityId`);
+  const history = useHistory();
 
   const { loading, error, data } = useQuery(OWNER_LIST);
 
@@ -52,6 +58,25 @@ const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
   // Entity list can work in select mode, which means that you can select an entity instance and it will be passed to onSelect callback.
   // This functionality is used in EntityLookupField.
   const isSelectMode = onSelect != null;
+
+  const openEditor = useCallback((id?: string) => {
+    const params: OpenInBreadcrumbParams = {
+      breadcrumbCaption: 'Owner Editor',
+      component: OwnerEditor,
+    };
+    if (id != null) {
+      params.props = {id};
+    }
+    screens.openInBreadcrumb(params);
+    // Append /id to existing url
+    history.push(id ? `/${ROUTE}/${id}` : `/${ROUTE}/new`);
+  }, [screens, history]);
+
+  useEffect(() => {
+    if (screens.activeTab?.breadcrumbs.length === 1 && match?.params.entityId != null) {
+      openEditor(match.params.entityId);
+    }
+  }, [match, openEditor, screens]);
 
   if (loading) {
     return <Spin />;
@@ -82,12 +107,7 @@ const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
             title='intl.formatMessage({id: "common.create"})'
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => {
-              screens.openInBreadcrumb({
-                breadcrumbCaption: 'Owner Editor',
-                component: OwnerEditor
-              });
-            }}
+            onClick={() => openEditor()}
           >
             <span>
               <FormattedMessage id="common.create" />
@@ -123,6 +143,7 @@ const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
             executeDeleteMutation,
             screens,
             intl,
+            openEditor
           })}
         >
           <Fields entity={e} />
@@ -158,6 +179,7 @@ interface CardActionsInput {
   ) => Promise<FetchResult>;
   screens: Screens;
   intl: IntlShape;
+  openEditor: (id?: string) => void;
 }
 
 function getCardActions(input: CardActionsInput) {
@@ -167,6 +189,7 @@ function getCardActions(input: CardActionsInput) {
     executeDeleteMutation,
     screens,
     intl,
+    openEditor
   } = input;
 
   if (onSelect == null) {
@@ -196,11 +219,7 @@ function getCardActions(input: CardActionsInput) {
         key="edit"
         title={intl.formatMessage({ id: "common.edit" })}
         onClick={() => {
-          screens.openInBreadcrumb({
-            breadcrumbCaption: 'Owner Editor',
-            component: OwnerEditor,
-            props: {id: entityInstance.id}
-          });
+          openEditor(entityInstance.id)
         }}
       />
     ];

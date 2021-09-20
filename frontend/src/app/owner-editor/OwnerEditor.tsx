@@ -13,6 +13,7 @@ import { observer } from "mobx-react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { EntityDetailsScreenProps } from "../../framework/components/entity-details-screen/EntityDetailsScreenProps";
 import {useScreens} from "../../framework/screen-api/ScreenContext";
+import {useHistory} from "react-router-dom";
 
 const OWNER = gql`
   query Get_Owner($id: Long) {
@@ -40,6 +41,7 @@ const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
   const [form] = useForm();
   const intl = useIntl();
   const screens = useScreens();
+  const history = useHistory();
 
   const [
     loadItem,
@@ -56,6 +58,11 @@ const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
 
   const [formError, setFormError] = useState<string | undefined>();
 
+  const goToParentScreen = useCallback(() => {
+    history.push('.'); // Remove entity id part from url
+    screens.closeActiveBreadcrumb();
+  }, [screens, history]);
+
   const handleSubmit = useCallback(
     values => {
       executeUpsertMutation({
@@ -66,7 +73,7 @@ const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
       })
         .then(({ errors }: FetchResult) => {
           if (errors == null || errors.length === 0) {
-            screens.closeActiveBreadcrumb();
+            goToParentScreen();
             message.success(
               intl.formatMessage({
                 id: "EntityDetailsScreen.savedSuccessfully"
@@ -177,7 +184,7 @@ const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
         )}
 
         <Form.Item style={{ textAlign: "center" }}>
-          <Button htmlType="button" onClick={screens.closeActiveBreadcrumb}>
+          <Button htmlType="button" onClick={goToParentScreen}>
             <FormattedMessage id="common.cancel" />
           </Button>
           <Button
