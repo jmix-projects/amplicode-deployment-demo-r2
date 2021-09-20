@@ -91,7 +91,7 @@ const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
           message.error(intl.formatMessage({ id: "common.requestFailed" }));
         });
     },
-    [executeUpsertMutation, id, intl, screens]
+    [executeUpsertMutation, id, intl, goToParentScreen]
   );
 
   const handleSubmitFailed = useCallback(() => {
