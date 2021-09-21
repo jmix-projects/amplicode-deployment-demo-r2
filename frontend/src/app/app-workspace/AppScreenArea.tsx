@@ -13,6 +13,7 @@ export const AppScreenArea = observer(() => {
   const {
     tabs,
     activeTab,
+    activeBreadcrumb,
     makeTabActive,
     closeTab,
     openInTab
@@ -59,7 +60,19 @@ export const AppScreenArea = observer(() => {
                              />}
           >
             <BreadcrumbsArea breadcrumbs={tab.breadcrumbs} />
-            {tabs[index].breadcrumbs[tabs[index].activeBreadcrumbIndex!].content}
+            {/* Breadcrumbs are actually nested tabs with invisible tab bar */}
+            <Tabs activeKey={activeBreadcrumb?.key}
+                  renderTabBar={() => <></>}
+            >
+              {
+                tabs[index].breadcrumbs.map((breadcrumb) => (
+                  <Tabs.TabPane key={breadcrumb.key}
+                  >
+                    {breadcrumb.content}
+                  </Tabs.TabPane>
+                ))
+              }
+            </Tabs>
           </Tabs.TabPane>
         ))
       }
