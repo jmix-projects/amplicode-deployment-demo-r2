@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  openldap:
+    image: bitnami/openldap
+    container_name: openldap
+    ports:
+      - "127.0.0.1:1389:1389"
+      - "127.0.0.1:1636:1636"
+    environment:
+      - "LDAP_ADMIN_USERNAME=admin"
+      - "LDAP_ADMIN_PASSWORD=admin"
+      - "LDAP_USERS=user01,user02"
+      - "LDAP_PASSWORDS=password1,password2"
+      - "LDAP_GROUP=admin"
+    restart: unless-stopped
+
