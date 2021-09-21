@@ -163,6 +163,12 @@ export class Screens {
     this.onActiveTabChange();
   };
 
+  closeAllTabs = () => {
+    this._tabs = [];
+    this._activeTabIndex = undefined;
+    this.onActiveTabChange();
+  };
+
   closeBreadcrumb = (key: string) => {
     if (this.activeTab == null) {
       return;
