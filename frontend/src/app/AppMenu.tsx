@@ -57,6 +57,7 @@ export const AppMenu = observer(() => {
       >
         {getCaption('owner-editor')}
       </Menu.Item>
+      <Menu.Divider/>
       <Menu.Item
         title='Component1'
         key='component1'

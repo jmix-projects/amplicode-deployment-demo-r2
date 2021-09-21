@@ -18,6 +18,7 @@ import en from "./i18n/en.json";
 import { GRAPHQL_URI } from "./config";
 import { ScreenContext } from "./framework/screen-api/ScreenContext";
 import { Screens } from "./framework/screen-api/Screens";
+import {HashRouter} from "react-router-dom";
 
 export const securityStore = new SecurityStore();
 
@@ -64,7 +65,9 @@ ReactDOM.render(
     <ScreenContext.Provider value={screens}>
       <ApolloProvider client={client}>
         <IntlProvider locale="en" messages={en}>
-          <App />
+          <HashRouter>
+            <App />
+          </HashRouter>
         </IntlProvider>
       </ApolloProvider>
     </ScreenContext.Provider>

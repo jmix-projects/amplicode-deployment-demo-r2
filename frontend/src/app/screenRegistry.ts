@@ -29,3 +29,7 @@ export const screenRegistry: Record<string, ScreenInfo> = {
     captionKey: 'screen.OwnerEditor',
   }
 };
+
+export function getScreenPaths(): string[] {
+  return Object.keys(screenRegistry).map(k => '/' + k);
+}
