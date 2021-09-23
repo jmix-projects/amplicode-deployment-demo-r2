@@ -6,8 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import {
   ApolloClient,
   ApolloProvider,
-  createHttpLink,
-  InMemoryCache
+  createHttpLink, gql,
+  InMemoryCache, useMutation
 } from "@apollo/client";
 import "antd/dist/antd.min.css";
 import axios from "axios";
@@ -19,6 +19,9 @@ import { GRAPHQL_URI } from "./config";
 import { ScreenContext } from "./framework/screen-api/ScreenContext";
 import { Screens } from "./framework/screen-api/Screens";
 import {HashRouter} from "react-router-dom";
+import {DevSupport} from "@react-buddy/ide-toolbox";
+import {ComponentPreviews} from "./dev/previews";
+import {useInitial} from "./dev/hook";
 
 export const securityStore = new SecurityStore();
 
@@ -65,9 +68,15 @@ ReactDOM.render(
     <ScreenContext.Provider value={screens}>
       <ApolloProvider client={client}>
         <IntlProvider locale="en" messages={en}>
-          <HashRouter>
-            <App />
-          </HashRouter>
+            <HashRouter>
+              <DevSupport
+                  ComponentPreviews={<ComponentPreviews />}
+                  useInitialHook={useInitial}
+              >
+              <App />
+              </DevSupport>
+            </HashRouter>
+
         </IntlProvider>
       </ApolloProvider>
     </ScreenContext.Provider>
