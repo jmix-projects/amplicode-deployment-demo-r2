@@ -1,5 +1,7 @@
 package io.jmix2mvp.petclinic.entity;
 
+import com.querydsl.core.annotations.QueryInit;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,13 +11,11 @@ import java.util.List;
 public class Visit extends BaseEntity {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id", nullable = false)
+    @QueryInit("*.*")
     private Pet pet;
 
     @Column(name = "visit_start", nullable = false)
     private LocalDateTime visitStart;
-
-    @Column(name = "visit_end", nullable = false)
-    private LocalDateTime visitEnd;
 
     @Column(name = "description", length = 4000)
     private String description;
@@ -26,6 +26,18 @@ public class Visit extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private VisitState state;
+
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "veterinarian_id")
+    private Veterinarian veterinarian;
+
+    public Veterinarian getVeterinarian() {
+        return veterinarian;
+    }
+
+    public void setVeterinarian(Veterinarian veterinarian) {
+        this.veterinarian = veterinarian;
+    }
 
     public VisitState getState() {
         return state;
@@ -49,14 +61,6 @@ public class Visit extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public LocalDateTime getVisitEnd() {
-        return visitEnd;
-    }
-
-    public void setVisitEnd(LocalDateTime visitEnd) {
-        this.visitEnd = visitEnd;
     }
 
     public LocalDateTime getVisitStart() {

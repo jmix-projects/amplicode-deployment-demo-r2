@@ -7,7 +7,6 @@ import java.util.List;
 
 public class VisitDTO extends BaseDTO {
     private LocalDateTime visitStart;
-    private LocalDateTime visitEnd;
     private String description;
     private List<AttachmentDTO> attachments;
     private VisitState visitState;
@@ -18,14 +17,6 @@ public class VisitDTO extends BaseDTO {
 
     public void setVisitStart(LocalDateTime visitStart) {
         this.visitStart = visitStart;
-    }
-
-    public LocalDateTime getVisitEnd() {
-        return visitEnd;
-    }
-
-    public void setVisitEnd(LocalDateTime visitEnd) {
-        this.visitEnd = visitEnd;
     }
 
     public String getDescription() {

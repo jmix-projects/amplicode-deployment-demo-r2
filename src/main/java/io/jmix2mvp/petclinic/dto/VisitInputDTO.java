@@ -8,7 +8,6 @@ import java.util.List;
 public class VisitInputDTO extends BaseDTO {
     private PetDTO pet;
     private LocalDateTime visitStart;
-    private LocalDateTime visitEnd;
     private String description;
     private List<AttachmentInputDTO> attachments;
     private VisitState visitState;
@@ -27,14 +26,6 @@ public class VisitInputDTO extends BaseDTO {
 
     public void setVisitStart(LocalDateTime visitStart) {
         this.visitStart = visitStart;
-    }
-
-    public LocalDateTime getVisitEnd() {
-        return visitEnd;
-    }
-
-    public void setVisitEnd(LocalDateTime visitEnd) {
-        this.visitEnd = visitEnd;
     }
 
     public String getDescription() {

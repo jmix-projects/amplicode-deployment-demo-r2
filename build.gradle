@@ -24,6 +24,12 @@ dependencies {
 
     implementation 'org.modelmapper:modelmapper:2.4.4'
 
+    implementation 'com.querydsl:querydsl-core:5.0.0'
+    implementation 'com.querydsl:querydsl-jpa:5.0.0'
+
+    annotationProcessor 'javax.persistence:javax.persistence-api:2.2'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jpa'
+
     runtimeOnly 'org.postgresql:postgresql'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

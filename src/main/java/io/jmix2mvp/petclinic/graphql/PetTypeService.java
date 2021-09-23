@@ -18,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.jmix2mvp.petclinic.Authorities.ADMIN;
-import static io.jmix2mvp.petclinic.Authorities.VETERINARIAN;
+import static io.jmix2mvp.petclinic.Authorities.*;
 
 @GraphQLApi
 @Service
@@ -32,7 +31,7 @@ public class PetTypeService {
         this.mapper = mapper;
     }
 
-    @Secured({ADMIN, VETERINARIAN})
+    @Secured({ADMIN, VETERINARIAN, OWNER})
     @GraphQLQuery(name = "petType")
     @Transactional
     public PetTypeDTO findById(@GraphQLArgument(name = "id") Long id) {
@@ -41,7 +40,7 @@ public class PetTypeService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
     }
 
-    @Secured({ADMIN, VETERINARIAN})
+    @Secured({ADMIN, VETERINARIAN, OWNER})
     @GraphQLQuery(name = "petTypeList")
     @Transactional
     public List<PetTypeDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {

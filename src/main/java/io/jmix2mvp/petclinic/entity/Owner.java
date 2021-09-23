@@ -1,8 +1,6 @@
 package io.jmix2mvp.petclinic.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "owner")
@@ -24,6 +22,18 @@ public class Owner extends BaseEntity {
 
     @Column(name = "telephone")
     private String telephone;
+
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "username")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getEmail() {
         return email;
