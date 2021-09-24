@@ -11,6 +11,7 @@ public class VisitInputDTO extends BaseDTO {
     private String description;
     private List<AttachmentInputDTO> attachments;
     private VisitState visitState;
+    private VeterinarianInputDTO veterinarian;
 
     public PetDTO getPet() {
         return pet;
@@ -50,5 +51,13 @@ public class VisitInputDTO extends BaseDTO {
 
     public void setVisitState(VisitState visitState) {
         this.visitState = visitState;
+    }
+
+    public VeterinarianInputDTO getVeterinarian() {
+        return veterinarian;
+    }
+
+    public void setVeterinarian(VeterinarianInputDTO veterinarian) {
+        this.veterinarian = veterinarian;
     }
 }

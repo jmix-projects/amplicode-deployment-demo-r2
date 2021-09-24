@@ -89,7 +89,7 @@ public class VisitService {
                 .orElse(null);
     }
 
-    @Secured({ADMIN, VETERINARIAN})
+    @Secured({ADMIN, VETERINARIAN, OWNER})
     @GraphQLMutation(name = "update_Visit")
     @Transactional
     public VisitDTO update(VisitInputDTO input) {

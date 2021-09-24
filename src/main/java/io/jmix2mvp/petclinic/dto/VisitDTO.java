@@ -10,6 +10,7 @@ public class VisitDTO extends BaseDTO {
     private String description;
     private List<AttachmentDTO> attachments;
     private VisitState visitState;
+    private VeterinarianDTO veterinarian;
 
     public LocalDateTime getVisitStart() {
         return visitStart;
@@ -41,5 +42,13 @@ public class VisitDTO extends BaseDTO {
 
     public void setVisitState(VisitState visitState) {
         this.visitState = visitState;
+    }
+
+    public VeterinarianDTO getVeterinarian() {
+        return veterinarian;
+    }
+
+    public void setVeterinarian(VeterinarianDTO veterinarian) {
+        this.veterinarian = veterinarian;
     }
 }
