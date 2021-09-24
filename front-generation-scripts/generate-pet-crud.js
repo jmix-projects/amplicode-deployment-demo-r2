@@ -1,8 +1,8 @@
 const { runCmdSync, esc, btoa, gjf } = require("./common");
 
 const petListQuery = `
-query Get_Pet_List($page: PaginationInput) {
-  petList(page: $page) {
+query Get_Pet_List {
+  petList {
      id
      identificationNumber
      owner {
@@ -41,14 +41,14 @@ mutation Update_Pet($input: PetInputDTOInput) {
 `;
 
 const petListAnswers = btoa(JSON.stringify({
-  componentName: 'pet-list',
+  componentName: 'PetList',
   shouldAddToMenu: true,
   query: esc(petListQuery),
   mutation: esc(petDeleteMutation),
 }));
 
 const petEditorAnswers = btoa(JSON.stringify({
-  componentName: "pet-editor",
+  componentName: "PetEditor",
   shouldAddToMenu: false,
   query: esc(petDetailsQuery),
   mutation: esc(petUpsertMutation),
@@ -58,7 +58,7 @@ const petEditorAnswers = btoa(JSON.stringify({
 const petListCommand = `
 ${gjf} react-typescript:mvp-entity-browser \\
   --answers ${petListAnswers} \\
-  --schema ../schema.json \\
+  --schema ./schema.graphql \\
   --dest ../frontend/src/app/pet-list \\
   --dirShift ../../
 `;
@@ -66,7 +66,7 @@ ${gjf} react-typescript:mvp-entity-browser \\
 const petEditorCommand = `
 ${gjf} react-typescript:mvp-entity-editor \\
   --answers ${petEditorAnswers} \\
-  --schema ../schema.json \\
+  --schema ./schema.graphql \\
   --dest ../frontend/src/app/petEditor \\
   --dirShift ../../
 `;

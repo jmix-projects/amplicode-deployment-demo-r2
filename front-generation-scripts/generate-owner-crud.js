@@ -1,8 +1,8 @@
 const { runCmdSync, esc, btoa, gjf } = require("./common");
 
 const ownerListQuery = `
-query Get_Owner_List($page: PaginationInput) {
-  ownerList(page: $page) {
+query Get_Owner_List {
+  ownerList {
     id
     firstName
     lastName
@@ -40,14 +40,14 @@ mutation Update_Owner($input: OwnerInputDTOInput) {
 `;
 
 const ownerListAnswers = btoa(JSON.stringify({
-  componentName: 'owner-list',
+  componentName: 'OwnerList',
   shouldAddToMenu: true,
   query: esc(ownerListQuery),
   mutation: esc(ownerDeleteMutation)
 }));
 
 const ownerEditorAnswers = btoa(JSON.stringify({
-  componentName: 'owner-editor',
+  componentName: 'OwnerEditor',
   shouldAddToMenu: false,
   query: esc(ownerDetailsQuery),
   mutation: esc(ownerUpsertMutation),
@@ -57,7 +57,7 @@ const ownerEditorAnswers = btoa(JSON.stringify({
 const ownerListCommand = `
 ${gjf} react-typescript:mvp-entity-browser \\
   --answers ${ownerListAnswers} \\
-  --schema ../schema.json \\
+  --schema ./schema.graphql \\
   --dest ../frontend/src/app/owner-list \\
   --dirShift ../../
 `;
@@ -65,7 +65,7 @@ ${gjf} react-typescript:mvp-entity-browser \\
 const ownerEditorCommand = `
 ${gjf} react-typescript:mvp-entity-editor \\
   --answers ${ownerEditorAnswers} \\
-  --schema ../schema.json \\
+  --schema ./schema.graphql \\
   --dest ../frontend/src/app/owner-editor \\
   --dirShift ../../
 `;

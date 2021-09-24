@@ -1,8 +1,8 @@
 const { runCmdSync, esc, btoa, gjf } = require("./common");
 
 const ownerListQuery = `
-query Get_Owner_List($page: PaginationInput) {
-  ownerList(page: $page) {
+query Get_Owner_List {
+  ownerList {
     id
     firstName
     lastName
@@ -26,21 +26,21 @@ query Get_Owner($id: Long) {
 `;
 
 const readOnlyOwnerListAnswers = btoa(JSON.stringify({
-  componentName: 'read-only-owner-list',
+  componentName: 'ReadOnlyOwnerList',
   shouldAddToMenu: true,
   query: esc(ownerListQuery),
   mode: 'view'
 }));
 
 const readOnlyOwnerListWithDetailsAnswers = btoa(JSON.stringify({
-  componentName: 'read-only-owner-list-with-details',
+  componentName: 'ReadOnlyOwnerListWithDetails',
   shouldAddToMenu: true,
   query: esc(ownerListQuery),
   mode: 'viewWithDetails'
 }));
 
 const readOnlyOwnerDetailsAnswers = btoa(JSON.stringify({
-  componentName: 'read-only-owner-details',
+  componentName: 'ReadOnlyOwnerDetails',
   shouldAddToMenu: false,
   query: esc(ownerDetailsQuery),
   listQueryName: 'ownerList'
@@ -49,7 +49,7 @@ const readOnlyOwnerDetailsAnswers = btoa(JSON.stringify({
 const readOnlyOwnerListCommand = `
 ${gjf} react-typescript:mvp-entity-browser \\
   --answers ${readOnlyOwnerListAnswers} \\
-  --schema ../schema.json \\
+  --schema ./schema.graphql \\
   --dest ../frontend/src/app/read-only-owner-list \\
   --dirShift ../../
 `;
@@ -57,14 +57,14 @@ ${gjf} react-typescript:mvp-entity-browser \\
 const readOnlyOwnerListWithDetailsCommand = `
 ${gjf} react-typescript:mvp-entity-browser \\
   --answers ${readOnlyOwnerListWithDetailsAnswers} \\
-  --schema ../schema.json \\
+  --schema ./schema.graphql \\
   --dest ../frontend/src/app/read-only-owner-list-with-details \\
   --dirShift ../../
 `;
 const readOnlyOwnerDetailsCommand = `
 ${gjf} react-typescript:mvp-entity-editor \\
   --answers ${readOnlyOwnerDetailsAnswers} \\
-  --schema ../schema.json \\
+  --schema ./schema.graphql \\
   --dest ../frontend/src/app/read-only-owner-details \\
   --dirShift ../../
 `;
