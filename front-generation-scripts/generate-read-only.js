@@ -36,7 +36,7 @@ const readOnlyOwnerListWithDetailsAnswers = btoa(JSON.stringify({
   componentName: 'ReadOnlyOwnerListWithDetails',
   shouldAddToMenu: true,
   query: esc(ownerListQuery),
-  mode: 'viewWithDetails'
+  mode: 'view with details'
 }));
 
 const readOnlyOwnerDetailsAnswers = btoa(JSON.stringify({

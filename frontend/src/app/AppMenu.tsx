@@ -57,6 +57,24 @@ export const AppMenu = observer(() => {
       {/*>*/}
       {/*  <Link to='/component1'>Component 1</Link>*/}
       {/*</Menu.Item>*/}
+      <Menu.Item title={getCaption("owner-list")} key="owner-list">
+        {getCaption("owner-list")}
+      </Menu.Item>
+      <Menu.Item title={getCaption("pet-list")} key="pet-list">
+        {getCaption("pet-list")}
+      </Menu.Item>
+      <Menu.Item
+        title={getCaption("read-only-owner-list")}
+        key="read-only-owner-list"
+      >
+        {getCaption("read-only-owner-list")}
+      </Menu.Item>
+      <Menu.Item
+        title={getCaption("read-only-owner-list-with-details")}
+        key="read-only-owner-list-with-details"
+      >
+        {getCaption("read-only-owner-list-with-details")}
+      </Menu.Item>
     </Menu>
   );
 });
