@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.http.HttpServletResponse;
@@ -54,6 +55,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name())
                         .allowedHeaders("*")
                         .allowedOrigins("http://localhost:3000");
+            }
+
+            @Override
+            public void addViewControllers(ViewControllerRegistry registry) {
+                registry.addViewController("/front").setViewName("forward:/front/index.html");
             }
         };
     }
