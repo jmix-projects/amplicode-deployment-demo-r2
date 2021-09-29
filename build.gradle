@@ -39,5 +39,5 @@ flyway {
     url = 'jdbc:postgresql://localhost/petclinic'
     user = 'cuba'
     password = 'cuba'
-    locations = ['classpath:db/migration', 'classpath:db/users']
+    placeholders = ['userStore': 'jdbc']
 }
