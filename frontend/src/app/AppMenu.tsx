@@ -56,6 +56,9 @@ export const AppMenu = observer(() => {
       {/*>*/}
       {/*  <Link to='/component1'>Component 1</Link>*/}
       {/*</Menu.Item>*/}
+      <Menu.Item title={getCaption("owner-list")} key="owner-list">
+        {getCaption("owner-list")}
+      </Menu.Item>
     </Menu>
   );
 });

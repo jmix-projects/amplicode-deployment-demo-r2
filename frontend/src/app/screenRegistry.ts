@@ -1,3 +1,4 @@
+import OwnerList from "./owner-list/OwnerList";
 import { Home } from "./home/Home";
 import { ReactComponent } from "@amplicode/react-core";
 
@@ -14,15 +15,20 @@ export interface ScreenInfo {
 }
 
 export const screenRegistry: Record<string, ScreenInfo> = {
-  home: {
-    component: Home,
-    captionKey: "screen.home"
-  }
   // TODO: delete me
   // 'owner-list': {
   //   component: OwnerList,
   //   captionKey: 'screen.OwnerList',
   // },
+  home: {
+    component: Home,
+    captionKey: "screen.home"
+  },
+
+  "owner-list": {
+    component: OwnerList,
+    captionKey: "screen.OwnerList"
+  }
 };
 
 export function getScreenPaths(): string[] {
