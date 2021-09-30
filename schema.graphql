@@ -1,0 +1,218 @@
+# This file was generated based on "Jmix model". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+"Mutation root"
+type Mutation {
+    delete_Owner(id: Long!): Boolean!
+    delete_Pet(id: Long!): Boolean!
+    delete_PetType(id: Long!): Boolean!
+    delete_Test(id: Long!): Boolean!
+    delete_Visit(id: Long!): Boolean!
+    update_Owner(input: OwnerInputDTOInput): OwnerDTO
+    update_Pet(input: PetInputDTOInput): PetDTO
+    update_PetType(input: PetTypeInputDTOInput): PetTypeDTO
+    update_Test(input: TestInputDTOInput): TestDTO
+    update_Visit(input: VisitInputDTOInput): VisitDTO
+}
+
+type OwnerDTO {
+    address: String
+    city: String
+    email: String
+    firstName: String
+    id: Long
+    lastName: String
+    telephone: String
+}
+
+type PetDTO {
+    birthDate: LocalDate
+    id: Long
+    identificationNumber: String
+    owner: OwnerDTO
+    type: PetTypeDTO
+}
+
+type PetTypeDTO {
+    id: Long
+    name: String
+}
+
+"Query root"
+type Query {
+    owner(id: Long): OwnerDTO
+    ownerList: [OwnerDTO]
+    pet(id: Long): PetDTO
+    petList: [PetDTO]
+    petType(id: Long): PetTypeDTO
+    petTypeList: [PetTypeDTO]
+    test(id: Long): TestDTO
+    testList: [TestDTO]
+    visit(id: Long): VisitDTO
+    visitList: [VisitDTO]
+}
+
+type TestDTO {
+    bigDecimal: BigDecimal
+    bigInt: BigInteger
+    bool: Boolean
+    boolPrimitive: Boolean!
+    bytePrimitive: Byte!
+    byteTest: Byte
+    charPrimitive: Char!
+    character: Char
+    dateUtil: DateTime
+    doubleTest: Float
+    floatTest: Float
+    id: Long
+    intTest: Int
+    localDate: LocalDate
+    localDateTime: LocalDateTime
+    localTime: LocalTime
+    longTest: Long
+    offsetDateTime: OffsetDateTime
+    offsetTime: OffsetTime
+    shortPrimitive: Short!
+    shortTest: Short
+    string: String
+    uuidTest: UUID
+}
+
+type VisitDTO {
+    description: String
+    id: Long
+    visitEnd: LocalDateTime
+    visitStart: LocalDateTime
+}
+
+"BigDecimal"
+scalar BigDecimal
+
+"BigInteger"
+scalar BigInteger
+
+"Byte"
+scalar Byte
+
+"Char"
+scalar Char
+
+"Date"
+scalar Date
+
+"DateTime"
+scalar DateTime
+
+"LocalDate"
+scalar LocalDate
+
+"LocalDateTime"
+scalar LocalDateTime
+
+"LocalTime"
+scalar LocalTime
+
+"Long"
+scalar Long
+
+"OffsetDateTime"
+scalar OffsetDateTime
+
+"OffsetTime"
+scalar OffsetTime
+
+"Short"
+scalar Short
+
+"Time"
+scalar Time
+
+"UUID"
+scalar UUID
+
+"Void"
+scalar Void
+
+input OwnerDTOInput {
+    address: String
+    city: String
+    email: String
+    firstName: String
+    id: Long
+    lastName: String
+    telephone: String
+}
+
+input OwnerInputDTOInput {
+    address: String
+    city: String
+    email: String
+    firstName: String
+    id: Long
+    lastName: String
+    telephone: String
+}
+
+input PetDTOInput {
+    birthDate: LocalDate
+    id: Long
+    identificationNumber: String
+    owner: OwnerDTOInput
+    type: PetTypeDTOInput
+}
+
+input PetInputDTOInput {
+    birthDate: LocalDate
+    id: Long
+    identificationNumber: String
+    owner: OwnerDTOInput
+    type: PetTypeDTOInput
+}
+
+input PetTypeDTOInput {
+    id: Long
+    name: String
+}
+
+input PetTypeInputDTOInput {
+    id: Long
+    name: String
+}
+
+input TestInputDTOInput {
+    bigDecimal: BigDecimal
+    bigInt: BigInteger
+    bool: Boolean
+    boolPrimitive: Boolean!
+    bytePrimitive: Byte!
+    byteTest: Byte
+    charPrimitive: Char!
+    character: Char
+    dateUtil: DateTime
+    doubleTest: Float
+    floatTest: Float
+    id: Long
+    intTest: Int
+    localDate: LocalDate
+    localDateTime: LocalDateTime
+    localTime: LocalTime
+    longTest: Long
+    offsetDateTime: OffsetDateTime
+    offsetTime: OffsetTime
+    shortPrimitive: Short!
+    shortTest: Short
+    string: String
+    uuidTest: UUID
+}
+
+input VisitInputDTOInput {
+    description: String
+    id: Long
+    pet: PetDTOInput
+    visitEnd: LocalDateTime
+    visitStart: LocalDateTime
+}
