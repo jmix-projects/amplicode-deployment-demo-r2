@@ -23,6 +23,9 @@ dependencies {
 
     implementation 'org.modelmapper:modelmapper:2.4.4'
 
+    implementation 'com.github.paulcwarren:spring-content-fs-boot-starter:1.2.5'
+    implementation 'com.github.paulcwarren:spring-content-rest-boot-starter:1.2.5'
+
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     runtimeOnly 'org.postgresql:postgresql'

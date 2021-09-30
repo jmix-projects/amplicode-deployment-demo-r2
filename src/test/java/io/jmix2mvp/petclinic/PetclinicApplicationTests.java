@@ -1,11 +1,22 @@
 package io.jmix2mvp.petclinic;
 
+import io.jmix2mvp.petclinic.entity.FileRef;
 import io.jmix2mvp.petclinic.entity.TestEntity;
+import io.jmix2mvp.petclinic.file.FileRefDTO;
+import io.jmix2mvp.petclinic.file.FileRefDTOStore;
+import io.jmix2mvp.petclinic.file.FileRefStore;
+import io.jmix2mvp.petclinic.repository.FileRefRepository;
 import io.jmix2mvp.petclinic.repository.TestRepository;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
@@ -25,6 +36,12 @@ import java.util.stream.IntStream;
 class PetclinicApplicationTests {
     @Autowired
     private TestRepository testRepository;
+    @Autowired
+    private FileRefRepository fileRefRepository;
+    @Autowired
+    private FileRefStore fileRefStore;
+    @Autowired
+    private FileRefDTOStore fileRefDTOStore;
 
     private static final String STRING_VALUE = "VALUE";
 
@@ -97,4 +114,48 @@ class PetclinicApplicationTests {
         testRepository.save(testEntity);
     }
 
+    @Test
+    @Transactional
+    void testFileRef() throws IOException {
+        byte[] data = "Hello World".getBytes(StandardCharsets.UTF_8);
+
+        FileRef fileRef = new FileRef();
+        fileRefStore.setContent(fileRef, new ByteArrayInputStream(data));
+
+        Assertions.assertNotNull(fileRef.getContentId());
+
+        FileRef newFileRef = fileRefRepository.save(fileRef);
+
+        FileRef reloadedFileRef = fileRefRepository.getById(newFileRef.getId());
+
+        InputStream content = fileRefStore.getContent(reloadedFileRef);
+
+        Assertions.assertEquals("Hello World", IOUtils.toString(content, StandardCharsets.UTF_8));
+    }
+
+    @Test
+    @Transactional
+    void testFileRefDTO() throws IOException {
+        byte[] data = "Hello World".getBytes(StandardCharsets.UTF_8);
+
+        FileRef fileRef = new FileRef();
+
+        FileRefDTO fileRefDTO = new FileRefDTO();
+
+        fileRefDTOStore.setContent(fileRefDTO, new ByteArrayInputStream(data));
+
+        Assertions.assertNotNull(fileRefDTO.getContentId());
+
+        fileRef.setContentId(fileRefDTO.getContentId());
+
+        FileRef newFileRef = fileRefRepository.save(fileRef);
+
+        FileRef reloadedFileRef = fileRefRepository.getById(newFileRef.getId());
+
+        FileRefDTO reloadedFileRefDTO = new FileRefDTO(reloadedFileRef.getContentId());
+
+        InputStream content = fileRefDTOStore.getContent(reloadedFileRefDTO);
+
+        Assertions.assertEquals("Hello World", IOUtils.toString(content, StandardCharsets.UTF_8));
+    }
 }

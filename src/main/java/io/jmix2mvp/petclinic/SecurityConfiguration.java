@@ -41,21 +41,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/graphql").permitAll()
                 .antMatchers("/graphql/**").permitAll()
                 .and()
-                .cors()
-                .and()
+                .cors().disable()
                 .csrf().disable();
     }
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name())
-                        .allowedHeaders("*")
-                        .allowedOrigins("http://localhost:3000");
-            }
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name())
+//                        .allowedHeaders("*")
+//                        .allowedOrigins("http://localhost:3000");
+//            }
 
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
