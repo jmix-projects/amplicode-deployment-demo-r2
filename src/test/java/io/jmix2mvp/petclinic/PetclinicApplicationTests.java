@@ -4,7 +4,8 @@ import io.jmix2mvp.petclinic.entity.FileRef;
 import io.jmix2mvp.petclinic.entity.TestEntity;
 import io.jmix2mvp.petclinic.file.FileRefDTO;
 import io.jmix2mvp.petclinic.file.FileRefDTOStore;
-import io.jmix2mvp.petclinic.file.FileRefStore;
+import io.jmix2mvp.petclinic.file.FileRefFsStore;
+import io.jmix2mvp.petclinic.file.FileRefJpaStore;
 import io.jmix2mvp.petclinic.repository.FileRefRepository;
 import io.jmix2mvp.petclinic.repository.TestRepository;
 import org.apache.commons.io.IOUtils;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -30,6 +32,7 @@ import java.util.Calendar;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -39,9 +42,13 @@ class PetclinicApplicationTests {
     @Autowired
     private FileRefRepository fileRefRepository;
     @Autowired
-    private FileRefStore fileRefStore;
+    private FileRefFsStore fileRefFsStore;
+    @Autowired
+    private FileRefJpaStore fileRefJpaStore;
     @Autowired
     private FileRefDTOStore fileRefDTOStore;
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     private static final String STRING_VALUE = "VALUE";
 
@@ -115,22 +122,84 @@ class PetclinicApplicationTests {
     }
 
     @Test
-    @Transactional
     void testFileRef() throws IOException {
-        byte[] data = "Hello World".getBytes(StandardCharsets.UTF_8);
 
-        FileRef fileRef = new FileRef();
-        fileRefStore.setContent(fileRef, new ByteArrayInputStream(data));
+        transactionTemplate.executeWithoutResult(s -> {
+            byte[] data = "Hello World".getBytes(StandardCharsets.UTF_8);
 
-        Assertions.assertNotNull(fileRef.getContentId());
+            FileRef fileRef = new FileRef();
+            fileRef.setType("file");
+            fileRefFsStore.setContent(fileRef, new ByteArrayInputStream(data));
 
-        FileRef newFileRef = fileRefRepository.save(fileRef);
+            Assertions.assertNotNull(fileRef.getContentId());
 
-        FileRef reloadedFileRef = fileRefRepository.getById(newFileRef.getId());
+            FileRef newFileRef = fileRefRepository.save(fileRef);
 
-        InputStream content = fileRefStore.getContent(reloadedFileRef);
+            FileRef reloadedFileRef = fileRefRepository.getById(newFileRef.getId());
 
-        Assertions.assertEquals("Hello World", IOUtils.toString(content, StandardCharsets.UTF_8));
+            InputStream content = fileRefFsStore.getContent(reloadedFileRef);
+
+            try {
+                Assertions.assertEquals("Hello World", IOUtils.toString(content, StandardCharsets.UTF_8));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        AtomicReference<Long> fileRefId = new AtomicReference<>();
+
+        transactionTemplate.executeWithoutResult(s -> {
+            byte[] data = "Hello World".getBytes(StandardCharsets.UTF_8);
+
+            FileRef fileRef = new FileRef();
+            fileRef.setType("jpa");
+            fileRefJpaStore.setContent(fileRef, new ByteArrayInputStream(data));
+
+            Assertions.assertNotNull(fileRef.getContentId());
+
+            FileRef newFileRef = fileRefRepository.save(fileRef);
+
+            FileRef reloadedFileRef = fileRefRepository.getById(newFileRef.getId());
+            fileRefId.set(reloadedFileRef.getId());
+
+            InputStream content = fileRefJpaStore.getContent(reloadedFileRef);
+
+            try {
+                Assertions.assertEquals("Hello World", IOUtils.toString(content, StandardCharsets.UTF_8));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+
+        transactionTemplate.executeWithoutResult(s -> {
+            FileRef reloadedFileRef = fileRefRepository.getById(fileRefId.get());
+            fileRefId.set(reloadedFileRef.getId());
+
+            InputStream content = fileRefJpaStore.getContent(reloadedFileRef);
+
+            try {
+                Assertions.assertEquals("Hello World", IOUtils.toString(content, StandardCharsets.UTF_8));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+
+    @Test
+    void testFileRefById() throws IOException {
+        transactionTemplate.executeWithoutResult(s -> {
+            FileRef reloadedFileRef = fileRefRepository.getById(2L);
+
+            InputStream content = fileRefJpaStore.getContent(reloadedFileRef);
+
+            try {
+                Assertions.assertEquals("Hello World", IOUtils.toString(content, StandardCharsets.UTF_8));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Test

@@ -16,12 +16,23 @@ public class FileRef {
     @Column(name = "content_id")
     private String contentId;
 
+    @Column(name = "type")
+    private String type;
+
     public String getContentId() {
         return contentId;
     }
 
     public void setContentId(String contentId) {
         this.contentId = contentId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Long getId() {

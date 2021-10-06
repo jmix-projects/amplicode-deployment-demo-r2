@@ -4,5 +4,6 @@ CREATE TABLE file_ref
 (
     id         BIGINT NOT NULL,
     content_id VARCHAR(255),
+    type VARCHAR(255),
     CONSTRAINT pk_file_ref PRIMARY KEY (id)
 );
