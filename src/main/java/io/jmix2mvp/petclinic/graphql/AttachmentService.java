@@ -18,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.jmix2mvp.petclinic.Authorities.ADMIN;
-import static io.jmix2mvp.petclinic.Authorities.VETERINARIAN;
+import static io.jmix2mvp.petclinic.Authorities.*;
 
 @GraphQLApi
 @Service
@@ -32,7 +31,7 @@ public class AttachmentService {
         this.mapper = mapper;
     }
 
-    @Secured({ADMIN, VETERINARIAN})
+    @Secured({ADMIN, VETERINARIAN, OWNER})
     @GraphQLQuery(name = "attachment")
     @Transactional
     public AttachmentDTO findById(@GraphQLArgument(name = "id") Long id) {
@@ -41,7 +40,7 @@ public class AttachmentService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
     }
 
-    @Secured({ADMIN, VETERINARIAN})
+    @Secured({ADMIN, VETERINARIAN, OWNER})
     @GraphQLQuery(name = "attachmentList")
     @Transactional
     public List<AttachmentDTO> findAll(@GraphQLArgument(name = "page") Pageable pageable) {
@@ -50,7 +49,7 @@ public class AttachmentService {
                 .collect(Collectors.toList());
     }
 
-    @Secured({ADMIN, VETERINARIAN})
+    @Secured({ADMIN, VETERINARIAN, OWNER})
     @GraphQLMutation(name = "update_Attachment")
     @Transactional
     public AttachmentDTO update(AttachmentInputDTO input) {
@@ -68,7 +67,7 @@ public class AttachmentService {
         return mapper.map(entity, AttachmentDTO.class);
     }
 
-    @Secured({ADMIN, VETERINARIAN})
+    @Secured({ADMIN, VETERINARIAN, OWNER})
     @GraphQLMutation(name = "delete_Attachment")
     @Transactional
     public void delete(@GraphQLNonNull Long id) {

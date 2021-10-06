@@ -25,18 +25,17 @@ public interface VisitExpressions {
         return QVisit.visit.visitStart.loe(to).and(QVisit.visit.visitStart.goe(from));
     }
 
-    static BooleanExpression withRowLevelPermissions(BooleanExpression expression, Authentication authentication) {
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        boolean isVet = authorities.stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(Authorities.VETERINARIAN));
+    static BooleanExpression withRowLevelPermissions(Authentication authentication) {
+        boolean isVet = Authorities.isVeterinarian(authentication);
         if (isVet) {
-            return expression.and(QVisit.visit.veterinarian.user.username.eq(authentication.getName()));
+            return QVisit.visit.veterinarian.isNotNull().and(QVisit.visit.veterinarian.user.username.eq(authentication.getName()));
         }
 
-        boolean isOwner = authorities.stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(Authorities.OWNER));
+        boolean isOwner = Authorities.isOwner(authentication);
         if(isOwner) {
-            return expression.and(QVisit.visit.pet.owner.isNotNull().and(QVisit.visit.pet.owner.user.username.eq(authentication.getName())));
+            return QVisit.visit.pet.owner.isNotNull().and(QVisit.visit.pet.owner.user.username.eq(authentication.getName()));
         }
 
-        return expression;
+        return Expressions.TRUE;
     }
 }

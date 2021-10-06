@@ -73,7 +73,7 @@ public class VisitService {
             predicate = predicate.and(VisitExpressions.byState(visitState));
         }
 
-        predicate = VisitExpressions.withRowLevelPermissions(predicate, authentication);
+        predicate = Expressions.allOf(predicate, VisitExpressions.withRowLevelPermissions(authentication));
 
         return visitRepository.findAll(predicate, pageable).stream()
                 .map(e -> mapper.map(e, VisitDTO.class))
@@ -117,32 +117,32 @@ public class VisitService {
         visitRepository.delete(entity);
     }
 
-    @Secured({OWNER})
-    @GraphQLQuery(name = "ownerPlannedVisits")
+    @Secured({OWNER, VETERINARIAN})
+    @GraphQLQuery(name = "userPlannedVisits")
     @Transactional
-    public List<VisitDTO> findOwnerPlannedVisits(@GraphQLArgument(name = "page") Pageable page) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    public List<VisitDTO> findUserPlannedVisits(@GraphQLArgument(name = "page") Pageable page) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        BooleanExpression ownerVisits = QVisit.visit.pet.owner.user.username.eq(username);
+        BooleanExpression userVisits = VisitExpressions.withRowLevelPermissions(authentication);;
         BooleanExpression plannedVisits = QVisit.visit.state.eq(VisitState.PLANNED);
 
-        return visitRepository.findAll(Expressions.allOf(ownerVisits, plannedVisits), page)
+        return visitRepository.findAll(Expressions.allOf(userVisits, plannedVisits), page)
                 .stream()
                 .map(visit -> mapper.map(visit, VisitDTO.class))
                 .collect(Collectors.toList());
     }
 
 
-    @Secured({OWNER})
-    @GraphQLQuery(name = "ownerPastVisits")
+    @Secured({OWNER, VETERINARIAN})
+    @GraphQLQuery(name = "userPastVisits")
     @Transactional
-    public List<VisitDTO> findOwnerPastVisits(@GraphQLArgument(name = "page") Pageable page) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    public List<VisitDTO> findUserPastVisits(@GraphQLArgument(name = "page") Pageable page) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        BooleanExpression ownerVisits = QVisit.visit.pet.owner.user.username.eq(username);
+        BooleanExpression userVisits = VisitExpressions.withRowLevelPermissions(authentication);
         BooleanExpression plannedVisits = QVisit.visit.state.ne(VisitState.PLANNED);
 
-        return visitRepository.findAll(Expressions.allOf(ownerVisits, plannedVisits), page)
+        return visitRepository.findAll(Expressions.allOf(userVisits, plannedVisits), page)
                 .stream()
                 .map(visit -> mapper.map(visit, VisitDTO.class))
                 .collect(Collectors.toList());
@@ -155,6 +155,16 @@ public class VisitService {
     public void cancelVisit(@GraphQLArgument(name = "id") @GraphQLNonNull Long id) {
         visitRepository.findById(id).ifPresent(visit -> {
             visit.setState(VisitState.CANCELED);
+
+            visitRepository.save(visit);
+        });
+    }
+
+    @Secured({VETERINARIAN})
+    @GraphQLMutation(name = "endVisit")
+    public void endVisit(@GraphQLArgument(name = "id") @GraphQLNonNull Long id) {
+        visitRepository.findById(id).ifPresent(visit -> {
+            visit.setState(VisitState.ENDED);
 
             visitRepository.save(visit);
         });

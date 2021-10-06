@@ -29,6 +29,7 @@ public class Visit extends BaseEntity {
 
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "veterinarian_id")
+    @QueryInit("*.*")
     private Veterinarian veterinarian;
 
     public Veterinarian getVeterinarian() {
