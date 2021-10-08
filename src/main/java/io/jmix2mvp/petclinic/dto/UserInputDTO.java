@@ -2,11 +2,10 @@ package io.jmix2mvp.petclinic.dto;
 
 import java.util.List;
 
-public class UserDTO {
+public class UserInputDTO {
     private String username;
-
+    private String password;
     private List<String> authorities;
-
     private boolean enabled;
 
     public String getUsername() {
@@ -15,6 +14,14 @@ public class UserDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<String> getAuthorities() {

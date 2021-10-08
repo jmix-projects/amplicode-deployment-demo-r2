@@ -7,7 +7,7 @@ public class OwnerDTO extends BaseDTO {
     private String city;
     private String email;
     private String telephone;
-    private String username;
+    private UserDTO user;
 
     public String getFirstName() {
         return firstName;
@@ -57,11 +57,11 @@ public class OwnerDTO extends BaseDTO {
         this.telephone = telephone;
     }
 
-    public String getUsername() {
-        return username;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 }

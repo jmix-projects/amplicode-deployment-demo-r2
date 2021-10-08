@@ -6,18 +6,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class VisitInputDTO extends BaseDTO {
-    private PetDTO pet;
+    private PetInputDTO pet;
     private LocalDateTime visitStart;
     private String description;
     private List<AttachmentInputDTO> attachments;
     private VisitState visitState;
     private VeterinarianInputDTO veterinarian;
 
-    public PetDTO getPet() {
+    public PetInputDTO getPet() {
         return pet;
     }
 
-    public void setPet(PetDTO pet) {
+    public void setPet(PetInputDTO pet) {
         this.pet = pet;
     }
 

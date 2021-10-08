@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class PetInputDTO extends BaseDTO {
     private String identificationNumber;
     private LocalDate birthDate;
-    private PetTypeDTO type;
+    private PetTypeInputDTO type;
     private String avatarUrl;
 
     public String getIdentificationNumber() {
@@ -24,11 +24,11 @@ public class PetInputDTO extends BaseDTO {
         this.birthDate = birthDate;
     }
 
-    public PetTypeDTO getType() {
+    public PetTypeInputDTO getType() {
         return type;
     }
 
-    public void setType(PetTypeDTO type) {
+    public void setType(PetTypeInputDTO type) {
         this.type = type;
     }
 
