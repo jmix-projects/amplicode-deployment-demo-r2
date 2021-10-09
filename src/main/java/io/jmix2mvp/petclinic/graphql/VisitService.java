@@ -73,7 +73,9 @@ public class VisitService {
             predicate = predicate.and(VisitExpressions.byState(visitState));
         }
 
-        predicate = Expressions.allOf(predicate, VisitExpressions.withRowLevelPermissions(authentication));
+        BooleanExpression rowLevelPermission = VisitExpressions.withRowLevelPermissions(authentication);
+        if(rowLevelPermission != null)
+            predicate = Expressions.allOf(predicate, rowLevelPermission);
 
         return visitRepository.findAll(predicate, pageable).stream()
                 .map(e -> mapper.map(e, VisitDTO.class))

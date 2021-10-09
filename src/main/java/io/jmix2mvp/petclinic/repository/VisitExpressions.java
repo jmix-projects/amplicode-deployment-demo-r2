@@ -10,6 +10,7 @@ import io.jmix2mvp.petclinic.entity.QVisit;
 import io.jmix2mvp.petclinic.entity.Visit;
 import io.jmix2mvp.petclinic.entity.VisitState;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -25,6 +26,7 @@ public interface VisitExpressions {
         return QVisit.visit.visitStart.loe(to).and(QVisit.visit.visitStart.goe(from));
     }
 
+    @Nullable
     static BooleanExpression withRowLevelPermissions(Authentication authentication) {
         boolean isVet = Authorities.isVeterinarian(authentication);
         if (isVet) {
@@ -36,6 +38,6 @@ public interface VisitExpressions {
             return QVisit.visit.pet.owner.isNotNull().and(QVisit.visit.pet.owner.user.username.eq(authentication.getName()));
         }
 
-        return Expressions.TRUE;
+        return null;
     }
 }
