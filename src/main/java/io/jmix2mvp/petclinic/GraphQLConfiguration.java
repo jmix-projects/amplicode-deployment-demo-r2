@@ -22,7 +22,7 @@ import io.leangen.graphql.spqr.spring.modules.data.DefaultValueSchemaTransformer
 import io.leangen.graphql.spqr.spring.modules.data.Order;
 import io.leangen.graphql.spqr.spring.modules.data.Pagination;
 import io.leangen.graphql.spqr.spring.modules.data.Sorting;
-import io.leangen.graphql.util.Scalars;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +32,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationTrustResolver;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -50,7 +53,7 @@ public class GraphQLConfiguration {
     //TODO: access denied bugfix
     @Bean
     public ExtensionProvider<GeneratorConfiguration, ResolverInterceptorFactory> resolverInterceptorFactoryProvider(ApplicationContext applicationContext) {
-        return (config, defaults) -> defaults.append(params -> getResolverInterceptors());
+        return (config, defaults) -> defaults.append(params -> getResolverInterceptors(applicationContext));
     }
 
     //TODO: pageable bugfix
@@ -139,21 +142,40 @@ public class GraphQLConfiguration {
                         });
     }
 
-    protected List<ResolverInterceptor> getResolverInterceptors() {
-        return Arrays.asList(new AccessDeniedResolverInterceptor(), new ValidationInterceptor());
+    protected List<ResolverInterceptor> getResolverInterceptors(ApplicationContext applicationContext) {
+        return Arrays.asList(new AccessDeniedResolverInterceptor(applicationContext), new ValidationInterceptor());
     }
 
     //TODO: access denied bugfix
     private static class AccessDeniedResolverInterceptor implements ResolverInterceptor {
+        private AuthenticationTrustResolver resolver;
+
+        public AccessDeniedResolverInterceptor(ApplicationContext applicationContext) {
+            try {
+                this.resolver = applicationContext.getBean(AuthenticationTrustResolver.class);
+            } catch (NoSuchBeanDefinitionException e) {
+                this.resolver = new AuthenticationTrustResolverImpl();
+            }
+        }
+
+
         @Override
         public Object aroundInvoke(InvocationContext context, Continuation continuation) throws Exception {
             try {
                 return continuation.proceed(context);
             } catch (AccessDeniedException e) {
-                GraphQLError error = GraphqlErrorBuilder.newError()
-                        .errorType(ErrorType.FORBIDDEN)
-                        .message("Forbidden")
-                        .build();
+                GraphQLError error;
+                if (resolver.isAnonymous(SecurityContextHolder.getContext().getAuthentication())) {
+                    error = GraphqlErrorBuilder.newError()
+                            .errorType(ErrorType.UNAUTHORIZED)
+                            .message("Unauthorized")
+                            .build();
+                } else {
+                    error = GraphqlErrorBuilder.newError()
+                            .errorType(ErrorType.FORBIDDEN)
+                            .message("Forbidden")
+                            .build();
+                }
                 return DataFetcherResult.newResult()
                         .error(error)
                         .build();
