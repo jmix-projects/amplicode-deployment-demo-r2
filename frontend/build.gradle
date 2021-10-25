@@ -17,6 +17,7 @@ task listGenerators(type: NpxTask, dependsOn: installGenerators) {
 
 task buildFrontend(type: NpmTask, dependsOn: npmInstall) {
     args = ["run", "build"]
+
 }
 
 task deployFrontend(type: Copy, dependsOn: buildFrontend) {
@@ -24,6 +25,6 @@ task deployFrontend(type: Copy, dependsOn: buildFrontend) {
     into "$rootDir/build/resources/main/static$frontContext"
 }
 
-if (rootProject.hasProperty("prod")) {
+if (rootProject.hasProperty("deployFrontend")) {
     rootProject.classes.dependsOn(deployFrontend)
 }

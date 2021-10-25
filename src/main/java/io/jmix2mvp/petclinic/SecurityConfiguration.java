@@ -3,13 +3,13 @@ package io.jmix2mvp.petclinic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,11 +17,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import static org.springframework.util.StringUtils.trimLeadingCharacter;
+import static org.springframework.util.StringUtils.trimTrailingCharacter;
+
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private AppProperties appProperties;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -51,16 +56,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name())
-                        .allowedHeaders("*")
-                        .allowedOrigins("http://localhost:3000");
+                CorsConfiguration corsConfiguration = appProperties.getCors();
+                if (isConfigured(corsConfiguration)) {
+                    registry.addMapping("/**").combine(corsConfiguration);
+                }
             }
 
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
-                registry.addViewController("/front").setViewName("forward:/front/index.html");
+                String publicUrl = normalizeUrl(appProperties.getFrontend().getPublicUrl());
+                registry.addViewController("/" + publicUrl).setViewName("forward:/" + publicUrl + "/index.html");
+            }
+
+            private boolean isConfigured(CorsConfiguration corsConfiguration) {
+                return corsConfiguration.getAllowedOrigins() != null && !corsConfiguration.getAllowedOrigins().isEmpty() ||
+                        corsConfiguration.getAllowedOriginPatterns() != null && !corsConfiguration.getAllowedOriginPatterns().isEmpty();
+            }
+
+            private String normalizeUrl(String url) {
+                return trimTrailingCharacter(trimLeadingCharacter(url, '/'), '/');
             }
         };
     }
+
 }
