@@ -17,7 +17,6 @@ task listGenerators(type: NpxTask, dependsOn: installGenerators) {
 
 task buildFrontend(type: NpmTask, dependsOn: npmInstall) {
     args = ["run", "build"]
-
 }
 
 task deployFrontend(type: Copy, dependsOn: buildFrontend) {
