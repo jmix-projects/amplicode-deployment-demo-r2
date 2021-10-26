@@ -202,9 +202,12 @@ public class GraphQLConfiguration {
         }
 
         private Map<String, Object> getExtensions(Set<ConstraintViolation<?>> constraintViolations) {
-            return Map.of("constraintViolations", constraintViolations.stream()
+            Map<String, Object> extensions = new HashMap<>();
+            extensions.put("constraintViolations", constraintViolations.stream()
                     .map(this::composeErrorExtension)
                     .collect(Collectors.toList()));
+
+            return extensions;
         }
 
         private Map<String, Object> composeErrorExtension(ConstraintViolation<?> constraintViolation) {

@@ -25,6 +25,6 @@ task deployFrontend(type: Copy, dependsOn: buildFrontend) {
     into "$rootDir/build/resources/main/static$frontContext"
 }
 
-if (rootProject.hasProperty("deployFrontend")) {
+if (rootProject.hasProperty("includeFrontend")) {
     rootProject.classes.dependsOn(deployFrontend)
 }
