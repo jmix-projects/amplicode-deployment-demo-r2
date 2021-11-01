@@ -3,12 +3,15 @@ package io.jmix2mvp.petclinic.graphql;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import io.jmix2mvp.petclinic.dto.VeterinarianDTO;
+import io.jmix2mvp.petclinic.dto.VeterinarianInputDTO;
 import io.jmix2mvp.petclinic.entity.QVisit;
+import io.jmix2mvp.petclinic.entity.Veterinarian;
 import io.jmix2mvp.petclinic.entity.Visit;
 import io.jmix2mvp.petclinic.entity.VisitState;
 import io.jmix2mvp.petclinic.repository.VeterinarianRepository;
 import io.jmix2mvp.petclinic.repository.VisitRepository;
 import io.leangen.graphql.annotations.GraphQLArgument;
+import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
@@ -63,6 +66,14 @@ public class VeterinarianService {
                 .toArray();
     }
 
+    @Secured({ADMIN, VETERINARIAN})
+    @GraphQLQuery(name = "veterinarian")
+    @Transactional
+    public VeterinarianDTO findById(@GraphQLArgument(name = "id") Long id) {
+        return veterinarianRepository.findById(id)
+                .map(veterinarian -> mapper.map(veterinarian, VeterinarianDTO.class))
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s", id)));
+    }
 
     @Secured({ADMIN, VETERINARIAN, OWNER})
     @GraphQLQuery(name = "veterinarianList")
@@ -72,5 +83,32 @@ public class VeterinarianService {
                 .stream()
                 .map(veterinarian -> mapper.map(veterinarian, VeterinarianDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Secured({ADMIN, VETERINARIAN})
+    @GraphQLMutation(name = "update_Veterinarian")
+    @Transactional
+    public VeterinarianDTO update(VeterinarianInputDTO input) {
+        if (input.getId() != null) {
+            if (!veterinarianRepository.existsById(input.getId())) {
+                throw new ResourceNotFoundException(String.format("Unable to find entity by id: %s", input.getId()));
+            }
+        }
+
+        Veterinarian entity = new Veterinarian();
+        mapper.map(input, entity);
+        entity = veterinarianRepository.save(entity);
+
+        return mapper.map(entity, VeterinarianDTO.class);
+    }
+
+    @Secured({ADMIN, VETERINARIAN})
+    @GraphQLMutation(name = "delete_Veterinarian")
+    @Transactional
+    public void delete(@GraphQLNonNull Long id) {
+        Veterinarian entity = veterinarianRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s", id)));
+
+        veterinarianRepository.delete(entity);
     }
 }
