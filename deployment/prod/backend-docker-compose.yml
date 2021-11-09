@@ -16,20 +16,9 @@ services:
     networks:
       - petclinic-net
 
-  petclinic-front:
-    container_name: petclinic-front
-    image: petclinic-front
-    restart: unless-stopped
-    ports:
-      - "83:80"
-    environment:
-      BACKEND_URL: http://petclinic-backend:8080
-    networks:
-      - petclinic-net
-
   petclinic-backend:
     container_name: petclinic-backend
-    image: amplicode-petclinic-demo-r2:backend
+    image: docker.haulmont.com/platform/infrastructure/demo-cuba-apps-docker/demo-r2/amplicode-petclinic-demo-r2:backend
     restart: unless-stopped
     environment:
       RDS_HOSTNAME: backend-postgres-12
