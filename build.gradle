@@ -46,6 +46,10 @@ bootBuildImage {
     if (rootProject.hasProperty('dockerTag')) {
         imageName = rootProject['dockerTag']
     } else {
-        imageName = 'amplicode-petclinic-demo-r2:backend'
+        if (rootProject.hasProperty("includeFrontend")) {
+            imageName = 'amplicode-petclinic-demo-r2:full'
+        } else {
+            imageName = 'amplicode-petclinic-demo-r2:backend'
+        }
     }
 }
