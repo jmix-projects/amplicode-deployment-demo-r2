@@ -22,9 +22,9 @@ services:
     restart: unless-stopped
     environment:
       RDS_HOSTNAME: backend-postgres-12-r2
-      RDS_PASSWORD: ${DB_PASSWORD}
-      RDS_USERNAME: ${DB_USERNAME}
-      RDS_DB_NAME: ${DB_NAME}
+      RDS_PASSWORD: ${DB1_PASSWORD}
+      RDS_USERNAME: ${DB1_USERNAME}
+      RDS_DB_NAME: ${DB1_NAME}
       RDS_PORT: 5432
       SPRING_PROFILES_ACTIVE: docker
     ports:
