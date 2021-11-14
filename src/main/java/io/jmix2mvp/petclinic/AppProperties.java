@@ -7,6 +7,7 @@ import org.springframework.web.cors.CorsConfiguration;
 public class AppProperties {
     private final CorsConfiguration cors = new CorsConfiguration();
     private final FrontendProperties frontend = new FrontendProperties();
+    private final CookieProperties cookie = new CookieProperties();
 
     public CorsConfiguration getCors() {
         return cors;
@@ -14,6 +15,10 @@ public class AppProperties {
 
     public FrontendProperties getFrontend() {
         return frontend;
+    }
+
+    public CookieProperties getCookie() {
+        return cookie;
     }
 
     public static class FrontendProperties {
@@ -25,6 +30,18 @@ public class AppProperties {
 
         public void setPublicUrl(String publicUrl) {
             this.publicUrl = publicUrl;
+        }
+    }
+
+    public static class CookieProperties {
+        private String sameSite;
+
+        public String getSameSite() {
+            return sameSite;
+        }
+
+        public void setSameSite(String sameSite) {
+            this.sameSite = sameSite;
         }
     }
 }
