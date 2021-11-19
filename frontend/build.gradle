@@ -2,15 +2,13 @@ plugins {
     id "com.github.node-gradle.node" version "3.0.1"
 }
 
-def frontContext = System.getenv('PUBLIC_URL')?:'/front'
-
 task installGenerators(type: NpmTask) {
     workingDir = file('generation')
     args = ['install']
 }
 
 task listGenerators(type: NpxTask, dependsOn: installGenerators) {
-    command = "@amplicode/codegen"
+    command = "amplicodegen"
     workingDir = file("generation")
     args = ["list", "-s", "generators.json"]
 }
@@ -21,9 +19,8 @@ task buildFrontend(type: NpmTask, dependsOn: npmInstall) {
 
 task deployFrontend(type: Copy, dependsOn: buildFrontend) {
     from "build"
-    into "$rootDir/build/resources/main/static$frontContext"
+    into "$rootDir/build/resources/main/static/front"
 }
 
-if (rootProject.hasProperty("includeFrontend")) {
-    rootProject.classes.dependsOn(deployFrontend)
-}
+// Uncomment the line below to build frontend along with the Spring Boot app
+//rootProject.classes.dependsOn(deployFrontend)

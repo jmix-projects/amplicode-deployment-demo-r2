@@ -1,4 +1,4 @@
-# This file was generated based on "Jmix model". Do not edit manually.
+# This file was automatically generated. Do not edit manually.
 
 schema {
     query: Query
@@ -7,86 +7,35 @@ schema {
 
 "Mutation root"
 type Mutation {
-    delete_Owner(id: Long!): Boolean!
-    delete_Pet(id: Long!): Boolean!
-    delete_PetType(id: Long!): Boolean!
-    delete_Test(id: Long!): Boolean!
-    delete_Visit(id: Long!): Boolean!
-    update_Owner(input: OwnerInputDTOInput): OwnerDTO
-    update_Pet(input: PetInputDTOInput): PetDTO
-    update_PetType(input: PetTypeInputDTOInput): PetTypeDTO
-    update_Test(input: TestInputDTOInput): TestDTO
-    update_Visit(input: VisitInputDTOInput): VisitDTO
-}
-
-type OwnerDTO {
-    address: String
-    city: String
-    email: String
-    firstName: String
-    id: Long
-    lastName: String
-    telephone: String
-}
-
-type PetDTO {
-    birthDate: LocalDate
-    id: Long
-    identificationNumber: String
-    owner: OwnerDTO
-    type: PetTypeDTO
-}
-
-type PetTypeDTO {
-    id: Long
-    name: String
+    delete(id: Long): Void
 }
 
 "Query root"
 type Query {
-    owner(id: Long): OwnerDTO
-    ownerList: [OwnerDTO]
-    pet(id: Long): PetDTO
-    petList: [PetDTO]
-    petType(id: Long): PetTypeDTO
-    petTypeList: [PetTypeDTO]
-    test(id: Long): TestDTO
-    testList: [TestDTO]
-    visit(id: Long): VisitDTO
-    visitList: [VisitDTO]
+    entityMessages(className: String, locale: String): [gql_MessageDetail]
+    enumMessages(className: String, locale: String): [gql_MessageDetail]
+    permissions: sec_PermissionConfig
 }
 
-type TestDTO {
-    bigDecimal: BigDecimal
-    bigInt: BigInteger
-    bool: Boolean
-    boolPrimitive: Boolean!
-    bytePrimitive: Byte!
-    byteTest: Byte
-    charPrimitive: Char!
-    character: Char
-    dateUtil: DateTime
-    doubleTest: Float
-    floatTest: Float
-    id: Long
-    intTest: Int
-    localDate: LocalDate
-    localDateTime: LocalDateTime
-    localTime: LocalTime
-    longTest: Long
-    offsetDateTime: OffsetDateTime
-    offsetTime: OffsetTime
-    shortPrimitive: Short!
-    shortTest: Short
-    string: String
-    uuidTest: UUID
+type gql_MessageDetail {
+    key: String
+    value: String
 }
 
-type VisitDTO {
-    description: String
-    id: Long
-    visitEnd: LocalDateTime
-    visitStart: LocalDateTime
+type sec_Permission {
+    target: String
+    value: Int
+}
+
+type sec_PermissionConfig {
+    entities: [sec_Permission]
+    entityAttributes: [sec_Permission]
+    specifics: [sec_Permission]
+}
+
+enum SortOrder {
+    ASC
+    DESC
 }
 
 "BigDecimal"
@@ -137,82 +86,358 @@ scalar UUID
 "Void"
 scalar Void
 
-input OwnerDTOInput {
-    address: String
-    city: String
-    email: String
-    firstName: String
-    id: Long
-    lastName: String
-    telephone: String
+"expression to compare columns of type BigDecimal. All fields are combined with logical 'AND'"
+input inp_BigDecimalFilterCondition {
+    "equals"
+    _eq: BigDecimal
+    "greater than"
+    _gt: BigDecimal
+    "greater than or equals"
+    _gte: BigDecimal
+    "in list"
+    _in: [BigDecimal]
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: BigDecimal
+    "less than or equals"
+    _lte: BigDecimal
+    "not equals"
+    _neq: BigDecimal
+    "not in list"
+    _notIn: [BigDecimal]
 }
 
-input OwnerInputDTOInput {
-    address: String
-    city: String
-    email: String
-    firstName: String
-    id: Long
-    lastName: String
-    telephone: String
+"expression to compare columns of type BigInteger. All fields are combined with logical 'AND'"
+input inp_BigIntegerFilterCondition {
+    "equals"
+    _eq: BigInteger
+    "greater than"
+    _gt: BigInteger
+    "greater than or equals"
+    _gte: BigInteger
+    "in list"
+    _in: [BigInteger]
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: BigInteger
+    "less than or equals"
+    _lte: BigInteger
+    "not equals"
+    _neq: BigInteger
+    "not in list"
+    _notIn: [BigInteger]
 }
 
-input PetDTOInput {
-    birthDate: LocalDate
-    id: Long
-    identificationNumber: String
-    owner: OwnerDTOInput
-    type: PetTypeDTOInput
+"expression to compare columns of type Boolean. All fields are combined with logical 'AND'"
+input inp_BooleanFilterCondition {
+    "equals"
+    _eq: Boolean
+    "is null"
+    _isNull: Boolean
+    "not equals"
+    _neq: Boolean
 }
 
-input PetInputDTOInput {
-    birthDate: LocalDate
-    id: Long
-    identificationNumber: String
-    owner: OwnerDTOInput
-    type: PetTypeDTOInput
+"expression to compare columns of type Char. All fields are combined with logical 'AND'"
+input inp_CharFilterCondition {
+    "equals"
+    _eq: Char
+    "in list"
+    _in: [Char]
+    "is null"
+    _isNull: Boolean
+    "not equals"
+    _neq: Char
+    "not in list"
+    _notIn: [Char]
 }
 
-input PetTypeDTOInput {
-    id: Long
-    name: String
+"expression to compare columns of type Date. All fields are combined with logical 'AND'"
+input inp_DateFilterCondition {
+    "equals"
+    _eq: Date
+    "greater than"
+    _gt: Date
+    "greater than or equals"
+    _gte: Date
+    "in list"
+    _in: [Date]
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: Date
+    "less than or equals"
+    _lte: Date
+    "not equals"
+    _neq: Date
+    "not in list"
+    _notIn: [Date]
 }
 
-input PetTypeInputDTOInput {
-    id: Long
-    name: String
+"expression to compare columns of type DateTime. All fields are combined with logical 'AND'"
+input inp_DateTimeFilterCondition {
+    "equals"
+    _eq: DateTime
+    "greater than"
+    _gt: DateTime
+    "greater than or equals"
+    _gte: DateTime
+    "in list"
+    _in: [DateTime]
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: DateTime
+    "less than or equals"
+    _lte: DateTime
+    "not equals"
+    _neq: DateTime
+    "not in list"
+    _notIn: [DateTime]
 }
 
-input TestInputDTOInput {
-    bigDecimal: BigDecimal
-    bigInt: BigInteger
-    bool: Boolean
-    boolPrimitive: Boolean!
-    bytePrimitive: Byte!
-    byteTest: Byte
-    charPrimitive: Char!
-    character: Char
-    dateUtil: DateTime
-    doubleTest: Float
-    floatTest: Float
-    id: Long
-    intTest: Int
-    localDate: LocalDate
-    localDateTime: LocalDateTime
-    localTime: LocalTime
-    longTest: Long
-    offsetDateTime: OffsetDateTime
-    offsetTime: OffsetTime
-    shortPrimitive: Short!
-    shortTest: Short
-    string: String
-    uuidTest: UUID
+"expression to compare columns of type Float. All fields are combined with logical 'AND'"
+input inp_FloatFilterCondition {
+    "equals"
+    _eq: Float
+    "greater than"
+    _gt: Float
+    "greater than or equals"
+    _gte: Float
+    "in list"
+    _in: [Float]
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: Float
+    "less than or equals"
+    _lte: Float
+    "not equals"
+    _neq: Float
+    "not in list"
+    _notIn: [Float]
 }
 
-input VisitInputDTOInput {
-    description: String
-    id: Long
-    pet: PetDTOInput
-    visitEnd: LocalDateTime
-    visitStart: LocalDateTime
+"expression to compare columns of type Int. All fields are combined with logical 'AND'"
+input inp_IntFilterCondition {
+    "equals"
+    _eq: Int
+    "greater than"
+    _gt: Int
+    "greater than or equals"
+    _gte: Int
+    "in list"
+    _in: [Int]
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: Int
+    "less than or equals"
+    _lte: Int
+    "not equals"
+    _neq: Int
+    "not in list"
+    _notIn: [Int]
+}
+
+"expression to compare columns of type LocalDate. All fields are combined with logical 'AND'"
+input inp_LocalDateFilterCondition {
+    "equals"
+    _eq: LocalDate
+    "greater than"
+    _gt: LocalDate
+    "greater than or equals"
+    _gte: LocalDate
+    "in list"
+    _in: [LocalDate]
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: LocalDate
+    "less than or equals"
+    _lte: LocalDate
+    "not equals"
+    _neq: LocalDate
+    "not in list"
+    _notIn: [LocalDate]
+}
+
+"expression to compare columns of type LocalDateTime. All fields are combined with logical 'AND'"
+input inp_LocalDateTimeFilterCondition {
+    "equals"
+    _eq: LocalDateTime
+    "greater than"
+    _gt: LocalDateTime
+    "greater than or equals"
+    _gte: LocalDateTime
+    "in list"
+    _in: [LocalDateTime]
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: LocalDateTime
+    "less than or equals"
+    _lte: LocalDateTime
+    "not equals"
+    _neq: LocalDateTime
+    "not in list"
+    _notIn: [LocalDateTime]
+}
+
+"expression to compare columns of type LocalTime. All fields are combined with logical 'AND'"
+input inp_LocalTimeFilterCondition {
+    "equals"
+    _eq: LocalTime
+    "greater than"
+    _gt: LocalTime
+    "greater than or equals"
+    _gte: LocalTime
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: LocalTime
+    "less than or equals"
+    _lte: LocalTime
+    "not equals"
+    _neq: LocalTime
+}
+
+"expression to compare columns of type Long. All fields are combined with logical 'AND'"
+input inp_LongFilterCondition {
+    "equals"
+    _eq: Long
+    "greater than"
+    _gt: Long
+    "greater than or equals"
+    _gte: Long
+    "in list"
+    _in: [Long]
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: Long
+    "less than or equals"
+    _lte: Long
+    "not equals"
+    _neq: Long
+    "not in list"
+    _notIn: [Long]
+}
+
+"expression to compare columns of type OffsetDateTime. All fields are combined with logical 'AND'"
+input inp_OffsetDateTimeFilterCondition {
+    "equals"
+    _eq: OffsetDateTime
+    "greater than"
+    _gt: OffsetDateTime
+    "greater than or equals"
+    _gte: OffsetDateTime
+    "in list"
+    _in: [OffsetDateTime]
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: OffsetDateTime
+    "less than or equals"
+    _lte: OffsetDateTime
+    "not equals"
+    _neq: OffsetDateTime
+    "not in list"
+    _notIn: [OffsetDateTime]
+}
+
+"expression to compare columns of type OffsetTime. All fields are combined with logical 'AND'"
+input inp_OffsetTimeFilterCondition {
+    "equals"
+    _eq: OffsetTime
+    "greater than"
+    _gt: OffsetTime
+    "greater than or equals"
+    _gte: OffsetTime
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: OffsetTime
+    "less than or equals"
+    _lte: OffsetTime
+    "not equals"
+    _neq: OffsetTime
+}
+
+"expression to compare columns of type Short. All fields are combined with logical 'AND'"
+input inp_ShortFilterCondition {
+    "equals"
+    _eq: Short
+    "greater than"
+    _gt: Short
+    "greater than or equals"
+    _gte: Short
+    "in list"
+    _in: [Short]
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: Short
+    "less than or equals"
+    _lte: Short
+    "not equals"
+    _neq: Short
+    "not in list"
+    _notIn: [Short]
+}
+
+"expression to compare columns of type String. All fields are combined with logical 'AND'"
+input inp_StringFilterCondition {
+    "contains substring"
+    _contains: String
+    "ends with substring"
+    _endsWith: String
+    "equals"
+    _eq: String
+    "in list"
+    _in: [String]
+    "is null"
+    _isNull: Boolean
+    "not equals"
+    _neq: String
+    "not contains substring"
+    _notContains: String
+    "not in list"
+    _notIn: [String]
+    "starts with substring"
+    _startsWith: String
+}
+
+"expression to compare columns of type Time. All fields are combined with logical 'AND'"
+input inp_TimeFilterCondition {
+    "equals"
+    _eq: Time
+    "greater than"
+    _gt: Time
+    "greater than or equals"
+    _gte: Time
+    "is null"
+    _isNull: Boolean
+    "less that"
+    _lt: Time
+    "less than or equals"
+    _lte: Time
+    "not equals"
+    _neq: Time
+}
+
+"expression to compare columns of type UUID. All fields are combined with logical 'AND'"
+input inp_UUIDFilterCondition {
+    "equals"
+    _eq: UUID
+    "in list"
+    _in: [UUID]
+    "is null"
+    _isNull: Boolean
+    "not equals"
+    _neq: UUID
+    "not in list"
+    _notIn: [UUID]
 }

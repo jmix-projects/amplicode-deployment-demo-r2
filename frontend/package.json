@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@amplicode/react-antd": "^0.1.0",
-    "@amplicode/react-core": "^0.1.0",
+    "@amplicode/react-core": "^0.2.0",
+    "@amplicode/react-antd": "^0.2.0",
     "@ant-design/icons": "^4.6.3",
     "@apollo/client": "^3.4.8",
     "@react-buddy/ide-toolbox": "^1.0.0",
@@ -34,7 +34,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate": "graphql-codegen",
+    "generate:watch": "graphql-codegen --watch",
+    "postinstall": "npm run generate"
   },
   "eslintConfig": {
     "extends": [
@@ -56,6 +59,16 @@
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
-    "@types/qs": "^6.9.7"
+    "@amplicode/gql": "file:src/gql",
+    "@graphql-codegen/cli": "^2.2.0",
+    "@graphql-codegen/gql-tag-operations-preset": "^1.1.7",
+    "@graphql-codegen/typescript": "^2.2.2",
+    "@types/qs": "^6.9.7",
+    "prettier": "^2.4.1"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!antd|@ant-design|@react-buddy|rc-.+?|@babel/runtime).+(js|jsx)$"
+    ]
   }
 }
