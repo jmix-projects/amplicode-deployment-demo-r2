@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.3'
+    id 'org.springframework.boot' version '2.5.6'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id "org.flywaydb.flyway" version "7.11.4"
@@ -11,6 +11,18 @@ sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://nexus.amplicode.com/repository/public/'
+    }
+    maven {
+        url 'https://nexus.jmix.io/repository/public' //for YARG
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.amplicode.bom:amplicode-bom:0.1.0-SNAPSHOT"
+    }
 }
 
 dependencies {
@@ -24,6 +36,8 @@ dependencies {
     implementation 'org.modelmapper:modelmapper:2.4.4'
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'com.amplicode.persistentmessages:amplicode-persistentmessages-starter'
+    implementation 'org.liquibase:liquibase-core'
 
     runtimeOnly 'org.postgresql:postgresql'
 
