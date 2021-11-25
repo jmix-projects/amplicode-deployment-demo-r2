@@ -376,11 +376,6 @@ export type QueryPetArgs = {
 };
 
 /** Query root */
-export type QueryPetListArgs = {
-  page?: InputMaybe<PaginationInput>;
-};
-
-/** Query root */
 export type QueryPetTypeArgs = {
   id?: InputMaybe<Scalars["Long"]>;
 };
@@ -760,9 +755,7 @@ export type New_PetDtoFragment = {
   id?: any | null | undefined;
 };
 
-export type PetListQueryVariables = Exact<{
-  page?: InputMaybe<PaginationInput>;
-}>;
+export type PetListQueryVariables = Exact<{ [key: string]: never }>;
 
 export type PetListQuery = {
   __typename?: "Query";
@@ -1265,32 +1258,14 @@ export const PetListDocument = {
       kind: "OperationDefinition",
       operation: "query",
       name: { kind: "Name", value: "petList" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "page" } },
-          type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "PaginationInput" },
-          },
-        },
-      ],
+      variableDefinitions: [],
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
             kind: "Field",
             name: { kind: "Name", value: "petList" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "page" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "page" },
-                },
-              },
-            ],
+            arguments: [],
             selectionSet: {
               kind: "SelectionSet",
               selections: [

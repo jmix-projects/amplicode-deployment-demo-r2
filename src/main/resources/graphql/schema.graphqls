@@ -1,10 +1,10 @@
 type Query {
     #Owner
     ownerList : [Owner]
-    owner(id : ID!) : Owner
+    owner(id : Long) : Owner
     #Pet
     petList : [Pet]
-    pet(id : ID!) : Pet
+    pet(id : Long) : Pet
     #PetType
     petTypeList : [PetTypeDTO]
     petType(id : Long) : PetTypeDTO
@@ -18,11 +18,11 @@ type Query {
 
 type Mutation {
     #Owner
-    delete_Owner(id : ID!): Boolean
-    update_Owner(input: OwnerInput): Owner
+    delete_Owner(id : Long!): Boolean
+    update_Owner(input: OwnerInputDTOInput): Owner
     #Pet
-    delete_Pet(id : ID!): Boolean
-    update_Pet(input: PetInput): Pet
+    delete_Pet(id : Long!): Boolean
+    update_Pet(input: PetInputDTOInput): Pet
     #PetType
     delete_PetType(id : Long!): Boolean
     update_PetType(input: PetTypeInputDTOInput): PetTypeDTO
@@ -35,7 +35,7 @@ type Mutation {
 }
 
 # Owner
-input OwnerInput {
+input OwnerInputDTOInput {
     id: ID
     firstName: String
     lastName: String
@@ -56,12 +56,12 @@ type Owner {
 }
 
 # Pet
-input PetInput {
+input PetInputDTOInput {
     id: ID
     identificationNumber: String
     birthDate: Date
     type: PetTypeDTOInput
-    owner: OwnerInput
+    owner: OwnerInputDTOInput
 }
 
 type Pet {

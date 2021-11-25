@@ -19,7 +19,7 @@ const documents = {
     graphql.Update_PetDocument,
   "\n              fragment New_PetDTO on PetDTO {\n                id\n              }\n            ":
     graphql.New_PetDtoFragmentDoc,
-  "\n  query petList($page: PaginationInput) {\n    petList(page: $page) {\n      birthDate\n      id\n      identificationNumber\n      owner {\n        firstName\n        id\n        lastName\n      }\n      type {\n        id\n        name\n      }\n    }\n  }\n":
+  "\n  query petList {\n    petList {\n      birthDate\n      id\n      identificationNumber\n      owner {\n        firstName\n        id\n        lastName\n      }\n      type {\n        id\n        name\n      }\n    }\n  }\n":
     graphql.PetListDocument,
   "\n  mutation delete_Pet($id: Long!) {\n    delete_Pet(id: $id)\n  }\n":
     graphql.Delete_PetDocument,
@@ -60,8 +60,8 @@ export function gql(
   source: "\n              fragment New_PetDTO on PetDTO {\n                id\n              }\n            "
 ): typeof documents["\n              fragment New_PetDTO on PetDTO {\n                id\n              }\n            "];
 export function gql(
-  source: "\n  query petList($page: PaginationInput) {\n    petList(page: $page) {\n      birthDate\n      id\n      identificationNumber\n      owner {\n        firstName\n        id\n        lastName\n      }\n      type {\n        id\n        name\n      }\n    }\n  }\n"
-): typeof documents["\n  query petList($page: PaginationInput) {\n    petList(page: $page) {\n      birthDate\n      id\n      identificationNumber\n      owner {\n        firstName\n        id\n        lastName\n      }\n      type {\n        id\n        name\n      }\n    }\n  }\n"];
+  source: "\n  query petList {\n    petList {\n      birthDate\n      id\n      identificationNumber\n      owner {\n        firstName\n        id\n        lastName\n      }\n      type {\n        id\n        name\n      }\n    }\n  }\n"
+): typeof documents["\n  query petList {\n    petList {\n      birthDate\n      id\n      identificationNumber\n      owner {\n        firstName\n        id\n        lastName\n      }\n      type {\n        id\n        name\n      }\n    }\n  }\n"];
 export function gql(
   source: "\n  mutation delete_Pet($id: Long!) {\n    delete_Pet(id: $id)\n  }\n"
 ): typeof documents["\n  mutation delete_Pet($id: Long!) {\n    delete_Pet(id: $id)\n  }\n"];

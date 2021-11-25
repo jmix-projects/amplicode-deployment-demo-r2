@@ -29,8 +29,8 @@ import { PetDetails } from "./PetDetails";
 const ROUTE = "pet-list";
 
 const PET_LIST = gql(/* GraphQL */ `
-  query petList($page: PaginationInput) {
-    petList(page: $page) {
+  query petList {
+    petList {
       birthDate
       id
       identificationNumber
