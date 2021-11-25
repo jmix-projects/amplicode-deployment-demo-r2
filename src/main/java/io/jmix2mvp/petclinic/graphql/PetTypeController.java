@@ -35,7 +35,7 @@ public class PetTypeController {
     @Secured({ADMIN, VETERINARIAN})
     @QueryMapping(name = "petType")
     @Transactional
-    public PetTypeDTO findById(Long id) {
+    public PetTypeDTO findById(@Argument Long id) {
         return crudRepository.findById(id)
                 .map(e -> mapper.map(e, PetTypeDTO.class))
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Unable to find entity by id: %s ", id)));
