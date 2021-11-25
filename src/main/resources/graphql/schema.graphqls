@@ -6,8 +6,8 @@ type Query {
     petList : [Pet]
     pet(id : ID!) : Pet
     #PetType
-    petTypeList : [PetType]
-    petType(id : ID!) : PetType
+    petTypeList : [PetTypeDTO]
+    petType(id : Long) : PetTypeDTO
     #Visit
     visitList : [Visit]
     visit(id : ID!) : Visit
@@ -24,8 +24,8 @@ type Mutation {
     delete_Pet(id : ID!): Boolean
     update_Pet(input: PetInput): Pet
     #PetType
-    delete_PetType(id : ID!): Boolean
-    update_PetType(input: PetTypeInput): PetType
+    delete_PetType(id : Long!): Boolean
+    update_PetType(input: PetTypeInputDTOInput): PetTypeDTO
     #Visit
     delete_Visit(id : ID!): Boolean
     update_Visit(input: VisitInput): Visit
@@ -60,7 +60,7 @@ input PetInput {
     id: ID
     identificationNumber: String
     birthDate: Date
-    type: PetTypeInput
+    type: PetTypeDTOInput
     owner: OwnerInput
 }
 
@@ -68,18 +68,23 @@ type Pet {
     id: ID
     identificationNumber: String,
     birthDate: Date,
-    type: PetType,
+    type: PetTypeDTO,
     owner: Owner,
 }
 
 # PetType
-input PetTypeInput {
-    id: ID
+input PetTypeInputDTOInput {
+    id: Long
     name: String
 }
 
-type PetType {
-    id: ID
+type PetTypeDTO {
+    id: Long
+    name: String
+}
+
+input PetTypeDTOInput {
+    id: Long
     name: String
 }
 
@@ -187,3 +192,5 @@ scalar BigInteger
 scalar BigDecimal
 
 
+"Long"
+scalar Long

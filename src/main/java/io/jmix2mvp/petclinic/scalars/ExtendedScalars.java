@@ -31,4 +31,10 @@ public interface ExtendedScalars {
             .name("BigDecimal")
             .coercing(new BaseCoercing(BigDecimal.class))
             .build();
+
+    GraphQLScalarType LONG = GraphQLScalarType.newScalar()
+            .name("Long")
+            .coercing(new BaseCoercing(Long.class, long.class))
+            .build();
+
 }

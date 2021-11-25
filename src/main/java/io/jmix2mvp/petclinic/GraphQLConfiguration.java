@@ -79,7 +79,8 @@ public class GraphQLConfiguration {
                 .scalar(DATETIME)
                 .scalar(TIME)
                 .scalar(BIG_INTEGER)
-                .scalar(BIG_DECIMAL);
+                .scalar(BIG_DECIMAL)
+                .scalar(LONG);
     }
 
     @Bean
