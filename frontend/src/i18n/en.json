@@ -10,6 +10,7 @@
   "common.back": "Back",
   "common.previous": "Previous",
   "common.requestFailed": "Request failed",
+  "common.notAllowed": "You do not have a permission to perform this operation",
   "common.viewDetails": "View details",
   "common.404": "Sorry, we couldn't find the page you were looking for",
   "auth.login.unauthorized": "Login does not exist or incorrect password",
@@ -21,6 +22,18 @@
   "EntityDetailsScreen.validationError": "Validation Error. Please check the data you entered.",
   "EntityLookupField.selectEntityInstance": "Select entity instance",
   "screen.home": "Home",
+  "hotkeys.hotkeyInfo.title": "Shortcuts",
+  "hotkeys.category.screen": "Screen",
+  "hotkeys.category.browser": "Browser",
+  "hotkeys.category.editor": "Editor",
+  "hotkeys.browser.applyFilter": "Apply filter",
+  "hotkeys.editor.saveEntity": "Save entity",
+  "hotkeys.screen.nextTab": "Switch to next tab",
+  "hotkeys.screen.previousTab": "Switch to previous tab",
+  "screen.OwnerEditor": "Owner Editor",
   "screen.OwnerList": "Owner List",
-  "screen.OwnerEditor": "Owner Editor"
+  "screen.PetEditor": "Pet Editor",
+  "screen.PetList": "Pet List",
+  "screen.ReadOnlyOwnerDetails": "Read Only Owner Details",
+  "screen.ReadOnlyOwnerList": "Read Only Owner List"
 }

@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState } from "react";
+import { gql } from "@amplicode/gql";
 import {
-  gql,
   useLazyQuery,
   useMutation,
   FetchResult,
@@ -12,9 +12,13 @@ import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useHistory } from "react-router-dom";
-import { EntityDetailsScreenProps, useScreens } from "@amplicode/react-core";
+import {
+  EntityDetailsScreenProps,
+  useScreens,
+  useDefaultEditorHotkeys
+} from "@amplicode/react-core";
 
-const OWNER = gql`
+const OWNER = gql(/* GraphQL */ `
   query owner($id: Long) {
     owner(id: $id) {
       address
@@ -26,9 +30,9 @@ const OWNER = gql`
       telephone
     }
   }
-`;
+`);
 
-const UPDATE__OWNER = gql`
+const UPDATE__OWNER = gql(/* GraphQL */ `
   mutation update_Owner($input: OwnerInputDTOInput) {
     update_Owner(input: $input) {
       address
@@ -40,9 +44,9 @@ const UPDATE__OWNER = gql`
       telephone
     }
   }
-`;
+`);
 
-const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
+export const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
   const [form] = useForm();
   const intl = useIntl();
   const screens = useScreens();
@@ -111,13 +115,15 @@ const OwnerEditor = observer(({ id }: EntityDetailsScreenProps) => {
     }
   }, [loadItem, id]);
 
-  const item = data?.["owner"];
+  const item = data?.owner;
 
   useEffect(() => {
     if (item != null) {
       form.setFieldsValue(dataToFormValues(item));
     }
   }, [item, form]);
+
+  useDefaultEditorHotkeys({ saveEntity: form.submit });
 
   if (queryLoading) {
     return <Spin />;
@@ -219,7 +225,7 @@ function dataToFormValues(data: any): any {
 
 function getUpdateFn(values: any) {
   return (cache: ApolloCache<any>, result: FetchResult) => {
-    const updateResult = result.data?.["update_Owner"];
+    const updateResult = result.data?.update_Owner;
     // Reflect the update in Apollo cache
     cache.modify({
       fields: {
@@ -239,5 +245,3 @@ function getUpdateFn(values: any) {
     });
   };
 }
-
-export default OwnerEditor;

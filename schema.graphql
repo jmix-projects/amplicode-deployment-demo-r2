@@ -1,9 +1,68 @@
-# This file was generated based on "Jmix model". Do not edit manually.
+# This file was automatically generated. Do not edit manually.
 
 schema {
     query: Query
     mutation: Mutation
 }
+
+type BaseLocale {
+    hash: Int!
+    language: String
+    region: String
+    script: String
+    variant: String
+}
+
+type Calendar {
+    areAllFieldsSet: Boolean!
+    areFieldsSet: Boolean!
+    firstDayOfWeek: Int!
+    isTimeSet: Boolean!
+    lenient: Boolean!
+    minimalDaysInFirstWeek: Int!
+    nextStamp: Int!
+    serialVersionOnStream: Int!
+    sharedZone: Boolean!
+    zone: TimeZone
+}
+
+type Character {
+    value: Char!
+}
+
+type Duration {
+    nanos: Int!
+}
+
+type InetAddress {
+    canonicalHostName: String
+    holder: InetAddressHolder
+}
+
+type InetAddressHolder {
+    address: Int!
+    family: Int!
+    hostName: String
+    originalHostName: String
+}
+
+type Instant {
+    nanos: Int!
+}
+
+type Locale {
+    baseLocale: BaseLocale
+    hashCodeValue: Int!
+    languageTag: String
+    localeExtensions: LocaleExtensions
+}
+
+type LocaleExtensions {
+    extensionMap: Map
+    id: String
+}
+
+type Map
 
 "Mutation root"
 type Mutation {
@@ -47,7 +106,7 @@ type Query {
     owner(id: Long): OwnerDTO
     ownerList: [OwnerDTO]
     pet(id: Long): PetDTO
-    petList: [PetDTO]
+    petList(page: PaginationInput): [PetDTO]
     petType(id: Long): PetTypeDTO
     petTypeList: [PetTypeDTO]
     test(id: Long): TestDTO
@@ -61,25 +120,75 @@ type TestDTO {
     bigInt: BigInteger
     bool: Boolean
     boolPrimitive: Boolean!
+    byteArray: [Byte]
     bytePrimitive: Byte!
     byteTest: Byte
+    calendar: Calendar
+    charArray: [Character]
     charPrimitive: Char!
     character: Char
+    currency: currency
+    date: Date
     dateUtil: DateTime
     doubleTest: Float
+    duration: Duration
     floatTest: Float
     id: Long
+    instant: Instant
     intTest: Int
     localDate: LocalDate
     localDateTime: LocalDateTime
     localTime: LocalTime
+    locale: Locale
     longTest: Long
     offsetDateTime: OffsetDateTime
     offsetTime: OffsetTime
     shortPrimitive: Short!
     shortTest: Short
     string: String
+    time: Time
+    timeStamp: Timestamp
+    url: URL
     uuidTest: UUID
+    zonedDateTime: ZonedDateTime
+}
+
+type TimeZone {
+    ID: String
+    zoneId: ZoneId
+}
+
+type Timestamp {
+    cdate: Date
+    nanos: Int!
+}
+
+type URL {
+    authority: String
+    file: String
+    handler: URLStreamHandler
+    hashCode: Int!
+    host: String
+    hostAddress: InetAddress
+    path: String
+    port: Int!
+    protocol: String
+    query: String
+    ref: String
+    tempState: UrlDeserializedState
+    userInfo: String
+}
+
+type URLStreamHandler
+
+type UrlDeserializedState {
+    authority: String
+    file: String
+    hashCode: Int!
+    host: String
+    port: Int!
+    protocol: String
+    ref: String
 }
 
 type VisitDTO {
@@ -87,6 +196,30 @@ type VisitDTO {
     id: Long
     visitEnd: LocalDateTime
     visitStart: LocalDateTime
+}
+
+type ZoneId
+
+type ZoneOffset {
+    id: String
+    totalSeconds: Int!
+}
+
+type ZonedDateTime {
+    dateTime: LocalDateTime
+    offset: ZoneOffset
+    zone: ZoneId
+}
+
+enum Direction {
+    ASC
+    DESC
+}
+
+enum NullHandling {
+    NATIVE
+    NULLS_FIRST
+    NULLS_LAST
 }
 
 "BigDecimal"
@@ -137,6 +270,81 @@ scalar UUID
 "Void"
 scalar Void
 
+"currency"
+scalar currency
+
+input BaseLocaleInput {
+    hash: Int!
+    language: String
+    region: String
+    script: String
+    variant: String
+}
+
+input ByteInput {
+    value: Byte!
+}
+
+input CalendarInput {
+    areAllFieldsSet: Boolean!
+    areFieldsSet: Boolean!
+    firstDayOfWeek: Int!
+    isTimeSet: Boolean!
+    lenient: Boolean!
+    minimalDaysInFirstWeek: Int!
+    nextStamp: Int!
+    serialVersionOnStream: Int!
+    sharedZone: Boolean!
+    zone: TimeZoneInput
+}
+
+input CharacterInput {
+    value: Char!
+}
+
+input DateInput
+
+input DurationInput {
+    nanos: Int!
+}
+
+input InetAddressHolderInput {
+    address: Int!
+    family: Int!
+    hostName: String
+    originalHostName: String
+}
+
+input InetAddressInput {
+    canonicalHostName: String
+    holder: InetAddressHolderInput
+}
+
+input InstantInput {
+    nanos: Int!
+}
+
+input LocaleExtensionsInput {
+    extensionMap: MapInput
+    id: String
+}
+
+input LocaleInput {
+    baseLocale: BaseLocaleInput
+    hashCodeValue: Int!
+    languageTag: String
+    localeExtensions: LocaleExtensionsInput
+}
+
+input MapInput
+
+input OrderInput {
+    direction: Direction
+    ignoreCase: Boolean
+    nullHandlingHint: NullHandling
+    property: String!
+}
+
 input OwnerDTOInput {
     address: String
     city: String
@@ -155,6 +363,12 @@ input OwnerInputDTOInput {
     id: Long
     lastName: String
     telephone: String
+}
+
+input PaginationInput {
+    pageNumber: Int!
+    pageSize: Int
+    sort: SortingInput
 }
 
 input PetDTOInput {
@@ -183,30 +397,88 @@ input PetTypeInputDTOInput {
     name: String
 }
 
+input SortingInput {
+    orders: [OrderInput!]!
+}
+
 input TestInputDTOInput {
     bigDecimal: BigDecimal
     bigInt: BigInteger
     bool: Boolean
     boolPrimitive: Boolean!
+    byteArray: [ByteInput]
     bytePrimitive: Byte!
     byteTest: Byte
+    calendar: CalendarInput
+    charArray: [CharacterInput]
     charPrimitive: Char!
     character: Char
+    currency: currency
+    date: DateInput
     dateUtil: DateTime
     doubleTest: Float
+    duration: DurationInput
     floatTest: Float
     id: Long
+    instant: InstantInput
     intTest: Int
     localDate: LocalDate
     localDateTime: LocalDateTime
     localTime: LocalTime
+    locale: LocaleInput
     longTest: Long
     offsetDateTime: OffsetDateTime
     offsetTime: OffsetTime
     shortPrimitive: Short!
     shortTest: Short
     string: String
+    time: TimeInput
+    timeStamp: TimestampInput
+    url: URLInput
     uuidTest: UUID
+    zonedDateTime: ZonedDateTimeInput
+}
+
+input TimeInput {
+    cdate: DateInput
+}
+
+input TimeZoneInput {
+    ID: String
+    zoneId: ZoneIdInput
+}
+
+input TimestampInput {
+    cdate: DateInput
+    nanos: Int!
+}
+
+input URLInput {
+    authority: String
+    file: String
+    handler: URLStreamHandlerInput
+    hashCode: Int!
+    host: String
+    hostAddress: InetAddressInput
+    path: String
+    port: Int!
+    protocol: String
+    query: String
+    ref: String
+    tempState: UrlDeserializedStateInput
+    userInfo: String
+}
+
+input URLStreamHandlerInput
+
+input UrlDeserializedStateInput {
+    authority: String
+    file: String
+    hashCode: Int!
+    host: String
+    port: Int!
+    protocol: String
+    ref: String
 }
 
 input VisitInputDTOInput {
@@ -215,4 +487,17 @@ input VisitInputDTOInput {
     pet: PetDTOInput
     visitEnd: LocalDateTime
     visitStart: LocalDateTime
+}
+
+input ZoneIdInput
+
+input ZoneOffsetInput {
+    id: String
+    totalSeconds: Int!
+}
+
+input ZonedDateTimeInput {
+    dateTime: LocalDateTime
+    offset: ZoneOffsetInput
+    zone: ZoneIdInput
 }

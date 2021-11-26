@@ -1,11 +1,7 @@
 import { observer } from "mobx-react";
-import {
-  gql,
-  useQuery,
-  useMutation,
-  ApolloCache,
-  Reference
-} from "@apollo/client";
+import { gql } from "@amplicode/gql";
+import { Exact } from "@amplicode/gql/graphql";
+import { useQuery, useMutation, ApolloCache, Reference } from "@apollo/client";
 import {
   CheckOutlined,
   CloseOutlined,
@@ -25,13 +21,14 @@ import {
   guessLabel,
   OpenInBreadcrumbParams,
   Screens,
-  useScreens
+  useScreens,
+  useDefaultBrowserHotkeys
 } from "@amplicode/react-core";
-import OwnerEditor from "../owner-editor/OwnerEditor";
+import { OwnerEditor } from "./OwnerEditor";
 
 const ROUTE = "owner-list";
 
-const OWNER_LIST = gql`
+const OWNER_LIST = gql(/* GraphQL */ `
   query ownerList {
     ownerList {
       address
@@ -43,15 +40,15 @@ const OWNER_LIST = gql`
       telephone
     }
   }
-`;
+`);
 
-const DELETE__OWNER = gql`
+const DELETE__OWNER = gql(/* GraphQL */ `
   mutation delete_Owner($id: Long!) {
     delete_Owner(id: $id)
   }
-`;
+`);
 
-const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
+export const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
   const screens: Screens = useScreens();
   const intl = useIntl();
   const match = useRouteMatch<{ entityId: string }>(`/${ROUTE}/:entityId`);
@@ -68,11 +65,11 @@ const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
   const openEditor = useCallback(
     (id?: string) => {
       const params: OpenInBreadcrumbParams = {
-        breadcrumbCaption: intl.formatMessage({id: 'screen.OwnerEditor'}),
-        component: OwnerEditor,
+        breadcrumbCaption: intl.formatMessage({ id: "screen.OwnerEditor" }),
+        component: OwnerEditor
       };
       if (id != null) {
-        params.props = {id};
+        params.props = { id };
       }
       screens.openInBreadcrumb(params);
       // Append /id to existing url
@@ -90,6 +87,8 @@ const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
     }
   }, [match, openEditor, screens]);
 
+  useDefaultBrowserHotkeys();
+
   if (loading) {
     return <Spin />;
   }
@@ -103,11 +102,7 @@ const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
     );
   }
 
-  const items = data?.["ownerList"];
-
-  if (items == null || items.length === 0) {
-    return <Empty />;
-  }
+  const items = data?.ownerList;
 
   return (
     <div className="narrow-layout">
@@ -144,23 +139,27 @@ const OwnerList = observer(({ onSelect }: EntityListScreenProps) => {
         </div>
       )}
 
-      {items.map((e: any) => (
-        <Card
-          key={e["id"]}
-          title={guessDisplayName(e)}
-          style={{ marginBottom: "12px" }}
-          actions={getCardActions({
-            screens,
-            entityInstance: e,
-            onSelect,
-            executeDeleteMutation,
-            intl,
-            openEditor
-          })}
-        >
-          <Fields entity={e} />
-        </Card>
-      ))}
+      {items == null || items.length === 0 ? (
+        <Empty />
+      ) : (
+        items.map((e: any) => (
+          <Card
+            key={e["id"]}
+            title={guessDisplayName(e)}
+            style={{ marginBottom: "12px" }}
+            actions={getCardActions({
+              screens,
+              entityInstance: e,
+              onSelect,
+              executeDeleteMutation,
+              intl,
+              openEditor
+            })}
+          >
+            <Fields entity={e} />
+          </Card>
+        ))
+      )}
     </div>
   );
 });
@@ -188,7 +187,7 @@ interface CardActionsInput {
   entityInstance: any;
   onSelect?: (entityInstance: this["entityInstance"]) => void;
   executeDeleteMutation: (
-    options?: MutationFunctionOptions
+    options?: MutationFunctionOptions<any, Exact<{ id: any }>>
   ) => Promise<FetchResult>;
   intl: IntlShape;
   openEditor: (id?: string) => void;
@@ -268,5 +267,3 @@ function getUpdateFn(e: any) {
     });
   };
 }
-
-export default OwnerList;
