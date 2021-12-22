@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -23,14 +24,22 @@ import static org.springframework.util.StringUtils.trimTrailingCharacter;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private DataSource dataSource;
+    public static final String NOOP_PREFIX = "{noop}";
+
     @Autowired
     private AppProperties appProperties;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource);
+        auth.inMemoryAuthentication()
+                .withUser(User.withUsername(appProperties.getUsers().getAdmin().getUsername())
+                        .password(getPassword(appProperties.getUsers().getAdmin().getPassword()))
+                        .authorities("ROLE_ADMIN").build());
+    }
+
+    private String getPassword(String initialPassword) {
+        return initialPassword != null && initialPassword.startsWith(NOOP_PREFIX) ? initialPassword
+                : NOOP_PREFIX + initialPassword;
     }
 
     @Override
