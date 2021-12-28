@@ -87,7 +87,7 @@ export const PetList = observer(({ onSelect }: EntityListScreenProps) => {
     }
   }, [match, openEditor, screens]);
 
-  useDefaultBrowserHotkeys();
+  useDefaultBrowserHotkeys({openEditor});
 
   if (loading) {
     return <Spin />;
