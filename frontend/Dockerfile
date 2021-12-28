@@ -1,11 +1,11 @@
-FROM node:14 as builder
+FROM node:16 as builder
 
 WORKDIR /app
 
 COPY package.json ./
 COPY package-lock.json ./
 
-RUN npm ci
+RUN npm i
 
 COPY . ./
 
